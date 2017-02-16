@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Our First D3 Example</title>
+        <style>
+            svg {
+                border: 1px solid #aaa;
+            }
+            .chart rect {
+                fill: red;
+            }
+
+            .chart .hightlighted rect{
+              fill: green
+            }
+
+            .chart .blue {
+                fill: steelblue;
+            }
+
+            .chart text {
+                fill: white;
+                font-size:12px;
+                font-family:arial;
+                alignment-baseline: middle;
+            }
+
+        </style>
+    </head>
+    <body>
+      <svg class="chart" width="800" height="360">
+        <g transform="translate(0,0)">
+          <rect width="40px" height="56"></rect>
+          <text y="30" x="10">4</text>
+        </g>
+        <g transform="translate(0,60)">
+          <rect width="80px" height="56"></rect>
+          <text y="30" x="10">8</text>
+        </g>
+        <g transform="translate(0,120)">
+          <rect width="150px" height="56"></rect>
+          <text y="30" x="10">15</text>
+        </g>
+        <g transform="translate(0,180)">
+          <rect width="160px" height="56"></rect>
+          <text y="30" x="10">16</text>
+        </g>
+        <!-- 1. Add two extra bars with values 23 and 42 -->
+        <!-- 2. Make all the bars red -->
+        <!-- 3. Highlight one bar by changing its color to green -->
+        <g class="hightlighted" transform="translate(0,240)">
+          <rect width="230px" height="56"></rect>
+          <text y="30" x="10">23</text>
+        </g>
+        <!-- transform: push everything down-->
+        <g transform="translate(0,300)">
+          <rect width="420px" height="56"></rect>
+          <text y="30" x="10">42</text>
+        </g>
+
+      </svg>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script>
+            // Where we will do our coding. Ignore for now.
+        </script>
+    </body>
+</html>
