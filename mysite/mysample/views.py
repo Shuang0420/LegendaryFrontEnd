@@ -10,14 +10,13 @@ https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 
 # Create your views here.
 def index(request):
-    template = loader.get_template('mysample/index.html')
-    # return HttpResponse("Hello, world. You're at the polls index.")
+    # template = loader.get_template('mysample/index.html')
+    return HttpResponse("Hello, world. Go to /mysample/1 to see dashboard 1")
+
+
+def dashboard(request, id):
+    template = loader.get_template('mysample/dashboard.html')
     context = {
-        'latest_question_list': '1122',
+            'dashboard_id': id,
     }
     return HttpResponse(template.render(context, request))
-
-
-
-def dashboard(request, question_id):
-    return HttpResponse("You're looking at dashboard %s." % question_id)
