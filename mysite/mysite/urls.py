@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     # point the root URLconf at the mysample.urls module
-    url(r'^mysample/', include('mysample.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^$', include('dashboard.urls')),
+    url(r'^dashboard/', include('dashboard.urls')),
+    url(r'^report/', include('report.urls')),
+    url(r'^admin/', admin.site.urls)
 ]

@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dashboard',
+    'report',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,8 +56,8 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/sure/Google_云端硬盘/Study/Capstone/LegendaryFrontEnd/mysite/mysite/templates'],
-        # 'DIRS': ['/Users/sure/Google_云端硬盘/Study/Capstone/LegendaryFrontEnd/mysite/mysample/templates'],
+        'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/templates'],
+        # 'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/mysample/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,5 +122,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-        '/Users/sure/Google_云端硬盘/Study/Capstone/LegendaryFrontEnd/mysite/static/',
+        '/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/static/',
 )
