@@ -22,17 +22,19 @@
 											</h1>
 									 </div>
 
-<div class="row">
-									 <div class="container">
+<!--must have csrf_token when using post method-->
+<form action="/report/get_report/" method="post">{% csrf_token %}
+									 <div class="row">
+
 													<div class="col-sm-4 form-group">
 														<label>Program title:</label>
-															<input type="text" class="form-control input-sm">
+															<input type="text" class="form-control input-sm" name="program_title">
 													</div>
 
 
 														<div class="col-sm-2 form-group">
 															<label>Region:</label>
-														  <select class="form-control input-sm" id="sel1" style="width:auto;">
+														  <select class="form-control input-sm" name="region" style="width:auto;">
 														    <option>United States</option>
 														    <option>Canada</option>
 														  </select>
@@ -40,15 +42,15 @@
 
 														<div class="col-sm-6 form-group">
 															<label>Genre:</label>
-														  <select class="form-control input-sm" id="sel1" style="width:auto;">
+														  <select class="form-control input-sm" name="genre" style="width:auto;">
 														    <option>Action</option>
 														    <option>Comedy</option>
 														  </select>
 														</div>
-									</div>
 
 
-												<div class="container">
+
+
 													<div class="col-sm-4">
 														<label>Date Range:</label>
 													</div>
@@ -59,15 +61,15 @@
 
 													    <div class="col-sm-2 form-group">
 													            <div class='input-group date' id='datepicker1'>
-													                <input type='text' class="form-control input-sm" />
+													                <input type='text' class="form-control input-sm"  name='date_from'/>
 													                <span class="input-group-addon">
 													                    <span class="glyphicon glyphicon-calendar"></span>
 													                </span>
 													            </div>
 													    </div>
 													    <div class="col-sm-2 form-group">
-													            <div class='input-group date' id='datepicker2'>
-													                <input type='text' class="form-control input-sm" />
+													            <div class='input-group date' id='datepicker2' >
+													                <input type='text' class="form-control input-sm" name='date_to'/>
 													                <span class="input-group-addon">
 													                    <span class="glyphicon glyphicon-calendar"></span>
 													                </span>
@@ -77,7 +79,7 @@
 																<div class='col-sm-2'>
 																		<div class="form-group">
 																				<div class='input-group date' id='timepicker1'>
-																						<input type='text' class="form-control input-sm" />
+																						<input type='text' class="form-control input-sm" name='time_from'/>
 																						<span class="input-group-addon">
 																								<span class="glyphicon glyphicon-time"></span>
 																						</span>
@@ -87,15 +89,15 @@
 																<div class='col-sm-2'>
 																		<div class="form-group">
 																				<div class='input-group date' id='timepicker2'>
-																						<input type='text' class="form-control input-sm" />
+																						<input type='text' class="form-control input-sm" name='time_to'/>
 																						<span class="input-group-addon">
 																								<span class="glyphicon glyphicon-time"></span>
 																						</span>
 																				</div>
 																		</div>
 																</div>
-																	<button type="button" class="btn btn-primary">Submit</button>
-														</div>
+																	<input type="submit" class="btn btn-primary" value="Submit">
+
 
 
 													<script type="text/javascript">
@@ -114,15 +116,7 @@
 													            $('#datepicker1').data("DateTimePicker").maxDate(e.date);
 													        });
 													    });
-													</script>
 
-
-
-
-													<div class="container">
-
-													</div>
-													<script type="text/javascript">
 													    $(function () {
 													        $('#timepicker1').datetimepicker({
 																		pickDate: false
@@ -143,5 +137,15 @@
 
 
                 </div>
+</form>
+<!-- rlt: spare some space for following table-->
+<div class="row">
+<div class="col-sm-4 form-group">
+	<h2>{{ program_title }} 	<small>{{ region }}</small> <small>{{ genre }}</samll></h2>
+<p><b>{{date_range}}</b>{{date_from}}  {{date_to}} </p>
+<p><b>{{time_range}}</b>{{time_from}}  {{time_to}}</p>
 </div>
+</div>
+
+
 {% endblock %}
