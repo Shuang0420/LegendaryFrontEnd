@@ -5,6 +5,8 @@
    <script type="text/javascript" src="/static/js/moment.min.js"></script>
    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+	 <script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
+
  </head>
 
 <body>
@@ -35,6 +37,7 @@
 														<div class="col-sm-2 form-group">
 															<label>Region:</label>
 														  <select class="form-control input-sm" name="region" style="width:auto;">
+																<option>All</option>
 														    <option>United States</option>
 														    <option>Canada</option>
 														  </select>
@@ -43,6 +46,7 @@
 														<div class="col-sm-6 form-group">
 															<label>Genre:</label>
 														  <select class="form-control input-sm" name="genre" style="width:auto;">
+																<option>All</option>
 														    <option>Action</option>
 														    <option>Comedy</option>
 														  </select>
@@ -97,15 +101,21 @@
 																		</div>
 																</div>
 																	<input type="submit" class="btn btn-primary" value="Submit">
+																	<input type="submit" class="btn btn-primary" value="Save Query">
 
 
 
 													<script type="text/javascript">
+													var dateTo = new Date();
+													var dateFrom = new Date();
+													dateFrom.setDate(dateFrom.getDate()-7);
 													    $(function () {
 													        $('#datepicker1').datetimepicker({
+																		defaultDate: dateFrom,
 																		pickTime: false
 																	});
 													        $('#datepicker2').datetimepicker({
+																			defaultDate: dateTo,
 													            useCurrent: false, //Important! See issue #1075
 																			pickTime: false
 													        });
@@ -118,12 +128,15 @@
 													    });
 
 													    $(function () {
+																	dateFrom.setHours(dateFrom.getHours()-3);
 													        $('#timepicker1').datetimepicker({
-																		pickDate: false
+																		pickDate: false,
+																		defaultDate: dateFrom,
 																	});
 													        $('#timepicker2').datetimepicker({
 													            useCurrent: false, //Important! See issue #1075
-																			pickDate: false
+																			pickDate: false,
+																			defaultDate: dateTo,
 													        });
 													        $("#timepicker1").on("dp.change", function (e) {
 													            $('#timepicker2').data("DateTimePicker").minDate(e.date);
@@ -145,6 +158,8 @@
 <p><b>{{date_range}}</b>{{date_from}}  {{date_to}} </p>
 <p><b>{{time_range}}</b>{{time_from}}  {{time_to}}</p>
 </div>
+
+
 </div>
 
 
