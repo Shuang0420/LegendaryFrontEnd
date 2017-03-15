@@ -14,6 +14,12 @@ import json
 #import json2html
 from json2html import *
 from django.http import JsonResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from StringIO import StringIO
 # Create your views here.
 '''
 https://docs.djangoproject.com/en/1.10/intro/tutorial01/
@@ -60,6 +66,51 @@ def get_report_by_title(request):
     return JsonResponse(jsonfile, safe=False)
     #return JsonResponse(jsonfile)
 
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4, inch, landscape
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+def save_pdf(request):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    buff = StringIO()
+    menu_pdf = SimpleDocTemplate(buff, rightMargin=72,
+                                leftMargin=72, topMargin=72, bottomMargin=18)
+
+    # container for pdf elements
+    elements = []
+    data = [
+    jsonfile[0].keys(),
+    ]
+    for item in jsonfile:
+        data.append(item.values())
+    style = TableStyle([('ALIGN',(1,1),(-2,-2),'RIGHT'),
+                           ('TEXTCOLOR',(1,1),(-2,-2),colors.red),
+                           ('VALIGN',(0,0),(0,-1),'TOP'),
+                           ('TEXTCOLOR',(0,0),(0,-1),colors.blue),
+                           ('ALIGN',(0,-1),(-1,-1),'CENTER'),
+                           ('VALIGN',(0,-1),(-1,-1),'MIDDLE'),
+                           ('TEXTCOLOR',(0,-1),(-1,-1),colors.green),
+                           ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                           ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                           ])
+    # Add the content as before then...
+    s = getSampleStyleSheet()
+    s = s["BodyText"]
+    s.wordWrap = 'CJK'
+    data2 = [[Paragraph(cell, s) for cell in row] for row in data]
+    t=Table(data2)
+    t.setStyle(style)
+
+    #Send the data and build the file
+    elements.append(t)
+
+    menu_pdf.build(elements)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
 
 
 # FOR PYTHON 2.7

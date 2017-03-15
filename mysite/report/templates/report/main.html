@@ -206,12 +206,19 @@
 			{% endfor %}
 		</div>-->
 
-			<div class="row" id="report_part" style="visibility:hidden" >
+			<div class="row col-sm-12" id="report_part" style="visibility:hidden">
+
 				<br />
 				<!-- show some leading information for table
 				<h2>{{ program_title }} 	<small>{{ region }}</small> <small>{{ genre }}</samll></h2>
 				<p><b>{{date_range}}</b>{{date_from}} {{date_to}} </p>
-				<p><b>{{time_range}}</b>{{time_from}} {{time_to}}</p>-->
+				<p><b>{{time_range}}</b>{{time_from}} {{time_to}}</p>
+				<div class="col-md-10"></div>
+						<div class="col-md-2">-->
+							
+				<a class="btn btn-default" href="/report/save_pdf/">Export</a>
+				<br />
+				<br />
 
 				<div class="table-responsive">
 					<table class="table table-condensed table-hover table-bordered" id="mytable">
