@@ -20,7 +20,8 @@
                             Report <small>User queries</small>
 
 												<button type="button" class="btn btn-default">New Query</button>
-												<button type="button" class="btn btn-primary">Saved Queries</button>
+												<!-- <button type="button" class="btn btn-primary">Saved Queries</button>-->
+												<a class="btn btn-primary" href="/report/saved_queries/">Saved Queries</a>
 											</h1>
 			</div>
 
@@ -158,7 +159,6 @@
 								data: $("#queryFields").serialize(), // serializes the form's elements.
 
 								success: function(data) {
-									$('#Result').html(data.program_title)
 									var trHTML = '';
 									$.each(data, function(key, value) {
 										trHTML +=
@@ -184,16 +184,24 @@
 							e.preventDefault();
 						});
 
-						$('#save').click(function() {
+						$('#save').click(function(e2) {
 							$.ajax({
 								type: "POST",
-								url: "/report/get_report/", // the script where you handle the form input.
+								url: "/report/save_query/", // the script where you handle the form input.
 								data: $("#queryFields").serialize(), // serializes the form's elements.
 								success: function(data) {
 									//alert(data);
-									alert("Saved successfully!");
+									if (data == "True") {
+										//$('#result').html("correct")
+										alert("Saved successfully!");
+									}
+									else {
+										alert("Something wrong. Please try again!");
+									}
+									//alert("Saved successfully!");
 								}
 							});
+							e2.preventDefault();
 						});
 					</script>
 				</div>
@@ -215,7 +223,7 @@
 				<p><b>{{time_range}}</b>{{time_from}} {{time_to}}</p>
 				<div class="col-md-10"></div>
 						<div class="col-md-2">-->
-							
+
 				<a class="btn btn-default" href="/report/save_pdf/">Export</a>
 				<br />
 				<br />

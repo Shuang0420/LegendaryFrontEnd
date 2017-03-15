@@ -12,13 +12,17 @@ import urllib2
 from django.contrib import messages
 import json
 #import json2html
-from json2html import *
+#from json2html import *
 from django.http import JsonResponse
 from reportlab.pdfgen import canvas
-from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4, inch, landscape
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 from StringIO import StringIO
 # Create your views here.
 '''
@@ -32,6 +36,16 @@ def index(request):
     return render(request,'report/main.html')
 
 
+savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
+def saved_queries(request):
+    template = loader.get_template('report/saved_queries.html')
+    #return render(request,'report/saved_queries.html',savedQueries)
+    data = {}
+    data['savedQueries'] = savedQueries
+    print data
+    return HttpResponse(template.render(data))
+
+
 jsonfile = [{"program_title": "king","region": "US","genre":"comedy", "start_date": "03/14/2017", "end_date": "03/15/2017", "time": "09:30"}]
 
 
@@ -41,36 +55,64 @@ def loadJson():
     return json2html.convert(json = infoFromJson)
     '''
 
+def process_query(fields):
+    r = requests.get('http://localhost:8080/api/v1/savedQueries/', data=fields)
+    print fields
+    print r.status_code
+    return HttpResponse(r.status_code == requests.codes.ok)
 
-def get_report_by_title(request):
-    ctx ={}
-    ctx.update(csrf(request))
+
+
+def get_report(request):
+    #ctx ={}
+    #ctx.update(csrf(request))
     if request.POST:
+        '''
     	ctx['program_title'] = request.POST['program_title']
-    	ctx['region'] = request.POST['region'] +','
+    	ctx['region'] = request.POST['region']
     	ctx['genre'] = request.POST['genre']
-    	ctx['date_range'] = 'Date Range: '
     	ctx['date_from'] = request.POST['date_from']
-    	ctx['date_to'] = '- '+request.POST['date_to']
-    	ctx['time_range'] = 'Time Range: '
+    	ctx['date_to'] = request.POST['date_to']
     	ctx['time_from'] = request.POST['time_from']
-    	ctx['time_to'] = '- '+request.POST['time_to']
+    	ctx['time_to'] = request.POST['time_to']
         if request.POST.get('save'):
             print 'save'
-            save_query(ctx)
+            status = save_query(ctx)
+            data = {"status":status}
             messages.success(request, "Saved successfully !")
-            return render(request, 'report/main.html')
-            #return HttpResponse(messages)
-    #return render(request, 'report/main.html', ctx)
-    #return HttpResponse(jsonfile, content_type='application/json')
-    return JsonResponse(jsonfile, safe=False)
-    #return JsonResponse(jsonfile)
+            #return render(request, 'report/main.html', data)
+            print status, type(status)
+            return HttpResponse(status)
+            '''
+        #return render(request, 'report/main.html', ctx)
+        #return HttpResponse(jsonfile, content_type='application/json')
+        fields = dict(request.POST.iterlists())
+        process_query(fields)
+        return JsonResponse(jsonfile, safe=False)
+        #return JsonResponse(jsonfile)
 
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4, inch, landscape
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+
+
+
+# FOR PYTHON 2.7
+def save_query(request):
+    print 'save'
+    userID = 'test'
+    query = 'test query'
+    if request.POST:
+        DATA = dict(request.POST.iterlists())
+        DATA['userID'] = userID
+        print DATA
+        #DATA = urllib.urlencode(DATA).encode("utf-8")
+        r = requests.put('http://localhost:8080/api/v1/savedQueries/', data=DATA)
+        return HttpResponse(r.status_code == requests.codes.ok)
+
+
+
+
+
+
 def save_pdf(request):
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
@@ -111,14 +153,3 @@ def save_pdf(request):
     response.write(buff.getvalue())
     buff.close()
     return response
-
-
-# FOR PYTHON 2.7
-def save_query(DATA):
-    userID = 'test'
-    query = 'test query'
-    DATA['userID'] = userID
-    print DATA
-    #DATA = urllib.urlencode(DATA).encode("utf-8")
-    r = requests.put('http://localhost:8080/api/v1/savedQueries/', data=DATA)
-    print r
