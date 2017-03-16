@@ -59,7 +59,9 @@ def process_query(fields):
     r = requests.get('http://localhost:8080/api/v1/savedQueries/', data=fields)
     print fields
     print r.status_code
-    return HttpResponse(r.status_code == requests.codes.ok)
+    content = r.json()
+    # HttpResponse(r.status_code == requests.codes.ok)
+    return content
 
 
 
@@ -87,7 +89,7 @@ def get_report(request):
         #return render(request, 'report/main.html', ctx)
         #return HttpResponse(jsonfile, content_type='application/json')
         fields = dict(request.POST.iterlists())
-        process_query(fields)
+        content = process_query(fields)
         return JsonResponse(jsonfile, safe=False)
         #return JsonResponse(jsonfile)
 
@@ -116,7 +118,7 @@ def save_query(request):
 def save_pdf(request):
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    response['Content-Disposition'] = 'attachment; filename=report' 
     buff = StringIO()
     menu_pdf = SimpleDocTemplate(buff, rightMargin=72,
                                 leftMargin=72, topMargin=72, bottomMargin=18)

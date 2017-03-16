@@ -224,7 +224,31 @@
 				<div class="col-md-10"></div>
 						<div class="col-md-2">-->
 
-				<a class="btn btn-default" href="/report/save_pdf/">Export</a>
+<button class="btn btn-default" id="export">Export</button>​
+
+<script>
+	window.onload = function() {
+		var el = document.getElementById('export');
+		el.onclick = function() {
+			var filename = prompt('Enter text here');
+			if (filename) {
+				$.ajax({
+					url: "/report/save_pdf/", // the script where you handle the form input.
+					success: function(data) {
+						// var win = window.open("data:application/pdf," + escape(data));
+						// win.document.title = "ttt";
+						var blob = new Blob([data]);
+						var link = document.createElement('a');
+						link.href = window.URL.createObjectURL(blob);
+						link.download = filename + ".pdf";
+						link.click();
+					}
+				});
+			}
+		}
+	}
+</script>
+
 				<br />
 				<br />
 
