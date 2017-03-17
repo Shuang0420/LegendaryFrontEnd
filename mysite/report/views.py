@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import loader
@@ -32,8 +31,12 @@ https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 # Create your views here.
 def index(request):
     template = loader.get_template('report/main.html')
+    if request.user.is_authenticated():
+        return render(request,'report/main.html')
+    else:
+        return render_to_response('users/home.html')
     # return HttpResponse(template.render(request))
-    return render(request,'report/main.html')
+    #return render(request,'report/main.html')
 
 
 savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
@@ -118,7 +121,7 @@ def save_query(request):
 def save_pdf(request):
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=report' 
+    response['Content-Disposition'] = 'attachment; filename=report'
     buff = StringIO()
     menu_pdf = SimpleDocTemplate(buff, rightMargin=72,
                                 leftMargin=72, topMargin=72, bottomMargin=18)

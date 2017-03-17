@@ -1,14 +1,15 @@
-{% extends "header.html" %} {% block content %}
+{% extends "header.html" %}
 
-<head>
+{% block javascript %}
 	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/js/moment.min.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
 
-</head>
+{% endblock %}
 
+{% block content %}
 <body>
 
 
@@ -271,19 +272,9 @@
 			</div>
 
 
-			<!-- rlt: spare some space for following table
-<tbody>
-		{% for row in values %}
-		<tr>
-				{% for cell in row %}
-				<td>{{cell}}</td>
-				{% endfor %}
-		</tr>
-		{% endfor %}
-</tbody>
-
 
 		</div>
-
+</div>
+</body>
 
 		{% endblock %}

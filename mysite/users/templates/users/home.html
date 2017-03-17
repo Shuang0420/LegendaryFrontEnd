@@ -1,0 +1,21 @@
+{% extends 'header.html' %}
+
+{% block content %}
+
+	<div class="container-fluid" style="height:90%;">
+    <div class="row">
+            {% if user.is_authenticated %}
+              <h2> Welcome, {{ user.username }}</h2>
+            {% else %}
+                <h4>Please <a href="javascript:void(0)" onclick="goToURL(); return false;">sign in</a></h4>
+                <script>
+                  function goToURL() {
+                    location.href = '/login/';
+                  }
+                </script>
+            {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
