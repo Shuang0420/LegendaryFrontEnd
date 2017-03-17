@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for mysite project.
 
@@ -11,6 +12,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'dashboard',
     'report',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/templates'],
+        'DIRS': ['/Users/sure/Google_云端硬盘/Study/Capstone/LegendaryFrontEnd/mysite/mysite/templates'],
         # 'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/mysample/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -116,11 +121,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = '/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-        '/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/static/',
+        '/Users/sure/Google_云端硬盘/Study/Capstone/LegendaryFrontEnd/mysite/static/',
 )
