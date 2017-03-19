@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import render_to_response
 
 # Create your views here.
 '''
@@ -17,7 +18,10 @@ def index(request):
     pageData['upcoming'] = upcoming
     pageData['airtimes'] = airtimes
     pageData['savedQueries'] = savedQueries
-    return HttpResponse(template.render(pageData))
+    if request.user.is_authenticated():
+        return HttpResponse(template.render(pageData))
+    else:
+        return render_to_response('users/home.html')
     # return HttpResponse("Hello, world. Go to /mysample/1 to see dashboard 1")
 
 
