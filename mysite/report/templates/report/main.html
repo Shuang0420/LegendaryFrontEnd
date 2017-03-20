@@ -47,10 +47,9 @@
 
 					<div class="col-sm-6 form-group">
 						<label>Genre:</label>
-						<select class="form-control input-sm" name="genre" style="width:auto;">
+						<select class="form-control input-sm" name="showtype" style="width:auto;">
 																<option>All</option>
-														    <option>Action</option>
-														    <option>Comedy</option>
+														    <option>Series</option>
 														  </select>
 					</div>
 
@@ -163,18 +162,18 @@
 									var trHTML = '';
 									$.each(data, function(key, value) {
 										trHTML +=
-											'<tr><td>' +
-											value.program_title +
-											'</td><td>' +
-											value.region +
-											'</td><td>' +
-											value.genre +
-											'</td><td>' +
-											value.start_date +
-											'</td><td>' +
-											value.end_date +
-											'</td><td>' +
-											value.time +
+											'<tr><td nowrap>' +
+											value.Title +
+											'</td><td nowrap>' +
+											value.Showtype +
+											'</td><td nowrap>' +
+											value.StationName +
+											'</td><td nowrap>' +
+											value.airdatetime +
+											'</td><td nowrap>' +
+											value.Duration +
+											'</td><td nowrap>' +
+											value.Description +
 											'</td></tr>';
 									});
 									//clear the table before populate data
@@ -253,16 +252,17 @@
 				<br />
 				<br />
 
-				<div class="table-responsive">
-					<table class="table table-condensed table-hover table-bordered" id="mytable">
-						<thead>
+				<div class="scrollable">
+					<table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
+						<thead class="thead-inverse">
+							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
 							<tr>
-								<th>Program</th>
-								<th>Region</th>
-								<th>Genre</th>
-								<th>Date From</th>
-								<th>Date To</th>
-								<th>Time</th>
+								<th>Title</th>
+								<th>Show Type</th>
+								<th>Station Name</th>
+								<th>Air Time</th>
+								<th>Duration</th>
+								<th>Description</th>
 							</tr>
 						</thead>
 						<tbody id="tBody">

@@ -28,6 +28,9 @@ from StringIO import StringIO
 https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 '''
 
+
+report_content = None
+
 # Create your views here.
 def index(request):
     template = loader.get_template('report/main.html')
@@ -40,35 +43,53 @@ def index(request):
 
 
 savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
+
+#[{u'query': u'{"showtype": ["Serie', u'queryDes': None}, {u'query': u'bySeries', u'queryDes': None}, {u'query': u'search by Series', u'queryDes': None}]
+#{'savedQueries': [['GameOfThrones 1 month', 'Game of Thrones,"month":1'], ['Daredevil 1 month', 'Daredevil,"month":1']]}
+
 def saved_queries(request):
     template = loader.get_template('report/saved_queries.html')
     #return render(request,'report/saved_queries.html',savedQueries)
+    if request.user.is_authenticated():
+        userID = request.user.username
+    queries = api_get_saved_query(userID)
+    #print queries
     data = {}
+    #data['savedQueries'] = queries
     data['savedQueries'] = savedQueries
-    print data
+    data['test'] = 'hello'
+    #return JsonResponse(queries, safe=False)
     return HttpResponse(template.render(data))
 
 
-jsonfile = [{"program_title": "king","region": "US","genre":"comedy", "start_date": "03/14/2017", "end_date": "03/15/2017", "time": "09:30"}]
-
-
-'''
-def loadJson():
-    infoFromJson = json.loads(jsonfile)
-    return json2html.convert(json = infoFromJson)
-    '''
-
-def process_query(fields):
-    r = requests.get('http://localhost:8080/api/v1/savedQueries/', data=fields)
-    print fields
-    print r.status_code
-    content = r.json()
+def api_get_saved_query(userID):
+    r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
     # HttpResponse(r.status_code == requests.codes.ok)
-    return content
+    return r.json()
 
+
+def api_save_query(fields):
+    query = 'series'
+    DATA = {}
+    DATA['userID'] = fields['userID']
+    DATA['query'] = query
+    DATA['description'] = str(DATA)
+    print DATA
+    #DATA = urllib.urlencode(DATA).encode("utf-8")
+    r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
+    return r.status_code
+
+
+def api_get_report(fields):
+    #d = '?showtype=' + fields['showtype']+'&language=en'+'&title='+fields['program_title']
+    d = '?title='+fields['program_title']
+    r = requests.get('http://localhost:8080/api/v1/program'+d)
+    print r.json()
+    return r.json()
 
 
 def get_report(request):
+    global report_content
     #ctx ={}
     #ctx.update(csrf(request))
     if request.POST:
@@ -90,11 +111,14 @@ def get_report(request):
             return HttpResponse(status)
             '''
         #return render(request, 'report/main.html', ctx)
-        #return HttpResponse(jsonfile, content_type='application/json')
-        fields = dict(request.POST.iterlists())
-        content = process_query(fields)
-        return JsonResponse(jsonfile, safe=False)
-        #return JsonResponse(jsonfile)
+        #return HttpResponse(report_content, content_type='application/json')
+        fields = dict(request.POST.iteritems())
+        content = api_get_report(fields)
+        print content
+        # update global content for pdf saving
+        report_content = content
+        return JsonResponse(content, safe=False)
+        #return JsonResponse(report_content)
 
 
 
@@ -103,15 +127,13 @@ def get_report(request):
 # FOR PYTHON 2.7
 def save_query(request):
     print 'save'
-    userID = 'test'
-    query = 'test query'
+    if request.user.is_authenticated():
+        userID = request.user.username
     if request.POST:
-        DATA = dict(request.POST.iterlists())
-        DATA['userID'] = userID
-        print DATA
-        #DATA = urllib.urlencode(DATA).encode("utf-8")
-        r = requests.put('http://localhost:8080/api/v1/savedQueries/', data=DATA)
-        return HttpResponse(r.status_code == requests.codes.ok)
+        fields = dict(request.POST.iteritems())
+        fields['userID'] = userID
+        status_code = api_save_query(fields)
+        return HttpResponse(status_code == requests.codes.ok)
 
 
 
@@ -119,6 +141,7 @@ def save_query(request):
 
 
 def save_pdf(request):
+    print 'rc',report_content
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=report'
@@ -129,10 +152,18 @@ def save_pdf(request):
     # container for pdf elements
     elements = []
     data = [
-    jsonfile[0].keys(),
+    #report_content[0].keys(),
+    # keep this so we have nice order
+    ["Title", "Show Type","Station Name", "Air Time", "Duration", "Description"]
     ]
-    for item in jsonfile:
-        data.append(item.values())
+    for item in report_content:
+        data.append([str(item['Title']),
+                    str(item['Showtype']),
+                    str(item['StationName']),
+                    str(item['airdatetime']),
+                    str(item['Duration']),
+                    str(item['Description'])
+                    ])
     style = TableStyle([('ALIGN',(1,1),(-2,-2),'RIGHT'),
                            ('TEXTCOLOR',(1,1),(-2,-2),colors.red),
                            ('VALIGN',(0,0),(0,-1),'TOP'),
