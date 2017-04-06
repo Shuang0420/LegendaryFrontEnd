@@ -19,7 +19,8 @@ def getConnection():
 		port='5439',
 		user='cmucapstonejd',
 		password='Ngl91dY2daIa3wFD1QhL',
-		host='cmucapstone.cjvi8xu2ejaw.us-east-2.redshift.amazonaws.com'
+                host='52.14.140.87',
+		#host='cmucapstone.cjvi8xu2ejaw.us-east-2.redshift.amazonaws.com'
 		)
 	return conn
 
