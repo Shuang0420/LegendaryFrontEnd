@@ -29,7 +29,7 @@ SECRET_KEY = '#7$f*%z3$pb=hdpd(85y=4l-z9dtr$%1uq1*@iy7mtl$ub@n3h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-52-14-223-164.us-east-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['ec2-52-14-223-164.us-east-2.compute.amazonaws.com','localhost']
 
 
 # Application definition
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/ec2-user/legendary/LegendaryFrontEnd/mysite/mysite/templates'],
+        'DIRS': ['/Users/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/templates'],        
         # 'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/mysample/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,5 +129,5 @@ LOGIN_REDIRECT_URL = '/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-        '/home/ec2-user/legendary/LegendaryFrontEnd/mysite/static/',
+        '/Users/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/templates',
 )
