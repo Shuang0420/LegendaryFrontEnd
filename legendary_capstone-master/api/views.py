@@ -13,13 +13,7 @@ import re
 
 def getConnection(): 
 	""" Obtain connection to Redshift """
-	conn = psycopg2.connect(
-	#host='cmucapstone.cvtax4qegotm.us-west-2.redshift.amazonaws.com', # Dummy DB
-	host='cmucapstone.cjvi8xu2ejaw.us-east-2.redshift.amazonaws.com', 
-	password='Ngl91dY2daIa3wFD1QhL',
-	dbname='cmucapstonejd',
-	user='cmucapstonejd', 
-	port='5439')
+
 	return conn
 
 
