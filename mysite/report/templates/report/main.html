@@ -32,25 +32,31 @@
 
 					<div class="col-sm-4 form-group">
 						<label>Program title:</label>
-						<input type="text" class="form-control input-sm" name="program_title">
+						<!--<input type="text" class="form-control input-sm" name="title">-->
+						<select class="form-control input-sm" name="title" style="width: col-xs-4;">
+										<option selected="selected">All</option>
+										{% for t in title %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
 					</div>
 
 
 					<div class="col-sm-2 form-group">
 						<label>Region:</label>
-						<select class="form-control input-sm" name="region" style="width:auto;">
-																<option>All</option>
-														    <option>United States</option>
-														    <option>Canada</option>
-														  </select>
+						<select class="form-control input-sm" name="region" style="width:col-xs-2;">
+										<option selected="selected">All</option>
+						</select>
 					</div>
 
 					<div class="col-sm-6 form-group">
-						<label>Genre:</label>
-						<select class="form-control input-sm" name="showtype" style="width:auto;">
-																<option>All</option>
-														    <option>Series</option>
-														  </select>
+						<label>Show type:</label>
+						<select class="form-control input-sm" name="showType" style="width:auto;">
+										<option selected="selected">All</option>
+										{% for t in showType %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
 					</div>
 
 
@@ -66,7 +72,7 @@
 
 					<div class="col-sm-2 form-group">
 						<div class='input-group date' id='datepicker1'>
-							<input type='text' class="form-control input-sm" name='date_from' />
+							<input type='text' class="form-control input-sm" name='dateFrom' />
 							<span class="input-group-addon">
 													                    <span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -74,7 +80,7 @@
 					</div>
 					<div class="col-sm-2 form-group">
 						<div class='input-group date' id='datepicker2'>
-							<input type='text' class="form-control input-sm" name='date_to' />
+							<input type='text' class="form-control input-sm" name='dateTo' />
 							<span class="input-group-addon">
 													                    <span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -84,7 +90,7 @@
 					<div class='col-sm-2'>
 						<div class="form-group">
 							<div class='input-group date' id='timepicker1'>
-								<input type='text' class="form-control input-sm" name='time_from' />
+								<input type='text' class="form-control input-sm" name='timeFrom' />
 								<span class="input-group-addon">
 																								<span class="glyphicon glyphicon-time"></span>
 								</span>
@@ -94,7 +100,7 @@
 					<div class='col-sm-2'>
 						<div class="form-group">
 							<div class='input-group date' id='timepicker2'>
-								<input type='text' class="form-control input-sm" name='time_to' />
+								<input type='text' class="form-control input-sm" name='timeTo' />
 								<span class="input-group-addon">
 																								<span class="glyphicon glyphicon-time"></span>
 								</span>
@@ -109,7 +115,7 @@
 					<script type="text/javascript">
 						var dateTo = new Date();
 						var dateFrom = new Date();
-						dateFrom.setDate(dateFrom.getDate() - 7);
+						dateFrom.setDate(dateFrom.getDate() - 14);
 						$(function() {
 							$('#datepicker1').datetimepicker({
 								defaultDate: dateFrom,
@@ -129,7 +135,7 @@
 						});
 
 						$(function() {
-							dateFrom.setHours(dateFrom.getHours() - 3);
+							dateFrom.setHours(dateFrom.getHours() - 12);
 							$('#timepicker1').datetimepicker({
 								pickDate: false,
 								defaultDate: dateFrom,
@@ -163,17 +169,17 @@
 									$.each(data, function(key, value) {
 										trHTML +=
 											'<tr><td nowrap>' +
-											value.Title +
+											value.programTitle +
 											'</td><td nowrap>' +
-											value.Showtype +
+											value.showType +
 											'</td><td nowrap>' +
-											value.StationName +
+											value.stationName +
 											'</td><td nowrap>' +
-											value.airdatetime +
+											value.airDateTime +
 											'</td><td nowrap>' +
-											value.Duration +
+											value.duration +
 											'</td><td nowrap>' +
-											value.Description +
+											value.description +
 											'</td></tr>';
 									});
 									//clear the table before populate data
@@ -218,9 +224,9 @@
 
 				<br />
 				<!-- show some leading information for table
-				<h2>{{ program_title }} 	<small>{{ region }}</small> <small>{{ genre }}</samll></h2>
-				<p><b>{{date_range}}</b>{{date_from}} {{date_to}} </p>
-				<p><b>{{time_range}}</b>{{time_from}} {{time_to}}</p>
+				<h2>{{ title }} 	<small>{{ region }}</small> <small>{{ genre }}</samll></h2>
+				<p><b>{{date_range}}</b>{{dateFrom}} {{dateTo}} </p>
+				<p><b>{{time_range}}</b>{{timeFrom}} {{timeTo}}</p>
 				<div class="col-md-10"></div>
 						<div class="col-md-2">-->
 
@@ -233,14 +239,14 @@
 			var filename = prompt('Enter text here');
 			if (filename) {
 				$.ajax({
-					url: "/report/save_pdf/", // the script where you handle the form input.
+					url: "/report/save_csv/", // the script where you handle the form input.
 					success: function(data) {
 						// var win = window.open("data:application/pdf," + escape(data));
 						// win.document.title = "ttt";
 						var blob = new Blob([data]);
 						var link = document.createElement('a');
 						link.href = window.URL.createObjectURL(blob);
-						link.download = filename + ".pdf";
+						link.download = filename + ".csv";
 						link.click();
 					}
 				});

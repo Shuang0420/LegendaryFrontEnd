@@ -23,6 +23,8 @@ from reportlab.lib.pagesizes import A4, inch, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from StringIO import StringIO
+import re
+import csv
 # Create your views here.
 '''
 https://docs.djangoproject.com/en/1.10/intro/tutorial01/
@@ -34,8 +36,10 @@ report_content = None
 # Create your views here.
 def index(request):
     template = loader.get_template('report/main.html')
+    fields = get_dropdown_fields()
+    #print 'fields',fields
     if request.user.is_authenticated():
-        return render(request,'report/main.html')
+        return render(request,'report/main.html', fields)
     else:
         return render_to_response('users/home.html')
     # return HttpResponse(template.render(request))
@@ -62,6 +66,20 @@ def saved_queries(request):
     return HttpResponse(template.render(data))
 
 
+
+
+def get_dropdown_fields():
+    attributes = ['title','showType','genre','region']
+    res = {}
+    for attr in attributes:
+        r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+        js = r.json()
+        res[attr] = js[attr]
+    return res
+
+
+
+
 def api_get_saved_query(userID):
     r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
     # HttpResponse(r.status_code == requests.codes.ok)
@@ -82,16 +100,40 @@ def api_save_query(fields):
 
 def api_get_report(fields):
     #d = '?showtype=' + fields['showtype']+'&language=en'+'&title='+fields['program_title']
-    d = '?title='+fields['program_title']
-    r = requests.get('http://localhost:8080/api/v1/program'+d)
-    print r.json()
+    #d = '?title='+'16 and Missing'
+    DATA = {}
+    if fields['title'] == 'All':
+        DATA['dateFrom'] = reformat_date(fields['dateFrom'])
+        DATA['dateTo'] = reformat_date(fields['dateTo'])
+        DATA['timeFrom'] = reformat_time(fields['timeFrom'])
+        DATA['timeTo'] = reformat_time(fields['timeTo'])
+    else:
+        DATA['title'] = fields['title']
+    if fields['showType'] != 'All':
+        DATA['showType'] = fields['showType']
+    r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
+    print 'get report',r.json()
     return r.json()
 
+
+def reformat_date(date):
+    parts = date.split('/')
+    return parts[-1]+'-'+'-'.join(parts[:-1])
+
+def reformat_time(time):
+    parts = re.split(':| ',time)
+    if parts[-1] == 'PM':
+        return str(int(parts[0])+12)
+    else:
+        return parts[0]
 
 def get_report(request):
     global report_content
     #ctx ={}
     #ctx.update(csrf(request))
+    fields = ['showID', 'title', 'programTitle', 'showType', 'airDateTime',
+    'duration', 'stationName', 'showRatingId', 'language', 'description',
+    'castcrew', 'programRatingId', 'scheduleRatingID', 'status', 'originalAirDate']
     if request.POST:
         '''
     	ctx['program_title'] = request.POST['program_title']
@@ -138,6 +180,29 @@ def save_query(request):
 
 
 
+def save_csv(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    data = [
+    #report_content[0].keys(),
+    # keep this so we have nice order
+    ["Title", "Show Type","Station Name", "Air Time", "Duration", "Description"]
+    ]
+    for item in report_content:
+        data.append([str(item['title']),
+                    str(item['showType']),
+                    str(item['stationName']),
+                    str(item['airDateTime']),
+                    str(item['duration']),
+                    str(item['description'])
+                    ])
+    for d in data:
+        writer.writerow(d)
+    return response
+
 
 
 def save_pdf(request):
@@ -157,12 +222,12 @@ def save_pdf(request):
     ["Title", "Show Type","Station Name", "Air Time", "Duration", "Description"]
     ]
     for item in report_content:
-        data.append([str(item['Title']),
-                    str(item['Showtype']),
-                    str(item['StationName']),
-                    str(item['airdatetime']),
-                    str(item['Duration']),
-                    str(item['Description'])
+        data.append([str(item['title']),
+                    str(item['showType']),
+                    str(item['stationName']),
+                    str(item['airDateTime']),
+                    str(item['duration']),
+                    str(item['description'])
                     ])
     style = TableStyle([('ALIGN',(1,1),(-2,-2),'RIGHT'),
                            ('TEXTCOLOR',(1,1),(-2,-2),colors.red),
