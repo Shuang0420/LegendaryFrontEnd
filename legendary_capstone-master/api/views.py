@@ -229,7 +229,7 @@ def favoriteAiring(request):
 		
 	# set date range
 	today = str(DT.date.today())
-	date_bound = DT.date.today() + DT.timedelta(days=timeRange)
+	date_bound = str(DT.date.today() + DT.timedelta(days=int(timeRange)))
 	if today > date_bound:
 		date_clause = "airDateTime BETWEEN '" + date_bound + "' AND dateadd(day,1,'" + today + "')"
 	else:
@@ -239,13 +239,13 @@ def favoriteAiring(request):
 		# determine which statistical summary to provide
 		if statistic == 'listing':
 			fields = ['title', 'programTitle', 'airDateTime', 'duration', 'regionID']
+			sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}".format(",".join(fields), id, date_clause)
 			column_names = fields
-			sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = {}) AND {}".format(",".join(fields), id, date_clause)
 
 		elif statistic == 'hour':
-			fields = ['title', 'programTitle','SUM(duration) as hours', 'regionID']
-			column_names = ['title', 'programTitle', 'hours', 'regionID']
-		sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = {}) AND {} GROUP BY title, regionID ".format(",".join(fields), id, date_clause)
+			fields = ['title', 'SUM(duration/60.0) as hours', 'regionID']
+			sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID".format(",".join(fields), id, date_clause)
+			column_names = ['title', 'hours', 'regionID']
 
 		cur.execute(sql)
 		result = cur.fetchall()
@@ -269,6 +269,7 @@ def favoriteShow(request):
 		"""
 		key = request.path.split("favoriteshow/")[1].replace("/","")
 		if len(key) == 0:
+			conn.close()
 			return Response("No userID specified.", status=status.HTTP_400_BAD_REQUEST)
 		try:
 			fields = ['showID', 'title', 'showtype', 'ratingid', 'language']
@@ -287,6 +288,7 @@ def favoriteShow(request):
 		id = request.data.get('userID')
 		show = request.data.get('showID')
 		if id == None or show == None:
+			conn.close()
 			return Response("No userID or showID provided.", status=status.HTTP_400_BAD_REQUEST)
 			
 		if request.method == 'POST':
@@ -343,6 +345,7 @@ def savedQuery(request):
 		"""
 		key = request.path.split("savedquery/")[1].replace("/","")
 		if len(key) == 0:
+			conn.close()
 			return Response("No userID specified.", status=status.HTTP_400_BAD_REQUEST)
 		conn = getConnection()
 		cur = conn.cursor()
