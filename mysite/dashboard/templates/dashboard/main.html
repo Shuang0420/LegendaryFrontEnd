@@ -1,5 +1,12 @@
 {% extends "header.html" %}
 {% block content %}
+<style type="text/css">
+.asd {
+    color:blue;
+    background-color:transparent;
+    border:none;
+}
+</style>
 	<div class="container-fluid" style="height:90%;">
 
     <!-- Page Heading -->
@@ -40,7 +47,7 @@
                 </table>
             </div>
             <div class="text-right">
-                <a href="#">Favourite tv shows <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/dashboard/favourite">Favourite tv shows <i class="fa fa-arrow-circle-right"></i></a>
             </div>
             </div>
             <div class="col-sm-6">
@@ -73,6 +80,7 @@
                     <table class="table table-condensed table-hover table-bordered">
                         <thead>
                             <tr>
+                                <th>Run Query</th>
                                 <th>Query Name</th>
                                 <th>Query Properties</th>
                             </tr>
@@ -80,6 +88,12 @@
                         <tbody>
                             {% for row in savedQueries %}
                             <tr>
+                                <td>
+                                    <form action="/report/saved_query/" method="GET">
+                                        <input id="title" type="hidden" name="title" value="How I Met Your Mother">
+                                        <input type="submit" class="asd" value="run">
+                                    </form>
+                                </td>
                                 {% for cell in row %}
                                 <td>{{cell}}</td>
                                 {% endfor %}
