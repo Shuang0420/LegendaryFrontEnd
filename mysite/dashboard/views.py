@@ -63,8 +63,9 @@ def favourite_programs(request):
 def add_fav(request):
     fields = dict(request.GET.iteritems())
     showID = fields["showId"]
-    return HttpResponse(showID)
-   
+    payload = {'userID':'emilie','showID':showID}
+    r = requests.post('http://localhost:8080/api/v1/favoriteshow/', payload)
+    return HttpResponse(r)
    
 
 def remove_fav(request):
