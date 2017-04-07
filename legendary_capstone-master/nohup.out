@@ -1,0 +1,62 @@
+Error: That port is already in use.
+Error: That port is already in use.
+[07/Apr/2017 17:31:13] "GET /api/v1/menu/title HTTP/1.1" 200 1632
+[07/Apr/2017 17:31:13] "GET /api/v1/menu/showType HTTP/1.1" 200 112
+[07/Apr/2017 17:31:13] "GET /api/v1/menu/genre HTTP/1.1" 200 12
+[07/Apr/2017 17:31:13] "GET /api/v1/menu/region HTTP/1.1" 200 13
+[07/Apr/2017 17:32:44] "GET /api/v1/menu/title HTTP/1.1" 200 1632
+[07/Apr/2017 17:32:44] "GET /api/v1/menu/showType HTTP/1.1" 200 112
+[07/Apr/2017 17:32:44] "GET /api/v1/menu/genre HTTP/1.1" 200 12
+[07/Apr/2017 17:32:44] "GET /api/v1/menu/region HTTP/1.1" 200 13
+Invalid HTTP_HOST header: '52.14.223.164'. You may need to add u'52.14.223.164' to ALLOWED_HOSTS.
+[07/Apr/2017 18:15:18] "GET /setup.cgi HTTP/1.1" 400 61753
+Invalid HTTP_HOST header: '52.14.223.164:8080'. You may need to add u'52.14.223.164' to ALLOWED_HOSTS.
+[07/Apr/2017 18:36:23] "GET /manager/html HTTP/1.1" 400 62323
+Invalid HTTP_HOST header: '52.14.223.164'. You may need to add u'52.14.223.164' to ALLOWED_HOSTS.
+[07/Apr/2017 19:19:30] "GET /setup.cgi HTTP/1.1" 400 61753
+Invalid HTTP_HOST header: 'www.baidu.com'. You may need to add u'www.baidu.com' to ALLOWED_HOSTS.
+[07/Apr/2017 22:08:45] "GET http://www.baidu.com/favicon.ico HTTP/1.1" 400 62634
+[07/Apr/2017 22:35:28] "GET /api/v1/savedquery/Shuang HTTP/1.1" 200 825
+[07/Apr/2017 22:35:29] "GET /api/v1/menu/title HTTP/1.1" 200 1632
+[07/Apr/2017 22:35:29] "GET /api/v1/menu/showType HTTP/1.1" 200 112
+[07/Apr/2017 22:35:30] "GET /api/v1/menu/genre HTTP/1.1" 200 12
+[07/Apr/2017 22:35:30] "GET /api/v1/menu/region HTTP/1.1" 200 13
+[07/Apr/2017 22:35:31] "GET /api/v1/savedquery/Shuang HTTP/1.1" 200 825
+[07/Apr/2017 22:35:46] "GET /api/v1/savedquery/Shuang HTTP/1.1" 200 825
+[07/Apr/2017 22:35:49] "GET /api/v1/menu/title HTTP/1.1" 200 1632
+[07/Apr/2017 22:35:49] "GET /api/v1/menu/showType HTTP/1.1" 200 112
+[07/Apr/2017 22:35:50] "GET /api/v1/menu/genre HTTP/1.1" 200 12
+[07/Apr/2017 22:35:50] "GET /api/v1/menu/region HTTP/1.1" 200 13
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 07, 2017 - 17:31:02
+Django version 1.10.6, using settings 'capstone.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 07, 2017 - 22:36:02
+Django version 1.10.6, using settings 'capstone.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 07, 2017 - 22:36:19
+Django version 1.10.6, using settings 'capstone.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.
+[07/Apr/2017 22:44:29] "GET /api/v1/menu/title HTTP/1.1" 200 1632
+[07/Apr/2017 22:44:29] "GET /api/v1/menu/showType HTTP/1.1" 200 112
+[07/Apr/2017 22:44:29] "GET /api/v1/menu/genre HTTP/1.1" 200 12
+[07/Apr/2017 22:44:29] "GET /api/v1/menu/region HTTP/1.1" 200 13
+[07/Apr/2017 22:44:31] "GET /api/v1/savedquery/Shuang HTTP/1.1" 200 825
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 07, 2017 - 22:39:49
+Django version 1.10.6, using settings 'capstone.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.

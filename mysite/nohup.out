@@ -1,0 +1,805 @@
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 16:12:23] "GET /dashboard/ HTTP/1.1" 200 6151
+[07/Apr/2017 16:12:25] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 16:12:26] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 16:12:35] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 16:12:43] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 16:12:43] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 16:12:46] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:12:50] "POST /report/get_report/ HTTP/1.1" 200 1146
+Internal Server Error: /report/get_report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 158, in get_report
+    content = api_get_report(fields)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 115, in api_get_report
+    print 'get report',r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 16:12:54] "POST /report/get_report/ HTTP/1.1" 500 16697
+Performing system checks...
+
+April 07, 2017 - 16:11:16
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'51', u'showType': u'Feature Film', u'description': u'An FBI agent (Ashley Scott) tries to track down her daughter (Lizze Broadway) after the teen arranges to meet an online acquaintance (Mark Hapka).', u'language': u'en', u'title': u'16 and Missing', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Ashley Scott(Actor), Lizze Broadway(Actor), Mark Hapka(Actor), David Starzyk(Actor), Jay Pickett(Actor), Jason Sims-Prewitt(Actor), Greg Evigan(Actor), Stella Hudgens(Actor), Robert Neary(Actor), Grace Bethany(Actor), Coley Feifer(Actor), Crew:Michael Feifer(Director),Michael Feifer(Screenwriter),Michael Feifer(Producer),Michael Moran(Executive Producer),Fernando Szew(Executive Producer),Brandon Jarrett(Original Music),Roy Kurtluyan(Cinematographer),Christine Kelley(Film Editor),Dean E. Fronk(Casting),Donald Paul Pemrick(Casting),Toby Lister(Production Design),Zerah Turbitt(Art Director),Diana Bobe(Costume Designer),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'51', u'showType': u'Feature Film', u'description': u'An FBI agent (Ashley Scott) tries to track down her daughter (Lizze Broadway) after the teen arranges to meet an online acquaintance (Mark Hapka).', u'language': u'en', u'title': u'16 and Missing', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Ashley Scott(Actor), Lizze Broadway(Actor), Mark Hapka(Actor), David Starzyk(Actor), Jay Pickett(Actor), Jason Sims-Prewitt(Actor), Greg Evigan(Actor), Stella Hudgens(Actor), Robert Neary(Actor), Grace Bethany(Actor), Coley Feifer(Actor), Crew:Michael Feifer(Director),Michael Feifer(Screenwriter),Michael Feifer(Producer),Michael Moran(Executive Producer),Fernando Szew(Executive Producer),Brandon Jarrett(Original Music),Roy Kurtluyan(Cinematographer),Christine Kelley(Film Editor),Dean E. Fronk(Casting),Donald Paul Pemrick(Casting),Toby Lister(Production Design),Zerah Turbitt(Art Director),Diana Bobe(Costume Designer),'}]
+get report get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is che[07/Apr/2017 16:13:07] "POST /report/get_report/ HTTP/1.1" 200 1265
+[07/Apr/2017 16:13:22] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:13:25] "POST /report/get_report/ HTTP/1.1" 200 1265
+[07/Apr/2017 16:13:27] "GET /report/ HTTP/1.1" 200 24911
+ating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'54', u'showType': u'Feature Film', u'description': u"Temptation and a difficult home life leave Charles (Clive Owen) open to an affair with Lucinda (Jennifer Aniston), whom he meets during his commute. Both are married with children, and it isn't long before they are together in a sleazy motel. However, a thug named LaRoche (Vincent Cassel) bursts into the room and at[07/Apr/2017 16:13:30] "POST /report/get_report/ HTTP/1.1" 200 1482
+Internal Server Error: /report/get_report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 158, in get_report
+    content = api_get_report(fields)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 115, in api_get_report
+    print 'get report',r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 16:13:35] "POST /report/get_report/ HTTP/1.1" 500 16693
+[07/Apr/2017 16:20:50] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:20:54] "GET /logout/ HTTP/1.1" 302 0
+[07/Apr/2017 16:20:55] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 16:21:07] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 16:21:14] "GET /admin/ HTTP/1.1" 302 0
+[07/Apr/2017 16:21:14] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1653
+[07/Apr/2017 16:21:16] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[07/Apr/2017 16:21:16] "GET /admin/ HTTP/1.1" 200 3372
+[07/Apr/2017 16:21:19] "GET /admin/auth/user/ HTTP/1.1" 200 6783
+[07/Apr/2017 16:21:19] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 16:21:23] "GET /admin/auth/user/add/ HTTP/1.1" 200 5163
+[07/Apr/2017 16:21:23] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 16:21:32] "POST /admin/auth/user/add/ HTTP/1.1" 302 0
+[07/Apr/2017 16:21:32] "GET /admin/auth/user/add/ HTTP/1.1" 200 5368
+[07/Apr/2017 16:21:33] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 16:21:40] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 16:21:43] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:21:46] "GET /logout/ HTTP/1.1" 302 0
+[07/Apr/2017 16:21:46] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 16:21:52] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 16:21:52] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 16:21:57] "GET /report/ HTTP/1.1" 200 24911
+tacks them, and they can't report it without their families discovering the affair. As if the violation wasn't enough, LaRoche then calls Charles to blackmail him.", u'language': u'en', u'title': u'Derailed', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u"Cast:Clive Owen(Actor), Jennifer Aniston(Actor), Vincent Cassel(Actor), Melissa George(Actor), RZA(Actor), Addison Timlin(Actor), Giancarlo Esposito(Actor), David Morrissey(Actor), Georgina Chapman(Actor), Denis O'Hare(Actor), Tom Conti(Actor), Xzibit(Actor), Crew:Mikael Hafstrom(Director),Lorenzo di Bonaventura(Producer),Stuart Beattie(Writer),Avy Kaufman(Casting Director),Mark Cooper(Co-Producer),Jonathan Gordon(Executive Producer),Jeremy Steckler(Executive Producer),Ed Shearmur(Original Music),Peter Biziou(Cinematographer),Peter Boyle(Film Editor),Avy Kaufman(Casting),Andrew Laws(Production Design),Mark Raggett(Art Direction),"}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'54', u'showType': u'Feature Film', u'description': u"Temptation and a difficult home life leave Charles (Clive Owen) open to an affair with Lucinda (Jennifer Aniston), whom he meets during his commute. Both are married with children, and it isn't long before they are together in a sleazy motel. However, a thug named LaRoche (Vincent Cassel) bursts into the room and attacks them, and they can't report it without their families discovering the affair. As if the violation wasn't enough, LaRoche then calls Charles to blackmail him.", u'language': u'en', u'title': u'Derailed', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u"Cast:Clive Owen(Actor), Jennifer Aniston(Actor), Vincent Cassel(Actor), Melissa George(Actor), RZA(Actor), Addison Timlin(Actor), Giancarlo Esposito(Actor), David Morrissey(Actor), Georgina Chapman(Actor), Denis O'Hare(Actor), Tom Conti(Actor), Xzibit(Actor), Crew:Mikael Hafstrom(Director),Lorenzo di Bonaventura(Producer),Stuart Beattie(Writer),Avy Kaufman(Casting Director),Mark Cooper(Co-Producer),Jonathan Gordon(Executive Producer),Jeremy Steckler(Executive Producer),Ed Shearmur(Original Music),Peter Biziou(Cinematographer),Peter Boyle(Film Editor),Avy Kaufman(Casting),Andrew Laws(Production Design),Mark Raggett(Art Direction),"}]
+get report get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"Coach D adds a major twist that shakes up this week's stand battle; the Dancing Doll veterans are temporarily benched as a new squad is thrown into battle; tensions rise as one of Brandon's twins makes cuts, which leads Brandon to confront Miss D.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Attack of the B Squad', u'originalAirDate': u'2017-03-03', u'airDateTime': u'2017-04-07T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u'The Dancing Dolls compete against arch rivals, the Prancing Tigerettes; with revenge on her mind, Coach D bites off more than she can chew with a futuristic robot routine and a new category called Tag Team.', u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Revenge of the Robo-Dolls', u'originalAirDate': u'2017-03-17', u'airDateTime': u'2017-04-07T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"Black Ice is back and Miss D is bringing the heat; Crystianna and Makylah find themselves tested when they have to choreograph a routine for the Co-Captain's Battle; Rittany throws herself a 1920s-themed birthday bash that is full of surprises.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Black Ice Meltdown', u'originalAirDate': u'2017-03-10', u'airDateTime': u'2017-04-07T21:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"The Dancing Dolls are shocked when they find out that Coach D has swapped studios with Tyrus, the flamboyant coach of the Elite Stars; Tyrus decides to bench Coach D's pros and take a chance on new blood; Cookie must get the Elite Stars in shape.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Cookie Bites Back', u'originalAirDate': u'2017-03-24', u'airDateTime': u'2017-04-07T23:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'The men of Seattle Grace go on a camping trip; Addison and Callie must team up to work on a patient; Meredith assists with a procedure Sloan has never experienced; Bailey confronts Cristina, suspicious of her recent actions.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Where the Boys Are', u'originalAirDate': u'2006-11-09', u'airDateTime': u'2017-04-06T19:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Steven W. Bailey(Guest Star), George Dzundza(Guest Star), Kali Rocha(Guest Star), Clare Carey(Guest Star), Alexandra Billings(Guest Star), Alexandra Holden(Guest Star), Jim Parrack(Guest Star), Jack Yang(Guest Star), Moe Irvin(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Mark Wilding(Writer),Dan Minahan(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"Bailey treats a young mother battling breast cancer; Derek learns more about Mark and Addison's relationship; the interns defend a resident's competence at a staff meeting.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Oh, the Guilt', u'originalAirDate': u'2006-10-19', u'airDateTime': u'2017-04-06T17:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Justina Machado(Guest Star), Faith Prince(Guest Star), Arye Gross(Guest Star), Chris Conner(Guest Star), Margo Harshman(Guest Star), Todd Babcock(Guest Star), Moe Irvin(Guest Star), Kate Anthony(Guest Star), Karl T. Wright(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Zoanne Clack(Writer),Tony Phelan(Writer),Joan Rater(Writer),Jeff Melman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"The O'Malley family visits George at the hospital; Meredith determines to have a more positive outlook on life; Derek and Addison strive for a civil relationship; Richard endeavors to reunite with his wife, Adele.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Staring at the Sun', u'originalAirDate': u'2006-11-16', u'airDateTime': u'2017-04-06T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Kate Burton(Guest Star), George Dzundza(Guest Star), Myndy Crist(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Matt Winston(Guest Star), Paul Cassell(Guest Star), Annie Campbell(Guest Star), Steven W. Bailey(Guest Star), Ray Ford(Guest Star), Brooke Bryan(Guest Star), Martin Yu(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Gabrielle Stanton(Writer),Harry Werksman(Writer),Jeff Melman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"Recent events strain Burke and Cristina's relationship; Meredith's half sister enters the hospital; Mark and Derek must work together when two close-knit brothers seek medical help.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u"Don't Stand So Close to Me", u'originalAirDate': u'2006-11-30', u'airDateTime': u'2017-04-06T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Brooke Smith(Guest Star), Debra Monk(Guest Star), Jennifer Aspen(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Mandy Siegfried(Guest Star), Jason Sklar(Guest Star), Randy Sklar(Guest Star), Mare Winningham(Guest Star), Kate Burton(Guest Star), Jack Axelrod(Guest Star), Linda Klein(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Carolina Paiz(Writer),Seith Mann(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"George's father has surgery for his cancer; Thatcher Grey arrives to see his new granddaughter; Meredith finds that Derek has trouble sleeping.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Six Days', u'originalAirDate': u'2007-01-11', u'airDateTime': u'2017-04-06T23:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u"Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Jeff Perry(Guest Star), Debra Monk(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Mae Whitman(Guest Star), Judith Hoag(Guest Star), Sarah Utterback(Guest Star), Rhomeyn Johnson(Guest Star), Jake Mailey(Guest Star), Michael James Thompson(Guest Star), John O'Brien(Guest Star), Elaine Kao(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Krista Vernoff(Writer),Greg Yaitanes(Director),"}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'A traumatic car accident fills the ER; Cristina has a crisis of conscience about her deceptive teamwork with Burke; Izzie pushes the boundaries of probation.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'From a Whisper to a Scream', u'originalAirDate': u'2006-11-23', u'airDateTime': u'2017-04-06T21:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Brooke Smith(Guest Star), Debra Monk(Guest Star), Lois Smith(Guest Star), Emy Coligado(Guest Star), Kate Anthony(Guest Star), Linda Klein(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Kip Koenig(Writer),Julie Ann Robinson(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'Cristina draws the envy of the other doctors when she scrubs in for the "humpty dumpty" procedure; George and Addison work with a pregnant woman who faces an unusual dilemma.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Let the Angels Commit', u'originalAirDate': u'2006-11-02', u'airDateTime': u'2017-04-06T18:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Embeth Davidtz(Guest Star), Eric Dane(Actor), Jillian Bach(Guest Star), Edwin Hodge(Guest Star), Liza Lapira(Guest Star), Francesca P. Roberts(Guest Star), Patricia Bethune(Guest Star), Moe Irvin(Guest Star), Jeremy Rabb(Guest Star), Yvette Cruise(Guest Star), Martin Yu(Guest Star), Paula Weston Solano(Guest Star), Jack Axelrod(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Stacy McKee(Writer),Jessica Yu(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u"When Barney and Abby (Britney Spears) realize they share a hatred of Ted, they go to a bar together to rub their relationship in Ted's face.", u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Everything Must Go', u'originalAirDate': u'2008-05-12', u'airDateTime': u'2017-04-06T12:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Alyson Hannigan(Actor), Neil Patrick Harris(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Britney Spears(Guest Star), Jennifer Lothrop(Guest Star), Petrea Burchard(Guest Star), Johnny Palermo(Guest Star), Matt Besser(Guest Star), Todd Sherry(Guest Star), Steve Hasley(Guest Star), Justin Alston(Guest Star), Larry Wilmore(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Jonathan Groff(Writer),Chris Harris(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u'An accident causes Ted to re-evaluate his life and his relationship with Stella.', u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Miracles', u'originalAirDate': u'2008-05-19', u'airDateTime': u'2017-04-06T12:30:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Alyson Hannigan(Actor), Neil Patrick Harris(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Sarah Chalke(Guest Star), Taira Soo(Guest Star), Anthony Palermo(Guest Star), Doug Benson(Guest Star), John Getz(Guest Star), Shelby Zemanek(Guest Star), Jayden Lund(Guest Star), Darcy Rose Byrnes(Guest Star), Vincent Fenequito(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u'Burger-mad Marshall meets Regis Philbin while on a quest to find the restaurant where he had his very first New York burger.', u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'The Best Burger in New York', u'originalAirDate': u'2008-09-29', u'airDateTime': u'2017-04-07T12:30:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Neil Patrick Harris(Actor), Alyson Hannigan(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Charlene Amoia(Guest Star), Casey Washington(Guest Star), Jay Lay(Guest Star), Regis Philbin(Guest Star), Mandy McMillian(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u"Stella responds to Ted's proposal; Barney realizes he's in love with Robin.", u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Do I Know You?', u'originalAirDate': u'2008-09-22', u'airDateTime': u'2017-04-07T12:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Neil Patrick Harris(Actor), Alyson Hannigan(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), David Henrie(Guest Star), Lyndsy Fonseca(Guest Star), Sarah Chalke(Guest Star), Kyle Archer(Guest Star), Nicole Taylor(Guest Star), Camila Greenberg(Guest Star), Heidi Lynne Herschbach(Guest Star), Alonza Maxwell(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pam Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'21', u'showType': u'Series', u'description': u'Kalu Yala CEO, Jimmy Stice, welcomes the interns, and they learn the lay of the land; while attending Hatch, an innovation conference in Montana, a student revolt breaks out.', u'language': u'en', u'title': u'Jungletown', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Pied Piper of Panama', u'originalAirDate': u'2017-04-04', u'airDateTime': u'2017-04-07T14:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ondi Timoner(Actor), '}, {u'status': True, u'contentRatingId': 1234, u'showID': u'21', u'showType': u'Series', u'description': u'The staff feverishly fix water lines as 80 interns say goodbye to their families and comfortable homes to descend into the jungle of Panama and build a makeshift town.', u'language': u'en', u'title': u'Jungletown', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Welcome to the Jungle', u'originalAirDate': u'2017-03-28', u'airDateTime': u'2017-04-07T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ondi Timoner(Actor), '}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'JD splits the young rappers into two teams and challenges them to perform at a high school halftime show.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Dat Way', u'originalAirDate': u'2017-03-10', u'airDateTime': u'2017-04-07T16:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'JD mixes up the management teams and then challenges the rappers to write, record and shoot a music video with past winners of "The Rap Game," Miss Mulatto and Mani.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'You Thought', u'originalAirDate': u'2017-03-03', u'airDateTime': u'2017-04-07T15:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u"Bow Wow helps hone the young rappers' media skills to prepare them for a press conference, television interview and photo shoot; Nova throws another artist under the bus.", u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Full Court Press', u'originalAirDate': u'2017-03-24', u'airDateTime': u'2017-04-07T18:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Bow Wow(Guest), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'Before signing, JD tests the young rappers in a battle rap; John John Da Don, Arsonal, Charlie Clips, DNA and Calicoe prepare the group; a rapper makes an unforgettable decision.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u"Don't Underestimate Nobody", u'originalAirDate': u'2017-03-31', u'airDateTime': u'2017-04-07T19:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'Kelly Rowland and her personal trainer visit the five young rappers; JD tests the children on both their mental and physical stamina in the "Catch the Beat" challenge.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Shut Up and Train', u'originalAirDate': u'2017-03-17', u'airDateTime': u'2017-04-07T17:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Kelly Rowland(Guest), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"Coach D adds a major twist that shakes up this week's stand battle; the Dancing Doll veterans are temporarily benched as a new squad is thrown into battle; tensions rise as one of Brandon's twins makes cuts, which leads Brandon to confront Miss D.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Attack of the B Squad', u'originalAirDate': u'2017-03-03', u'airDateTime': u'2017-04-07T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u'The Dancing Dolls compete against arch rivals, the Prancing Tigerettes; with revenge on her mind, Coach D bites off more than she can chew with a futuristic robot routine and a new category called Tag Team.', u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Revenge of the Robo-Dolls', u'originalAirDate': u'2017-03-17', u'airDateTime': u'2017-04-07T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"Black Ice is back and Miss D is bringing the heat; Crystianna and Makylah find themselves tested when they have to choreograph a routine for the Co-Captain's Battle; Rittany throws herself a 1920s-themed birthday bash that is full of surprises.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Black Ice Meltdown', u'originalAirDate': u'2017-03-10', u'airDateTime': u'2017-04-07T21:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'23', u'showType': u'Series', u'description': u"The Dancing Dolls are shocked when they find out that Coach D has swapped studios with Tyrus, the flamboyant coach of the Elite Stars; Tyrus decides to bench Coach D's pros and take a chance on new blood; Cookie must get the Elite Stars in shape.", u'language': u'en', u'title': u'Bring It!', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Cookie Bites Back', u'originalAirDate': u'2017-03-24', u'airDateTime': u'2017-04-07T23:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Dianna Williams(Actor), Crew:Craig Piligian(Executive Producer),Derek W. Wan(Executive Producer),Eli Lehrer(Executive Producer),Mary Donahue(Executive Producer),Colleen Conway Grogan(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'The men of Seattle Grace go on a camping trip; Addison and Callie must team up to work on a patient; Meredith assists with a procedure Sloan has never experienced; Bailey confronts Cristina, suspicious of her recent actions.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Where the Boys Are', u'originalAirDate': u'2006-11-09', u'airDateTime': u'2017-04-06T19:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Steven W. Bailey(Guest Star), George Dzundza(Guest Star), Kali Rocha(Guest Star), Clare Carey(Guest Star), Alexandra Billings(Guest Star), Alexandra Holden(Guest Star), Jim Parrack(Guest Star), Jack Yang(Guest Star), Moe Irvin(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Mark Wilding(Writer),Dan Minahan(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"Bailey treats a young mother battling breast cancer; Derek learns more about Mark and Addison's relationship; the interns defend a resident's competence at a staff meeting.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Oh, the Guilt', u'originalAirDate': u'2006-10-19', u'airDateTime': u'2017-04-06T17:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Justina Machado(Guest Star), Faith Prince(Guest Star), Arye Gross(Guest Star), Chris Conner(Guest Star), Margo Harshman(Guest Star), Todd Babcock(Guest Star), Moe Irvin(Guest Star), Kate Anthony(Guest Star), Karl T. Wright(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Zoanne Clack(Writer),Tony Phelan(Writer),Joan Rater(Writer),Jeff Melman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"The O'Malley family visits George at the hospital; Meredith determines to have a more positive outlook on life; Derek and Addison strive for a civil relationship; Richard endeavors to reunite with his wife, Adele.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Staring at the Sun', u'originalAirDate': u'2006-11-16', u'airDateTime': u'2017-04-06T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), Kate Burton(Guest Star), George Dzundza(Guest Star), Myndy Crist(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Matt Winston(Guest Star), Paul Cassell(Guest Star), Annie Campbell(Guest Star), Steven W. Bailey(Guest Star), Ray Ford(Guest Star), Brooke Bryan(Guest Star), Martin Yu(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Gabrielle Stanton(Writer),Harry Werksman(Writer),Jeff Melman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"Recent events strain Burke and Cristina's relationship; Meredith's half sister enters the hospital; Mark and Derek must work together when two close-knit brothers seek medical help.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u"Don't Stand So Close to Me", u'originalAirDate': u'2006-11-30', u'airDateTime': u'2017-04-06T22:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Brooke Smith(Guest Star), Debra Monk(Guest Star), Jennifer Aspen(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Mandy Siegfried(Guest Star), Jason Sklar(Guest Star), Randy Sklar(Guest Star), Mare Winningham(Guest Star), Kate Burton(Guest Star), Jack Axelrod(Guest Star), Linda Klein(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Carolina Paiz(Writer),Seith Mann(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u"George's father has surgery for his cancer; Thatcher Grey arrives to see his new granddaughter; Meredith finds that Derek has trouble sleeping.", u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Six Days', u'originalAirDate': u'2007-01-11', u'airDateTime': u'2017-04-06T23:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u"Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Jeff Perry(Guest Star), Debra Monk(Guest Star), Greg Pitts(Guest Star), Tim Griffin(Guest Star), Mae Whitman(Guest Star), Judith Hoag(Guest Star), Sarah Utterback(Guest Star), Rhomeyn Johnson(Guest Star), Jake Mailey(Guest Star), Michael James Thompson(Guest Star), John O'Brien(Guest Star), Elaine Kao(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Krista Vernoff(Writer),Greg Yaitanes(Director),"}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'A traumatic car accident fills the ER; Cristina has a crisis of conscience about her deceptive teamwork with Burke; Izzie pushes the boundaries of probation.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'From a Whisper to a Scream', u'originalAirDate': u'2006-11-23', u'airDateTime': u'2017-04-06T21:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Eric Dane(Actor), George Dzundza(Guest Star), Brooke Smith(Guest Star), Debra Monk(Guest Star), Lois Smith(Guest Star), Emy Coligado(Guest Star), Kate Anthony(Guest Star), Linda Klein(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Kip Koenig(Writer),Julie Ann Robinson(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'13', u'showType': u'Series', u'description': u'Cristina draws the envy of the other doctors when she scrubs in for the "humpty dumpty" procedure; George and Addison work with a pregnant woman who faces an unusual dilemma.', u'language': u'en', u'title': u"Grey's Anatomy", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Let the Angels Commit', u'originalAirDate': u'2006-11-02', u'airDateTime': u'2017-04-06T18:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ellen Pompeo(Actor), Patrick Dempsey(Actor), Sandra Oh(Actor), Isaiah Washington(Actor), Katherine Heigl(Actor), Justin Chambers(Actor), T.R. Knight(Actor), Chandra Wilson(Actor), James Pickens Jr.(Actor), Kate Walsh(Actor), Sara Ramirez(Actor), Embeth Davidtz(Guest Star), Eric Dane(Actor), Jillian Bach(Guest Star), Edwin Hodge(Guest Star), Liza Lapira(Guest Star), Francesca P. Roberts(Guest Star), Patricia Bethune(Guest Star), Moe Irvin(Guest Star), Jeremy Rabb(Guest Star), Yvette Cruise(Guest Star), Martin Yu(Guest Star), Paula Weston Solano(Guest Star), Jack Axelrod(Guest Star), Crew:Shonda Rhimes(Executive Producer),Mark Gordon(Executive Producer),Betsy Beers(Executive Producer),James Parriott(Executive Producer),Stacy McKee(Writer),Jessica Yu(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u"When Barney and Abby (Britney Spears) realize they share a hatred of Ted, they go to a bar together to rub their relationship in Ted's face.", u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Everything Must Go', u'originalAirDate': u'2008-05-12', u'airDateTime': u'2017-04-06T12:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Alyson Hannigan(Actor), Neil Patrick Harris(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Britney Spears(Guest Star), Jennifer Lothrop(Guest Star), Petrea Burchard(Guest Star), Johnny Palermo(Guest Star), Matt Besser(Guest Star), Todd Sherry(Guest Star), Steve Hasley(Guest Star), Justin Alston(Guest Star), Larry Wilmore(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Jonathan Groff(Writer),Chris Harris(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u'An accident causes Ted to re-evaluate his life and his relationship with Stella.', u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Miracles', u'originalAirDate': u'2008-05-19', u'airDateTime': u'2017-04-06T12:30:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Alyson Hannigan(Actor), Neil Patrick Harris(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Sarah Chalke(Guest Star), Taira Soo(Guest Star), Anthony Palermo(Guest Star), Doug Benson(Guest Star), John Getz(Guest Star), Shelby Zemanek(Guest Star), Jayden Lund(Guest Star), Darcy Rose Byrnes(Guest Star), Vincent Fenequito(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u'Burger-mad Marshall meets Regis Philbin while on a quest to find the restaurant where he had his very first New York burger.', u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'The Best Burger in New York', u'originalAirDate': u'2008-09-29', u'airDateTime': u'2017-04-07T12:30:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Neil Patrick Harris(Actor), Alyson Hannigan(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), Charlene Amoia(Guest Star), Casey Washington(Guest Star), Jay Lay(Guest Star), Regis Philbin(Guest Star), Mandy McMillian(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pamela Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'10', u'showType': u'Series', u'description': u"Stella responds to Ted's proposal; Barney realizes he's in love with Robin.", u'language': u'en', u'title': u'How I Met Your Mother', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Do I Know You?', u'originalAirDate': u'2008-09-22', u'airDateTime': u'2017-04-07T12:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u'Cast:Josh Radnor(Actor), Jason Segel(Actor), Neil Patrick Harris(Actor), Alyson Hannigan(Actor), Cobie Smulders(Actor), Bob Saget(Narrator), David Henrie(Guest Star), Lyndsy Fonseca(Guest Star), Sarah Chalke(Guest Star), Kyle Archer(Guest Star), Nicole Taylor(Guest Star), Camila Greenberg(Guest Star), Heidi Lynne Herschbach(Guest Star), Alonza Maxwell(Guest Star), Crew:Carter Bays(Executive Producer),Craig Thomas(Executive Producer),Carter Bays(Writer),Craig Thomas(Writer),Pam Fryman(Director),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'21', u'showType': u'Series', u'description': u'Kalu Yala CEO, Jimmy Stice, welcomes the interns, and they learn the lay of the land; while attending Hatch, an innovation conference in Montana, a student revolt breaks out.', u'language': u'en', u'title': u'Jungletown', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Pied Piper of Panama', u'originalAirDate': u'2017-04-04', u'airDateTime': u'2017-04-07T14:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ondi Timoner(Actor), '}, {u'status': True, u'contentRatingId': 1234, u'showID': u'21', u'showType': u'Series', u'description': u'The staff feverishly fix water lines as 80 interns say goodbye to their families and comfortable homes to descend into the jungle of Panama and build a makeshift town.', u'language': u'en', u'title': u'Jungletown', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Welcome to the Jungle', u'originalAirDate': u'2017-03-28', u'airDateTime': u'2017-04-07T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Ondi Timoner(Actor), '}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'JD splits the young rappers into two teams and challenges them to perform at a high school halftime show.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Dat Way', u'originalAirDate': u'2017-03-10', u'airDateTime': u'2017-04-07T16:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'JD mixes up the management teams and then challenges the rappers to write, record and shoot a music video with past winners of "The Rap Game," Miss Mulatto and Mani.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'You Thought', u'originalAirDate': u'2017-03-03', u'airDateTime': u'2017-04-07T15:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u"Bow Wow helps hone the young rappers' media skills to prepare them for a press conference, television interview and photo shoot; Nova throws another artist under the bus.", u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Full Court Press', u'originalAirDate': u'2017-03-24', u'airDateTime': u'2017-04-07T18:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Bow Wow(Guest), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'Before signing, JD tests the young rappers in a battle rap; John John Da Don, Arsonal, Charlie Clips, DNA and Calicoe prepare the group; a rapper makes an unforgettable decision.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u"Don't Underestimate Nobody", u'originalAirDate': u'2017-03-31', u'airDateTime': u'2017-04-07T19:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'22', u'showType': u'Series', u'description': u'Kelly Rowland and her personal trainer visit the five young rappers; JD tests the children on both their mental and physical stamina in the "Catch the Beat" challenge.', u'language': u'en', u'title': u'The Rap Game', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'Shut Up and Train', u'originalAirDate': u'2017-03-17', u'airDateTime': u'2017-04-07T17:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 3600, u'castcrew': u'Cast:Jermaine Dupri(Actor), Nova(Contestant), Al\'Dreco "King Roscoe" Jones(Contestant), Tally(Contestant), Deetranada(Contestant), Flau\'jae(Contestant), Kelly Rowland(Guest), Crew:Queen Latifah(Executive Producer),Shakim Compere(Executive Producer),Jermaine Dupri(Executive Producer),Mechelle Collins(Executive Producer),Kevin Dill(Executive Producer),Mary Donahue(Executive Producer[07/Apr/2017 16:22:05] "POST /report/get_report/ HTTP/1.1" 200 22733
+[07/Apr/2017 16:24:27] "GET /users/ HTTP/1.1" 200 7314
+[07/Apr/2017 16:24:31] "GET /dashboard/ HTTP/1.1" 200 12621
+[07/Apr/2017 16:24:49] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:24:52] "GET /report/saved_queries/ HTTP/1.1" 200 7728
+[07/Apr/2017 16:24:55] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:25:08] "POST /report/get_report/ HTTP/1.1" 200 1404
+[07/Apr/2017 16:25:09] "POST /report/save_query/ HTTP/1.1" 200 5
+[07/Apr/2017 16:52:13] "GET /admin/ HTTP/1.1" 302 0
+[07/Apr/2017 16:52:13] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1805
+[07/Apr/2017 16:52:52] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:52:53] "GET /report/ HTTP/1.1" 200 24911
+),Mariana Flynn(Executive Producer),Ted Iredell(Executive Producer),Perry Dance(Executive Producer),'}]
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-08T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-07T08:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-08T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-07T08:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}]
+save
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-08T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T08:34:00', u'station[07/Apr/2017 16:53:01] "POST /report/get_report/ HTTP/1.1" 200 1404
+[07/Apr/2017 16:53:05] "POST /report/save_query/ HTTP/1.1" 200 5
+Name': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-07T08:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-08T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T08:34:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}, {u'status': True, u'contentRatingId': 1234, u'showID': u'16', u'showType': u'Paid Programming', u'description': u'Tone, tighten and burn fat - In seated comfort! Transform your entire body with the Ab Doer 360!', u'language': u'en', u'title': u'Amazing Abs', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-07T08:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 1800, u'castcrew': u''}]
+save
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 16:56:10] "GET /report/ HTTP/1.1" 200 24911
+[07/Apr/2017 16:56:14] "POST /report/get_report/ HTTP/1.1" 200 1265
+[07/Apr/2017 16:56:16] "POST /report/save_query/ HTTP/1.1" 200 5
+[07/Apr/2017 17:01:04] "GET /report/ HTTP/1.1" 200 24911
+Performing system checks...
+
+April 07, 2017 - 16:56:06
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+save
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Pro[07/Apr/2017 17:01:07] "POST /report/get_report/ HTTP/1.1" 200 1265
+[07/Apr/2017 17:01:08] "POST /report/save_query/ HTTP/1.1" 200 5
+ducer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'53', u'showType': u'Feature Film', u'description': u"Wall Street baron Steven Taylor (Michael Douglas) discovers that his pretty young wife, Emily (Gwyneth Paltrow), is cheating on him. But what concerns him more than her infidelity is the hope of profiting from her untimely death. Emily has millions, and Steve's own financial empire is collapsing before his eyes. He hires her lover, David (Viggo Mortensen), to murder her. The plan -- to stage a break-in that will look like a random murder -- turns out to be far from perfect.", u'language': u'en', u'title': u'A Perfect Murder', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T20:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 7200, u'castcrew': u'Cast:Michael Douglas(Actor), Gwyneth Paltrow(Actor), Viggo Mortensen(Actor), David Suchet(Actor), Sarita Choudhury(Actor), Constance Towers(Actor), Michael P. Moran(Actor), Novella Nelson(Actor), Crew:Arnold Kopelson(Producer),Anne Kopelson(Producer),Christopher Mankiewicz(Producer),Peter Macgregor-Scott(Producer),Stephen Brown(Executive Producer),Andrew Davis(Director),Patrick Smith Kelly(Writer (Screenplay)),'}]
+save
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:04:49] "GET /report/ HTTP/1.1" 500 97641
+[07/Apr/2017 17:04:59] "GET / HTTP/1.1" 200 6151
+[07/Apr/2017 17:05:00] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 17:05:01] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 17:05:17] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 17:05:18] "GET / HTTP/1.1" 200 12621
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:05:20] "GET /report/ HTTP/1.1" 500 97492
+[07/Apr/2017 17:06:20] "GET / HTTP/1.1" 200 12621
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:06:22] "GET /report/ HTTP/1.1" 500 97492
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 17:10:34] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 17:10:34] "GET / HTTP/1.1" 200 12621
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:10:37] "GET /report/ HTTP/1.1" 500 97507
+[07/Apr/2017 17:16:54] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 17:16:54] "GET / HTTP/1.1" 200 12621
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:16:56] "GET /report/ HTTP/1.1" 500 97507
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+Error: That port is already in use.
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 17:19:52] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 17:19:54] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 17:20:00] "POST /report/get_report/ HTTP/1.1" 200 1712
+[07/Apr/2017 17:20:05] "POST /report/save_query/ HTTP/1.1" 200 5
+[07/Apr/2017 17:20:34] "GET /logout/ HTTP/1.1" 302 0
+[07/Apr/2017 17:20:34] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 17:20:44] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 17:20:48] "GET / HTTP/1.1" 200 6151
+[07/Apr/2017 17:20:51] "GET /admin/ HTTP/1.1" 302 0
+[07/Apr/2017 17:20:51] "GET /admin/ HTTP/1.1" 302 0
+[07/Apr/2017 17:20:51] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1653
+[07/Apr/2017 17:20:53] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[07/Apr/2017 17:20:53] "GET /admin/ HTTP/1.1" 200 3372
+[07/Apr/2017 17:20:55] "GET /admin/auth/user/ HTTP/1.1" 200 6783
+[07/Apr/2017 17:20:55] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 17:20:57] "GET /admin/auth/user/add/ HTTP/1.1" 200 5163
+[07/Apr/2017 17:20:57] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 17:21:09] "POST /admin/auth/user/add/ HTTP/1.1" 302 0
+[07/Apr/2017 17:21:09] "GET /admin/auth/user/3/change/ HTTP/1.1" 200 13529
+[07/Apr/2017 17:21:09] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 17:21:48] "GET /admin/auth/user/3/change/ HTTP/1.1" 200 13327
+[07/Apr/2017 17:21:48] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 17:21:52] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 17:21:55] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 17:21:58] "GET /logout/ HTTP/1.1" 302 0
+[07/Apr/2017 17:21:58] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 17:21:59] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 17:21:59] "GET / HTTP/1.1" 200 12621
+[07/Apr/2017 17:22:01] "GET /report/ HTTP/1.1" 200 23629
+Performing system checks...
+
+April 07, 2017 - 17:19:45
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'MV00988935', u'showType': u'TV Movie', u'description': u"A woman begins to suspect that her therapist neighbor's offer of free treatments is not the altruistic gesture that it appeared to be.", u'language': u'en', u'title': u"A Neighbor's Deception", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T02:02:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Bell(Actor), Gates McFadden(Actor), Tom Amandes(Actor), Isabella Hofmann(Actor), Adam Mayfield(Actor), Kathleen Noone(Actor), Marissa Labog(Actor), Ben Whalen(Actor), William Christian(Actor), Crew:Kenny Gage(Director),Devon Downs(Director),Adam Rockoff(Screenwriter),Kimberly A. Ray(Producer),Michael Moran(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'MV00988935', u'showType': u'TV Movie', u'description': u"A woman begins to suspect that her therapist neighbor's offer of free treatments is not the altruistic gesture that it appeared to be.", u'language': u'en', u'title': u"A Neighbor's Deception", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T06:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Bell(Actor), Gates McFadden(Actor), Tom Amandes(Actor), Isabella Hofmann(Actor), Adam Mayfield(Actor), Kathleen Noone(Actor), Marissa Labog(Actor), Ben Whalen(Actor), William Christian(Actor), Crew:Kenny Gage(Director),Devon Downs(Director),Adam Rockoff(Screenwriter),Kimberly A. Ray(Producer),Michael Moran(Executive Producer),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'MV00988935', u'showType': u'TV Movie', u'description': u"A woman begins to suspect that her therapist neighbor's offer of free treatments is not the altruistic gesture that it appeared to be.", u'language': u'en', u'title': u"A Neighbor's Deception", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T02:02:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Bell(Actor), Gates McFadden(Actor), Tom Amandes(Actor), Isabella Hofmann(Actor), Adam Mayfield(Actor), Kathleen Noone(Actor), Marissa Labog(Actor), Ben Whalen(Actor), William Christian(Actor), Crew:Kenny Gage(Director),Devon Downs(Director),Adam Rockoff(Screenwriter),Kimberly A. Ray(Producer),Michael Moran(Executive Producer),'}, {u'status': True, u'contentRatingId': 1234, u'showID': u'MV00988935', u'showType': u'TV Movie', u'description': u"A woman begins to suspect that her therapist neighbor's offer of free treatments is not the altruistic gesture that it appeared to be.", u'language': u'en', u'title': u"A Neighbor's Deception", u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-09T06:04:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Bell(Actor), Gates McFadden(Actor), Tom Amandes(Actor), Isabella Hofmann(Actor), Adam Mayfield(Actor), Kathleen Noone(Actor), Marissa Labog(Actor), Ben Whalen(Actor), William Christian(Actor), Crew:Kenny Gage(Director),Devon Downs(Director),Adam Rockoff(Screenwriter),Kimberly A. Ray(Producer),Michael Moran(Executive Producer),'}]
+save
+{'query': 'series', 'userID': u'Shuang', 'description': "{'query': 'series', 'userID': u'Shuang'}"}
+get report [{u'status': True, u'contentRatingId': 1234, u'showID': u'MV00810938', u'showType': u'Feature Film', u'description': u'An FBI agent (Ashley Scott) tries to track down her daughter (Lizze Broadway) after the teen arranges to meet an online acqua[07/Apr/2017 17:22:05] "POST /report/get_report/ HTTP/1.1" 200 1153
+[07/Apr/2017 17:22:06] "POST /report/save_query/ HTTP/1.1" 200 5
+intance (Mark Hapka).', u'language': u'en', u'title': u'16 and Missing', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Scott(Actor), Lizze Broadway(Actor), Mark Hapka(Actor), David Starzyk(Actor), Jay Pickett(Actor), Jason Sims-Prewitt(Actor), Greg Evigan(Actor), Stella Hudgens(Actor), Robert Neary(Actor), Grace Bethany(Actor), Coley Feifer(Actor), Crew:Michael Feifer(Director),Michael Feifer(Screenwriter),Michael Feifer(Producer),Michael Moran(Executive Producer),Fernando Szew(Executive Producer),Brandon Jarrett(Original Music),Roy Kurtluyan(Cinematographer),Christine Kelley(Film Editor),Dean E. Fronk(Casting),Donald Paul Pemrick(Casting),Toby Lister(Production Design),Zerah Turbitt(Art Director),Diana Bobe(Costume Designer),'}]
+[{u'status': True, u'contentRatingId': 1234, u'showID': u'MV00810938', u'showType': u'Feature Film', u'description': u'An FBI agent (Ashley Scott) tries to track down her daughter (Lizze Broadway) after the teen arranges to meet an online acquaintance (Mark Hapka).', u'language': u'en', u'title': u'16 and Missing', u'regionID': u'10017 ', u'programRatingId': 1234, u'programTitle': u'', u'originalAirDate': None, u'airDateTime': u'2017-04-13T13:00:00', u'stationName': u'Lifetime HD', u'scheduleRatingID': 1234, u'duration': 120, u'castcrew': u'Cast:Ashley Scott(Actor), Lizze Broadway(Actor), Mark Hapka(Actor), David Starzyk(Actor), Jay Pickett(Actor), Jason Sims-Prewitt(Actor), Greg Evigan(Actor), Stella Hudgens(Actor), Robert Neary(Actor), Grace Bethany(Actor), Coley Feifer(Actor), Crew:Michael Feifer(Director),Michael Feifer(Screenwriter),Michael Feifer(Producer),Michael Moran(Executive Producer),Fernando Szew(Executive Producer),Brandon Jarrett(Original Music),Roy Kurtluyan(Cinematographer),Christine Kelley(Film Editor),Dean E. Fronk(Casting),Donald Paul Pemrick(Casting),Toby Lister(Production Design),Zerah Turbitt(Art Director),Diana Bobe(Costume Designer),'}]
+save
+{'query': 'series', 'userID': u'admin', 'description': "{'query': 'series', 'userID': u'admin'}"}
+Traceback (most recent call last):
+  File "manage.py", line 22, in <module>
+    execute_from_command_line(sys.argv)
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 367, in execute_from_command_line
+    utility.execute()
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 316, in execute
+    settings.INSTALLED_APPS
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 53, in __getattr__
+    self._setup(name)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 41, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 97, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/usr/lib64/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/mysite/settings.py", line 64
+    <<<<<<< Updated upstream
+     ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "manage.py", line 22, in <module>
+    execute_from_command_line(sys.argv)
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 367, in execute_from_command_line
+    utility.execute()
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 316, in execute
+    settings.INSTALLED_APPS
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 53, in __getattr__
+    self._setup(name)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 41, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 97, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/usr/lib64/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/mysite/settings.py", line 64
+    <<<<<<< Updated upstream
+     ^
+SyntaxError: invalid syntax
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 17:26:41] "GET /dashboard/ HTTP/1.1" 200 6151
+[07/Apr/2017 17:26:42] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 17:26:44] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 17:26:55] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 17:26:55] "GET / HTTP/1.1" 200 13614
+Not Found: /report/saved_query/
+[07/Apr/2017 17:27:00] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+[07/Apr/2017 17:27:50] "GET /dashboard/ HTTP/1.1" 200 13614
+[07/Apr/2017 17:28:00] "GET /dashboard/favourite HTTP/1.1" 301 0
+[07/Apr/2017 17:28:00] "GET /dashboard/favourite/ HTTP/1.1" 200 10755
+[07/Apr/2017 17:28:03] "GET /dashboard/ HTTP/1.1" 200 13614
+[07/Apr/2017 17:28:43] "GET / HTTP/1.1" 200 13614
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 76, in get_dropdown_fields
+    js = r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 17:28:47] "GET /report/ HTTP/1.1" 500 100872
+[2017-04-07 17:28:47,168] - Broken pipe from ('128.237.179.166', 51735)
+
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 76, in get_dropdown_fields
+    js = r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 17:29:13] "GET /report/ HTTP/1.1" 500 100730
+[2017-04-07 17:29:13,791] - Broken pipe from ('128.237.179.166', 51746)
+
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 76, in get_dropdown_fields
+    js = r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 17:29:19] "GET /report/ HTTP/1.1" 500 100730
+[2017-04-07 17:29:19,128] - Broken pipe from ('128.237.179.166', 51747)
+
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 76, in get_dropdown_fields
+    js = r.json()
+  File "/usr/lib/python2.7/dist-packages/requests/models.py", line 651, in json
+    return json.loads(self.text or self.content, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/__init__.py", line 505, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 370, in decode
+    obj, end = self.raw_decode(s)
+  File "/usr/lib64/python2.7/dist-packages/simplejson/decoder.py", line 400, in raw_decode
+    return self.scan_once(s, idx=_w(s, idx).end())
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[07/Apr/2017 17:29:28] "GET /report/ HTTP/1.1" 500 100730
+[2017-04-07 17:29:28,230] - Broken pipe from ('128.237.179.166', 51752)
+
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'httplib.BadStatusLine'>: '')
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'httplib.BadStatusLine'>: '')
+[07/Apr/2017 17:29:33] "GET /report/ HTTP/1.1" 500 97439
+[2017-04-07 17:29:33,486] - Broken pipe from ('128.237.179.166', 51768)
+
+[07/Apr/2017 17:29:33] "GET /report/ HTTP/1.1" 500 97430
+[07/Apr/2017 17:30:00] "GET / HTTP/1.1" 200 13614
+[07/Apr/2017 17:30:00] "GET / HTTP/1.1" 200 13614
+Internal Server Error: /report/
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 39, in index
+    fields = get_dropdown_fields()
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/report/views.py", line 75, in get_dropdown_fields
+    r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 55, in get
+    return request('get', url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/api.py", line 44, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 335, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 438, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 327, in send
+    raise ConnectionError(e)
+ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/menu/title (Caused by <class 'socket.error'>: [Errno 111] Connection refused)
+[07/Apr/2017 17:30:01] "GET /report/ HTTP/1.1" 500 97506
+[07/Apr/2017 17:31:12] "GET / HTTP/1.1" 200 13614
+[07/Apr/2017 17:31:12] "GET / HTTP/1.1" 200 13614
+[07/Apr/2017 17:31:13] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 17:31:16] "GET /dashboard/ HTTP/1.1" 200 13614
+Not Found: /report/saved_query/
+[07/Apr/2017 17:31:32] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+Not Found: /report/saved_query/
+[07/Apr/2017 17:31:44] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+Not Found: /report/saved_query/
+[07/Apr/2017 17:32:04] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+[07/Apr/2017 17:32:44] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 17:32:47] "GET /dashboard/ HTTP/1.1" 200 13614
+Not Found: /report/saved_query/
+[07/Apr/2017 17:32:49] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+Invalid HTTP_HOST header: '52.14.223.164:8000'. You may need to add u'52.14.223.164' to ALLOWED_HOSTS.
+[07/Apr/2017 17:58:34] "GET / HTTP/1.1" 400 62290
+[07/Apr/2017 18:36:11] "GET /admin/ HTTP/1.1" 200 3372
+[07/Apr/2017 18:36:14] "GET /admin/auth/user/ HTTP/1.1" 200 6783
+[07/Apr/2017 18:36:14] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 18:36:48] "GET /admin/auth/user/add/ HTTP/1.1" 200 5163
+[07/Apr/2017 18:36:48] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 18:37:00] "POST /admin/auth/user/add/ HTTP/1.1" 200 5320
+[07/Apr/2017 18:37:00] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 18:37:08] "POST /admin/auth/user/add/ HTTP/1.1" 302 0
+[07/Apr/2017 18:37:08] "GET /admin/auth/user/3/change/ HTTP/1.1" 200 13529
+[07/Apr/2017 18:37:08] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 22:35:20] "GET / HTTP/1.1" 200 13614
+[07/Apr/2017 22:35:20] "GET /static/css/sb-admin.css HTTP/1.1" 200 3480
+[07/Apr/2017 22:35:20] "GET /static/css/plugins/morris.css HTTP/1.1" 200 433
+[07/Apr/2017 22:35:20] "GET /static/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 21984
+[07/Apr/2017 22:35:20] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 121200
+[07/Apr/2017 22:35:20] "GET /static/js/jquery.min.js HTTP/1.1" 200 83606
+[07/Apr/2017 22:35:20] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 37045
+[07/Apr/2017 22:35:20] "GET /static/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0 HTTP/1.1" 200 65452
+[07/Apr/2017 22:35:20] "GET /static/js/moment.min.js HTTP/1.1" 200 24864
+[07/Apr/2017 22:35:20] "GET /static/js/plugins/morris/morris.min.js HTTP/1.1" 200 35652
+[07/Apr/2017 22:35:20] "GET /static/js/jquery.js HTTP/1.1" 200 95785
+[07/Apr/2017 22:35:20] "GET /static/js/plugins/morris/raphael.min.js HTTP/1.1" 200 92872
+[07/Apr/2017 22:35:20] "GET /static/js/plugins/morris/morris-data.js HTTP/1.1" 200 5337
+[07/Apr/2017 22:35:20] "GET /static/img/logo.png HTTP/1.1" 200 15502
+[07/Apr/2017 22:35:20] "GET /static/js/bootstrap-datetimepicker.min.js HTTP/1.1" 200 21336
+[07/Apr/2017 22:35:20] "GET /static/js/bootstrap-table.js HTTP/1.1" 200 109621
+Not Found: /report/saved_query/
+[07/Apr/2017 22:35:25] "GET /report/saved_query/?title=How+I+Met+Your+Mother HTTP/1.1" 404 3716
+[07/Apr/2017 22:35:28] "GET /users/ HTTP/1.1" 200 7315
+[07/Apr/2017 22:35:30] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 22:35:30] "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+[07/Apr/2017 22:35:31] "GET /report/saved_queries/ HTTP/1.1" 200 7728
+[07/Apr/2017 22:35:34] "GET /dashboard/ HTTP/1.1" 200 13614
+[07/Apr/2017 22:35:46] "GET /users/ HTTP/1.1" 200 7315
+[07/Apr/2017 22:35:48] "GET /dashboard/ HTTP/1.1" 200 13614
+[07/Apr/2017 22:35:50] "GET /report/ HTTP/1.1" 200 23629
+Performing system checks...
+
+April 07, 2017 - 17:26:37
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Traceback (most recent call last):
+  File "manage.py", line 22, in <module>
+    execute_from_command_line(sys.argv)
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 367, in execute_from_command_line
+    utility.execute()
+  File "/usr/local/lib/python2.7/site-packages/django/core/management/__init__.py", line 316, in execute
+    settings.INSTALLED_APPS
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 53, in __getattr__
+    self._setup(name)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 41, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/usr/local/lib/python2.7/site-packages/django/conf/__init__.py", line 97, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/usr/lib64/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/mysite/settings.py", line 64
+    <<<<<<< Updated upstream
+     ^
+SyntaxError: invalid syntax
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+Invalid HTTP_HOST header: 'ec2-52-14-223-164.us-east-2.compute.amazonaws.com:8000'. You may need to add u'ec2-52-14-223-164.us-east-2.compute.amazonaws.com' to ALLOWED_HOSTS.
+[07/Apr/2017 22:40:06] "GET /dashboard/ HTTP/1.1" 400 64275
+Invalid HTTP_HOST header: 'ec2-52-14-223-164.us-east-2.compute.amazonaws.com:8000'. You may need to add u'ec2-52-14-223-164.us-east-2.compute.amazonaws.com' to ALLOWED_HOSTS.
+[07/Apr/2017 22:40:11] "GET / HTTP/1.1" 400 63973
+Performing system checks...
+
+April 07, 2017 - 22:40:02
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+Error: That port is already in use.
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ec2-user/legendary/LegendaryFrontEnd/mysite/dashboard/views.py", line 40, in index
+    return render_to_response('users/home.html')
+  File "/usr/local/lib/python2.7/site-packages/django/shortcuts.py", line 21, in render_to_response
+    content = loader.render_to_string(template_name, context, using=using)
+  File "/usr/local/lib/python2.7/site-packages/django/template/loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "/usr/local/lib/python2.7/site-packages/django/template/backends/django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "/usr/local/lib/python2.7/site-packages/django/template/backends/django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "/usr/local/lib/python2.7/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/loader_tags.py", line 152, in render
+    compiled_parent = self.get_parent(context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/loader_tags.py", line 149, in get_parent
+    return self.find_template(parent, context)
+  File "/usr/local/lib/python2.7/site-packages/django/template/loader_tags.py", line 129, in find_template
+    template_name, skip=history,
+  File "/usr/local/lib/python2.7/site-packages/django/template/engine.py", line 146, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+TemplateDoesNotExist: header.html
+[07/Apr/2017 22:41:36] "GET / HTTP/1.1" 500 129102
+Performing system checks...
+
+April 07, 2017 - 22:41:34
+Django version 1.10.6, using settings 'mysite.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W001) Your URL pattern '^$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+?: (urls.W001) Your URL pattern '^users/$' uses include with a regex ending with a '$'. Remove the dollar from the regex to avoid problems including URLs.
+
+System check identified 2 issues (0 silenced).
+[07/Apr/2017 22:44:15] "GET / HTTP/1.1" 200 6151
+[07/Apr/2017 22:44:17] "GET /login/ HTTP/1.1" 200 7480
+[07/Apr/2017 22:44:19] "POST /login/ HTTP/1.1" 200 7650
+[07/Apr/2017 22:44:26] "POST /login/ HTTP/1.1" 302 0
+[07/Apr/2017 22:44:26] "GET / HTTP/1.1" 200 13614
+[07/Apr/2017 22:44:29] "GET /report/ HTTP/1.1" 200 23629
+[07/Apr/2017 22:44:31] "GET /report/saved_queries/ HTTP/1.1" 200 7728
+[07/Apr/2017 22:44:33] "GET /dashboard/ HTTP/1.1" 200 13614
+[07/Apr/2017 22:47:37] "GET /admin/ HTTP/1.1" 200 3372
+[07/Apr/2017 22:47:37] "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[07/Apr/2017 22:47:37] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /admin/auth/user/add/ HTTP/1.1" 200 5163
+[07/Apr/2017 22:47:40] "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 22:47:40] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:40] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:51] "POST /admin/auth/user/add/ HTTP/1.1" 302 0
+[07/Apr/2017 22:47:51] "GET /admin/auth/user/3/change/ HTTP/1.1" 200 13529
+[07/Apr/2017 22:47:51] "GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:51] "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:51] "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:51] "GET /static/admin/js/SelectBox.js HTTP/1.1" 304 0
+[07/Apr/2017 22:47:51] "GET /admin/jsi18n/ HTTP/1.1" 200 3217
+[07/Apr/2017 22:47:52] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/icon-unknown.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/icon-unknown-alt.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/selector-icons.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/icon-clock.svg HTTP/1.1" 304 0
+[07/Apr/2017 22:47:52] "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
