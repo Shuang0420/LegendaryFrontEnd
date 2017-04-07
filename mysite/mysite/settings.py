@@ -61,7 +61,11 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< Updated upstream
         'DIRS': ['/home/ec2-user/legendary/LegendaryFrontEnd/mysite/mysite/templates'],
+=======
+        'DIRS': ['/Users/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/templates'],
+>>>>>>> Stashed changes
         # 'DIRS': ['/home/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/mysite/mysample/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,5 +133,9 @@ LOGIN_REDIRECT_URL = '/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
+<<<<<<< Updated upstream
         '/home/ec2-user/legendary/LegendaryFrontEnd/mysite/static/',
+=======
+        '/Users/prabhdeep/cmu/Capstone/code/LegendaryFrontEnd/mysite/static/',
+>>>>>>> Stashed changes
 )

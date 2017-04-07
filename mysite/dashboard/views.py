@@ -1,12 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.template import loader
 from django.shortcuts import render_to_response
+from rest_framework import status
+import json
+import requests
 
 # Create your views here.
 '''
 https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 '''
+def format(rows, fields):
+    try:
+        if rows == None or fields == None:
+            raise ValueError('Null input')
+        if len(rows) == 0:
+            return ""
+        if len(rows[0]) != len(fields):
+            raise ValueError('Inconsistent field lengths')
+        dicts = (dict(zip(fields,row)) for row in rows)
+        return dicts
+    except ValueError as err:
+        return (err)
 
 # Create your views here.
 def index(request):
@@ -24,12 +40,41 @@ def index(request):
         return render_to_response('users/home.html')
     # return HttpResponse("Hello, world. Go to /mysample/1 to see dashboard 1")
 
+def api_get_search(title):
+    #d = '?showtype=' + fields['showtype']+'&language=en'+'&title='+fields['program_title']
+    r = requests.get('http://localhost:8080/api/v1/show/'+title)
+    print r.json()
+    return r.json()
 
-'''
-def dashboard(request, id):
-    template = loader.get_template('dashboard.html')
-    context = {
-            'dashboard_id': id,
-    }
-    return HttpResponse(template.render(context, request))
-    '''
+
+def search(request):
+    if request.POST:
+        fields = dict(request.POST.iteritems())
+        title = fields["program_title"]
+        result = api_get_search(title)
+        return JsonResponse(result, safe=False)
+
+def favourite_programs(request):
+    template = loader.get_template('dashboard/favourite.html')
+    favourite_shows = {}
+    favourite_shows["favourites"] = [['Game Of Thrones',1],['Mad Men',2]]
+    return HttpResponse(template.render(favourite_shows, request))
+
+def add_fav(request):
+    fields = dict(request.GET.iteritems())
+    showID = fields["showId"]
+    return HttpResponse(showID)
+   
+   
+
+def remove_fav(request):
+    global report_content
+
+    if request.POST:
+        fields = dict(request.POST.iteritems())
+        content = api_get_report(fields)
+        print content
+        # update global content for pdf saving
+        report_content = content
+        return JsonResponse(content, safe=False)
+    

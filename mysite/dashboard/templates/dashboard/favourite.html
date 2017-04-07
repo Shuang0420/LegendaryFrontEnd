@@ -1,0 +1,109 @@
+{% extends "header.html" %}
+{% block content %}
+<style type="text/css">
+.asd {
+    color:blue;
+    background-color:transparent;
+    border:none;
+}
+</style>
+	<div class="container-fluid" style="height:90%;">
+
+    <!-- Page Heading -->
+        <div class="row">
+            <h3 class="page-header">
+                Dashboard <small>Favourite Shows</small>
+            </h3>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Current favourites</h3>
+                <div class="table-responsive">
+                <table class="table table-condensed table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>TV Show</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fav_shows">
+                        {% for row in favourites %}
+                            <tr>
+                                <td>{{row.0}}</td>
+                                <td>
+                                    <form action="/dashboard/remove_fav/" method="GET">
+                                        <input id="ShowId" type="hidden" name="ShowId" value={{row.1}}>
+                                        <input id="UserId" type="hidden" name="UserId" value={{userID}}>
+                                        <input type="submit" class="asd" value="remove">
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <h3>Add new tv shows</h3>
+            <!--must have csrf_token when using post method-->
+            <form action="/dashboard/search/" method="post" id="queryFields">{% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-2"> 
+                    <label>Show Title:</label></div><div class="col-sm-4">  <input type="text" class="form-control input-sm" name="program_title">
+                    </div>
+                    <div class="col-sm-1"> 
+                        <input type="submit" class="btn btn-primary" name="submit" value="submit" id="submit">
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+        <script>
+            $('#submit').click(function(e) {
+                e.preventDefault();
+                document.getElementById("report_part").style.visibility = "visible";
+                $.ajax({
+                    type: "POST",
+                    url: "/dashboard/search/", // the script where you handle the form input.
+                    data: $("#queryFields").serialize(), // serializes the form's elements.
+
+                    success: function(data) {
+                        var trHTML = data;
+                        $.each(data, function(key, value) {
+                            trHTML +=
+                                '<tr><td nowrap>' +
+                                value.showID + "  :  " + value.title +
+                                '</td><td><form action="/dashboard/add_fav/" method="GET">'+
+                                '<input type="hidden" name="showId" value="'+value.showID+'">'+
+                                '<input type="submit" class="asd" value="Add"></form></td></tr>'
+                        });
+                        //clear the table before populate data
+                        $('#tBody').empty();
+                        $('#tBody').append(trHTML);
+                    }
+                });
+            });
+        </script>
+        <div class="row col-sm-12" id="report_part" style="visibility:hidden">
+            <br />
+            <br />
+            <br />
+            <div class="scrollable">
+                <table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
+                    <thead class="thead-inverse">
+                        <!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
+                        <tr>
+                            <th>Show Title</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBody">
+                    </tBody>
+                </table>
+            </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
