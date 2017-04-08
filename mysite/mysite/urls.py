@@ -18,14 +18,14 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from users.forms import LoginForm
 from django.contrib.auth import views
-
+from django.views.generic import RedirectView
 
 urlpatterns = [
     # point the root URLconf at the mysample.urls module
     #url(r'^$', include('users.urls')),
     #url(r'^users/', include('users.urls')),
-    url(r'^users/$', include('users.urls')),
-
+    #url(r'^users/$', include('users.urls')),
+    url(r'^users/$',RedirectView.as_view(url='/admin/')),
     url(r'^admin/', include(admin.site.urls)),
     #url(r'', include('users.urls')),
     url(r'^login/', views.login, {'template_name': 'users/login.html', 'authentication_form': LoginForm}, name='login'),
