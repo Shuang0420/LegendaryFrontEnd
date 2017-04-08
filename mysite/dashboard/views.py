@@ -27,6 +27,9 @@ def format(rows, fields):
 # Create your views here.
 def index(request):
     template = loader.get_template('dashboard/main.html')
+    # get the data from the backend
+    
+
     upcoming = [['Game of thrones','1: Song of fire and ice','1/1/2017 9:00 pm','1 hr'],['Game of thrones','2: Battle of the bastards','1/8/2017 9:00 pm','1 hr'],['Daredevil','1: The blind lady','1/2/2017 9:00 pm','1 hr'],['Daredevil','2: Struggler','1/9/2017 9:00 pm','1 hr']]
     airtimes = [['Game of thrones','1: Song of fire and ice','2 hr'],['Game of thrones','2: Battle of the bastards','2 hr'],['Daredevil','1: The blind lady','1 hr'],['Daredevil','2: Struggler','2 hr']]
     savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
@@ -56,26 +59,36 @@ def search(request):
 
 def favourite_programs(request):
     template = loader.get_template('dashboard/favourite.html')
+    userID = 'emilie'
+    r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
+    obj = r.json()
     favourite_shows = {}
-    favourite_shows["favourites"] = [['Game Of Thrones',1],['Mad Men',2]]
+    favourite_shows["favourites"] = obj 
     return HttpResponse(template.render(favourite_shows, request))
 
 def add_fav(request):
+    template = loader.get_template('dashboard/favourite.html')    
     fields = dict(request.GET.iteritems())
     showID = fields["showId"]
-    payload = {'userID':'emilie','showID':showID}
+    userID = 'emilie'
+    payload = {'userID':userID,'showID':showID}
     r = requests.post('http://localhost:8080/api/v1/favoriteshow/', payload)
-    return HttpResponse(r)
-   
+    r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
+    obj = r.json()
+    favourite_shows = {}
+    favourite_shows["favourites"] = obj 
+    return HttpResponse(template.render(favourite_shows, request))
+
 
 def remove_fav(request):
-    global report_content
-
-    if request.POST:
-        fields = dict(request.POST.iteritems())
-        content = api_get_report(fields)
-        print content
-        # update global content for pdf saving
-        report_content = content
-        return JsonResponse(content, safe=False)
-    
+    template = loader.get_template('dashboard/favourite.html')    
+    fields = dict(request.GET.iteritems())
+    showID = fields["showId"]
+    userID = 'emilie'
+    payload = {'userID':userID,'showID':showID}
+    r = requests.delete('http://localhost:8080/api/v1/favoriteshow/', data = payload)
+    r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
+    obj = r.json()
+    favourite_shows = {}
+    favourite_shows["favourites"] = obj 
+    return HttpResponse(template.render(favourite_shows, request))
