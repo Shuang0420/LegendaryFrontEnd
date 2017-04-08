@@ -18,22 +18,26 @@
         <div class="row">
             <div class="col-sm-6">
                 <h3>Upcoming</h3>
-                <div class="table-responsive">
-                <table class="table table-condensed table-hover table-bordered">
+                <div class="scrollable">
+                <table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
                     <thead>
+                        <!--'title', 'programTitle', 'airDateTime', 'duration', 'regionID'-->
                         <tr>
                             <th>TV Show</th>
                             <th>Episode</th>
-                            <th>DateTime</th>
-                            <th>Airtime</th>
+                            <th>Air Date Time</th>
+                            <th>Duration</th>
+                            <th>Region</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for row in upcoming %}
                             <tr>
-                                {% for cell in row %}
-                                <td>{{cell}}</td>
-                                {% endfor %}
+                                <td>{{row.title}}</td>
+                                <td>{{row.programTitle}}</td>
+                                <td>{{row.airDateTime}}</td>
+                                <td>{{row.duration}}</td>
+                                <td>{{row.regionID}}</td>
                             </tr>
                         {% endfor %}
                         <!--
@@ -54,22 +58,22 @@
                 <h3>This Past Week</h3>
                 <div class="table-responsive">
                     <table class="table table-condensed table-hover table-bordered">
-                        <thead>
+                        <!--'title', 'SUM(duration/60.0) as hours', 'regionID'-->
+                        <tr>
+                            <th>TV Show</th>
+                            <th>Total Air Time</th>
+                            <th>Region</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in airtimes %}
                             <tr>
-                                <th>TV Show</th>
-                                <th>Episode</th>
-                                <th>Airtime</th>
+                                <td>{{row.title}}</td>
+                                <td>{{row.hours}}</td>
+                                <td>{{row.regionID}}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in airtimes %}
-                            <tr>
-                                {% for cell in row %}
-                                <td>{{cell}}</td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
+                        {% endfor %}
+                    </tbody>
                     </table>
                 </div>
             </div>

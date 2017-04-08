@@ -28,10 +28,21 @@ def format(rows, fields):
 def index(request):
     template = loader.get_template('dashboard/main.html')
     # get the data from the backend
-    
+    #   id = request.data.get('userID')
+    #timeRange = request.data.get('timeRange')
+    #statistic = request.data.get('statistic')
+    params = {}
+    params["userID"] = "emilie"
+    params["timeRange"] = "7"
+    params["statistic"] = "hour"
+    r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
+    print r
+    airtimes = r.json
 
-    upcoming = [['Game of thrones','1: Song of fire and ice','1/1/2017 9:00 pm','1 hr'],['Game of thrones','2: Battle of the bastards','1/8/2017 9:00 pm','1 hr'],['Daredevil','1: The blind lady','1/2/2017 9:00 pm','1 hr'],['Daredevil','2: Struggler','1/9/2017 9:00 pm','1 hr']]
-    airtimes = [['Game of thrones','1: Song of fire and ice','2 hr'],['Game of thrones','2: Battle of the bastards','2 hr'],['Daredevil','1: The blind lady','1 hr'],['Daredevil','2: Struggler','2 hr']]
+    params["statistic"] = "listing"
+    r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
+    print r
+    upcoming = r.json
     savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
     pageData = {}
     pageData['upcoming'] = upcoming
@@ -46,7 +57,6 @@ def index(request):
 def api_get_search(title):
     #d = '?showtype=' + fields['showtype']+'&language=en'+'&title='+fields['program_title']
     r = requests.get('http://localhost:8080/api/v1/show/'+title)
-    print r.json()
     return r.json()
 
 
