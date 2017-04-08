@@ -86,21 +86,20 @@
                             <tr>
                                 <th>Run Query</th>
                                 <th>Query Name</th>
-                                <th>Query Properties</th>
+                                <th>Query Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for row in savedQueries %}
                             <tr>
                                 <td>
-                                    <form action="/report/saved_query/" method="GET">
-                                        <input id="title" type="hidden" name="title" value="How I Met Your Mother">
+                                    <form action="/report/run_saved_query/" method="GET">
+                                        <input id="title" type="hidden" name="query" value={{row.safequery}}>
                                         <input type="submit" class="asd" value="run">
                                     </form>
                                 </td>
-                                {% for cell in row %}
-                                <td>{{cell}}</td>
-                                {% endfor %}
+                                <td>{{row.query}}</td>
+                                <td>{{row.description}}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

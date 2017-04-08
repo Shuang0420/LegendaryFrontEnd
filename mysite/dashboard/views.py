@@ -31,27 +31,32 @@ def index(request):
     #   id = request.data.get('userID')
     #timeRange = request.data.get('timeRange')
     #statistic = request.data.get('statistic')
-    params = {}
-    params["userID"] = "emilie"
-    params["timeRange"] = "7"
-    params["statistic"] = "hour"
-    r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
-    print r
-    airtimes = r.json
-
-    params["statistic"] = "listing"
-    r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
-    print r
-    upcoming = r.json
-    savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
-    pageData = {}
-    pageData['upcoming'] = upcoming
-    pageData['airtimes'] = airtimes
-    pageData['savedQueries'] = savedQueries
     if request.user.is_authenticated():
+        params = {}
+        params["userID"] = "emilie"
+        params["timeRange"] = "7"
+        params["statistic"] = "hour"
+        r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
+        print r
+        airtimes = r.json
+
+        params["statistic"] = "listing"
+        r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
+        print r
+        upcoming = r.json
+        if request.user.is_authenticated():
+            userID = request.user.username
+        queries = api_get_saved_query(userID)
+        for query in queries:
+            query["safequery"] = str(query["query"]).replace(' ',"~")
+        pageData = {}
+        pageData['upcoming'] = upcoming
+        pageData['airtimes'] = airtimes
+        pageData['savedQueries'] = queries
         return HttpResponse(template.render(pageData))
     else:
         return render_to_response('users/home.html')
+    
     # return HttpResponse("Hello, world. Go to /mysample/1 to see dashboard 1")
 
 def api_get_search(title):
@@ -89,6 +94,9 @@ def add_fav(request):
     favourite_shows["favourites"] = obj 
     return HttpResponse(template.render(favourite_shows, request))
 
+def api_get_saved_query(userID):
+    r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
+    return r.json()
 
 def remove_fav(request):
     template = loader.get_template('dashboard/favourite.html')    

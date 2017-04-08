@@ -64,22 +64,22 @@ def saved_queries(request):
 
 
 
-@csrf_exempt
 def run_saved_query(request):
-    print 'post',request.POST
-    #DATA = request.GET['query']
-    DATA = {}
-    DATA['title'] = 'Girl Followed'
-    print DATA
-    #r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
+    template = loader.get_template('report/saved_queries.html')
+    fields = dict(request.GET.iteritems())
+    DATA = fields["query"]
+    DATA = str(DATA.replace('~',' '))
+    DATA = json.loads(DATA)
     content = api_get_report(DATA)
-    print content
-    # update global content for pdf saving
     report_content = content
-    return JsonResponse(content, safe=False)
-    #return HttpResponse('5')
-    #return JsonResponse(request.GET, safe=False)
-
+    results = {}
+    results['results'] = report_content
+    if request.user.is_authenticated():
+        userID = request.user.username
+    queries = api_get_saved_query(userID)
+    results['savedQueries'] = queries
+    return HttpResponse(template.render(results))
+    
 
 
 def get_report(request):
@@ -246,7 +246,10 @@ def reformat_time(time):
 def api_get_saved_query(userID):
     r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
     # HttpResponse(r.status_code == requests.codes.ok)
-    return r.json()
+    queries = r.json()
+    for query in queries:
+        query["safequery"] = str(query["query"]).replace(' ',"~")
+    return queries
 
 
 def api_save_query(fields):
