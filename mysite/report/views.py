@@ -25,6 +25,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from StringIO import StringIO
 import re
 import csv
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 '''
 https://docs.djangoproject.com/en/1.10/intro/tutorial01/
@@ -46,11 +48,6 @@ def index(request):
     #return render(request,'report/main.html')
 
 
-savedQueries = [['GameOfThrones 1 month','Game of Thrones,"month":1'],['Daredevil 1 month','Daredevil,"month":1']]
-
-#[{u'query': u'{"showtype": ["Serie', u'queryDes': None}, {u'query': u'bySeries', u'queryDes': None}, {u'query': u'search by Series', u'queryDes': None}]
-#{'savedQueries': [['GameOfThrones 1 month', 'Game of Thrones,"month":1'], ['Daredevil 1 month', 'Daredevil,"month":1']]}
-
 def saved_queries(request):
     template = loader.get_template('report/saved_queries.html')
     #return render(request,'report/saved_queries.html',savedQueries)
@@ -60,72 +57,30 @@ def saved_queries(request):
     #print queries
     data = {}
     #data['savedQueries'] = queries
-    data['savedQueries'] = savedQueries
-    data['test'] = 'hello'
+    data['savedQueries'] = queries
+    #data['test'] = 'hello'
     #return JsonResponse(queries, safe=False)
     return HttpResponse(template.render(data))
 
 
 
-
-def get_dropdown_fields():
-    attributes = ['title','showType','genre','region']
-    res = {}
-    for attr in attributes:
-        r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
-        js = r.json()
-        res[attr] = js[attr]
-    return res
-
-
-
-
-def api_get_saved_query(userID):
-    r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
-    # HttpResponse(r.status_code == requests.codes.ok)
-    return r.json()
-
-
-def api_save_query(fields):
-    query = 'series'
+@csrf_exempt
+def run_saved_query(request):
+    print 'post',request.POST
+    #DATA = request.GET['query']
     DATA = {}
-    DATA['userID'] = fields['userID']
-    DATA['query'] = query
-    DATA['description'] = str(DATA)
+    DATA['title'] = 'Girl Followed'
     print DATA
-    #DATA = urllib.urlencode(DATA).encode("utf-8")
-    r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
-    return r.status_code
+    #r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
+    content = api_get_report(DATA)
+    print content
+    # update global content for pdf saving
+    report_content = content
+    return JsonResponse(content, safe=False)
+    #return HttpResponse('5')
+    #return JsonResponse(request.GET, safe=False)
 
 
-def api_get_report(fields):
-    #d = '?showtype=' + fields['showtype']+'&language=en'+'&title='+fields['program_title']
-    #d = '?title='+'16 and Missing'
-    DATA = {}
-    if fields['title'] == 'All':
-        DATA['dateFrom'] = reformat_date(fields['dateFrom'])
-        DATA['dateTo'] = reformat_date(fields['dateTo'])
-        DATA['timeFrom'] = reformat_time(fields['timeFrom'])
-        DATA['timeTo'] = reformat_time(fields['timeTo'])
-    else:
-        DATA['title'] = fields['title']
-    if fields['showType'] != 'All':
-        DATA['showType'] = fields['showType']
-    r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
-    print 'get report',r.json()
-    return r.json()
-
-
-def reformat_date(date):
-    parts = date.split('/')
-    return parts[-1]+'-'+'-'.join(parts[:-1])
-
-def reformat_time(time):
-    parts = re.split(':| ',time)
-    if parts[-1] == 'PM':
-        return str(int(parts[0])+12)
-    else:
-        return parts[0]
 
 def get_report(request):
     global report_content
@@ -136,13 +91,6 @@ def get_report(request):
     'castcrew', 'programRatingId', 'scheduleRatingID', 'status', 'originalAirDate']
     if request.POST:
         '''
-    	ctx['program_title'] = request.POST['program_title']
-    	ctx['region'] = request.POST['region']
-    	ctx['genre'] = request.POST['genre']
-    	ctx['date_from'] = request.POST['date_from']
-    	ctx['date_to'] = request.POST['date_to']
-    	ctx['time_from'] = request.POST['time_from']
-    	ctx['time_to'] = request.POST['time_to']
         if request.POST.get('save'):
             print 'save'
             status = save_query(ctx)
@@ -161,9 +109,6 @@ def get_report(request):
         report_content = content
         return JsonResponse(content, safe=False)
         #return JsonResponse(report_content)
-
-
-
 
 
 # FOR PYTHON 2.7
@@ -254,3 +199,73 @@ def save_pdf(request):
     response.write(buff.getvalue())
     buff.close()
     return response
+
+
+
+"""
+Helper function
+"""
+def get_dropdown_fields():
+    attributes = ['title','showType','genre','region']
+    res = {}
+    for attr in attributes:
+        r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+        js = r.json()
+        res[attr] = js[attr]
+    return res
+
+
+def fields_transform(fields):
+    DATA = {}
+    if 'title' in fields:
+        if fields['title'] == 'All':
+            DATA['dateFrom'] = reformat_date(fields['dateFrom'])
+            DATA['dateTo'] = reformat_date(fields['dateTo'])
+            DATA['timeFrom'] = reformat_time(fields['timeFrom'])
+            DATA['timeTo'] = reformat_time(fields['timeTo'])
+        else:
+            DATA['title'] = fields['title']
+    if 'showType' in fields and fields['showType'] != 'All':
+        DATA['showType'] = fields['showType']
+    return DATA
+
+
+def reformat_date(date):
+    parts = date.split('/')
+    return parts[-1]+'-'+'-'.join(parts[:-1])
+
+def reformat_time(time):
+    parts = re.split(':| ',time)
+    if parts[-1] == 'PM':
+        return str(int(parts[0])+12)
+    else:
+        return parts[0]
+
+
+
+def api_get_saved_query(userID):
+    r = requests.get('http://localhost:8080/api/v1/savedquery/' + userID)
+    # HttpResponse(r.status_code == requests.codes.ok)
+    return r.json()
+
+
+def api_save_query(fields):
+    print fields
+    DATA = fields_transform(fields)
+    query = ''
+    for k,v in DATA.iteritems():
+        query += k + ': ' + v + ';'
+    DATA['query'] = json.dumps(DATA)
+    DATA['description'] = query
+    DATA['userID'] = fields['userID']
+    #DATA['description'] = str(DATA).strip()#.replace("'","")
+    #DATA = urllib.urlencode(DATA).encode("utf-8")
+    r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
+    return r.status_code
+
+
+def api_get_report(fields):
+    DATA = fields_transform(fields)
+    r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
+    print 'get report',r.json()
+    return r.json()

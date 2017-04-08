@@ -1,5 +1,4 @@
-{% extends "header.html" %}
-{% block content %}
+{% extends "header.html" %} {% block content %}
 
 <head>
 	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
@@ -9,6 +8,14 @@
 	<script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
 
 </head>
+
+<style type="text/css">
+	.asd {
+		color: blue;
+		background-color: transparent;
+		border: none;
+	}
+</style>
 
 <body>
 
@@ -35,33 +42,124 @@
 			{% endfor %}
 		</div>-->
 
-
-		<div class="table-responsive">
-						<table class="table table-condensed table-hover table-bordered">
-								<thead>
-										<tr>
-												<th>Query Name</th>
-												<th>Query Properties</th>
-										</tr>
-								</thead>
-								<tbody>
-									<!-- 	{% for row in savedQueries %}
-																			<tr>
-																					<td>{{ row.query }}</td>
-																					<td>{{ row.queryDes }}</td>
-																			</tr>
-																			{% endfor %} -->
-										{% for row in savedQueries %}
-										<tr>
-												{% for cell in row %}
-												<td>{{cell}}</td>
-												{% endfor %}
-										</tr>
-										{% endfor %}
-								</tbody>
-						</table>
+			<div class="row">
+				<div class="table-responsive">
+					<table class="table table-condensed table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>Run Query</th>
+								<th>Query Name</th>
+								<th>Query Properties</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for row in savedQueries %}
+							<tr>
+								<td>
+								</td>
+								<td>{{row.query}}</td>
+								<td>{{row.description}}</td>
+								{% endfor %}
+							</tr>
+						</tbody>
+					</table>
 				</div>
+			</div>
 
 
+			<form method="post" id="run_saved_query">{% csrf_token %}
+				<!--<input id="query" type="hidden" name="query" value={{row.query}}>-->
+				<input type="submit" class="asd" value="run" name="submit" id="submit">
+			</form>
 
-		{% endblock %}
+
+			<!-- Ajax for report table -->
+			<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+			<script>
+				$('#submit').click(function(e) {
+					document.getElementById("report_part").style.visibility = "visible";
+					//document.getElementById("success_message").style.visibility = "hidden";
+					$.ajax({
+						type: "POST",
+						url: "/report/run_saved_query/", // the script where you handle the form input.
+						data: $("#query").serialize(), // serializes the form's elements.
+						// action="/report/run_saved_query/" method="get"
+						success: function(data) {
+							var trHTML = '';
+							$.each(data, function(key, value) {
+								trHTML +=
+									'<tr><td nowrap>' +
+									value.programTitle +
+									'</td><td nowrap>' +
+									value.showType +
+									'</td><td nowrap>' +
+									value.stationName +
+									'</td><td nowrap>' +
+									value.airDateTime +
+									'</td><td nowrap>' +
+									value.duration +
+									'</td><td nowrap>' +
+									value.description +
+									'</td></tr>';
+							});
+							//clear the table before populate data
+							$('#tBody').empty();
+							$('#tBody').append(trHTML);
+						}
+					});
+					e.preventDefault();
+				});
+			</script>
+
+			<div class="row col-sm-12" id="report_part" style="visibility:hidden">
+
+				<br />
+
+				<button class="btn btn-default" id="export">Export</button>​
+
+				<script>
+					window.onload = function() {
+						var el = document.getElementById('export');
+						el.onclick = function() {
+							var filename = prompt('Enter text here');
+							if (filename) {
+								$.ajax({
+									url: "/report/save_csv/", // the script where you handle the form input.
+									success: function(data) {
+										// var win = window.open("data:application/pdf," + escape(data));
+										// win.document.title = "ttt";
+										var blob = new Blob([data]);
+										var link = document.createElement('a');
+										link.href = window.URL.createObjectURL(blob);
+										link.download = filename + ".csv";
+										link.click();
+									}
+								});
+							}
+						}
+					}
+				</script>
+
+				<br />
+				<br />
+
+				<div class="scrollable">
+					<table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
+						<thead class="thead-inverse">
+							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
+							<tr>
+								<th>Title</th>
+								<th>Show Type</th>
+								<th>Station Name</th>
+								<th>Air Time</th>
+								<th>Duration</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody id="tBody">
+						</tBody>
+					</table>
+				</div>
+			</div>
+
+			{% endblock %}
