@@ -40,17 +40,17 @@ def format(rows, fields):
 		result = (dict(zip(fields,row)) for row in rows)
 		return result
 	except ValueError as err:
-		return (err) 
+		return (err)
 
 
 def hashMD5(userID, password):
-	""" 
-	Create a MD5 hash of a string 
+	"""
+	Create a MD5 hash of a string
 	@userID: userID to be reversed and used as salt
 	@password: password entered by user
 	@return: the MD5 hash for salted password
 	"""
-	string = userID[::-1] + password 
+	string = userID[::-1] + password
 	return hashlib.md5(string.encode('utf-8')).hexdigest()
 
 
@@ -68,7 +68,7 @@ def auth(request):
 	if id == None or pd == None:
 		conn.close()
 		return Response("The userID or password is missing.", status=status.HTTP_400_BAD_REQUEST)
-	
+
 	# locate user by userID
 	fields = ['userID', 'name', 'password', 'role']
 	try:
@@ -117,7 +117,7 @@ def user(request):
 				return Response("Invalid userID.", status=status.HTTP_400_BAD_REQUEST)
 			return Response(format(result,fields), status=status.HTTP_200_OK)
 
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -140,7 +140,7 @@ def user(request):
 				if key == 'password':
 					value = hashMD5(id, value)
 				updates.append(key + " = '" + value + "'")
-			
+
 			# run the query
 			sql = "UPDATE userinfo SET {} WHERE userID = \'{}\';".format(",".join(updates), id)
 			cur.execute(sql)
@@ -153,7 +153,7 @@ def user(request):
 
 			return Response("User info has been updated.", status=status.HTTP_200_OK)
 
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -177,7 +177,7 @@ def user(request):
 			if len(result) != 0:
 				conn.close()
 				return Response("This userID is already in use.", status=status.HTTP_400_BAD_REQUEST)
-			
+
 			# if available, create a new user entry
 			pd = hashMD5(id,pd)
 			sql = "INSERT INTO userinfo (userID, name, password, role) VALUES (\'{}\', \'{}\', \'{}\', \'{}\')".format(id, name, pd, role)
@@ -186,11 +186,11 @@ def user(request):
 			conn.close()
 			return Response("The user is added successfully.", status=status.HTTP_200_OK)
 
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
-			return Response(status=status.HTTP_404_NOT_FOUND)	
-	
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
 	elif request.method == 'DELETE':
 		"""
 		Remove a user
@@ -204,7 +204,7 @@ def user(request):
 			if cur.rowcount == 0:
 				return Response("Empty/Invalid userID.", status=status.HTTP_400_BAD_REQUEST)
 			return Response("The user has been removed from database.", status=status.HTTP_200_OK)
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -225,32 +225,32 @@ def favoriteAiring(request):
 	if id == None or timeRange == None or statistic == None or statistic not in ('listing', 'hour'):
 		conn.close()
 		return Response("The userID/timeRange/statistic is missing. The statistic has to be either 'listing' or 'hour'.", status=status.HTTP_400_BAD_REQUEST)
-		
+
 	# set date range
 	today = str(DT.date.today())
 	date_bound = str(DT.date.today() + DT.timedelta(days=int(timeRange)))
 	if today > date_bound:
 		date_clause = "airDateTime BETWEEN '" + date_bound + "' AND dateadd(day,1,'" + today + "')"
 	else:
-		date_clause = "airDateTime BETWEEN '" + today + "' AND dateadd(day,1,'" + date_bound + "')"			
+		date_clause = "airDateTime BETWEEN '" + today + "' AND dateadd(day,1,'" + date_bound + "')"
 
 	try:
 		# determine which statistical summary to provide
 		if statistic == 'listing':
 			fields = ['title', 'programTitle', 'airDateTime', 'duration', 'regionID']
-			sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}".format(",".join(fields), id, date_clause)
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}".format(",".join(fields), id, date_clause)
 			column_names = fields
 
 		elif statistic == 'hour':
 			fields = ['title', 'SUM(duration/60.0) as hours', 'regionID']
-			sql = "SELECT {} FROM starSchedule WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID".format(",".join(fields), id, date_clause)
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID".format(",".join(fields), id, date_clause)
 			column_names = ['title', 'hours', 'regionID']
 
 		cur.execute(sql)
 		result = cur.fetchall()
 		conn.close()
 		return Response(format(result,column_names), status=status.HTTP_200_OK)
-	except psycopg2.ProgrammingError as e: 
+	except psycopg2.ProgrammingError as e:
 		print (repr(e))
 		conn.close()
 		return Response(status=status.HTTP_404_NOT_FOUND)
@@ -271,13 +271,13 @@ def favoriteShow(request):
 			conn.close()
 			return Response("No userID specified.", status=status.HTTP_400_BAD_REQUEST)
 		try:
-			fields = ['showID', 'title', 'showtype', 'ratingid', 'language']
+			fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'programid', 'status']
 			sql = "SELECT {} FROM favoriteshow JOIN show USING (showID) WHERE userID = \'{}\';".format(",".join(fields), key)
 			cur.execute(sql)
 			result = cur.fetchall()
 			conn.close()
 			return Response(format(result,fields), status=status.HTTP_200_OK)
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -289,7 +289,7 @@ def favoriteShow(request):
 		if id == None or show == None:
 			conn.close()
 			return Response("No userID or showID provided.", status=status.HTTP_400_BAD_REQUEST)
-			
+
 		if request.method == 'POST':
 			"""
 			Add a show to user's Favorite Shows
@@ -302,14 +302,14 @@ def favoriteShow(request):
 				if (id, show) in currentShows:
 					conn.close()
 					return Response("This show is already in the user's favorite shows.", status=status.HTTP_400_BAD_REQUEST)
-				
+
 				# if not, add to the list
 				sql = "INSERT INTO favoriteshow (userID, showID) VALUES (\'{}\', \'{}\')".format(id, show)
 				cur.execute(sql)
 				conn.commit()
 				conn.close()
 				return Response("The show has been added to user's favorite shows.", status=status.HTTP_200_OK)
-			except psycopg2.ProgrammingError as e: 
+			except psycopg2.ProgrammingError as e:
 				print (repr(e))
 				conn.close()
 				return Response(status=status.HTTP_404_NOT_FOUND)
@@ -326,12 +326,12 @@ def favoriteShow(request):
 				if cur.rowcount == 0:
 					return Response("The userID/showID is invalid or the show has been removed", status=status.HTTP_400_BAD_REQUEST)
 				return Response("The show has been deleted from user's favorite shows.", status=status.HTTP_200_OK)
-			except psycopg2.ProgrammingError as e: 
+			except psycopg2.ProgrammingError as e:
 				print (repr(e))
 				conn.close()
 				return Response(status=status.HTTP_404_NOT_FOUND)
 
-		
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 def savedQuery(request):
@@ -355,7 +355,7 @@ def savedQuery(request):
 			result = cur.fetchall()
 			conn.close()
 			return Response(format(result,fields), status=status.HTTP_200_OK)
-		except psycopg2.ProgrammingError as e: 
+		except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -365,11 +365,11 @@ def savedQuery(request):
 		id = request.data.get('userID')
 		query = request.data.get('query')
 		description = request.data.get('description') or query
-		
+
 		if id == None or query == None:
 			conn.close()
 			return Response("The userID/query/description is missing.", status=status.HTTP_400_BAD_REQUEST)
-			
+
 		if request.method == 'POST':
 			"""
 			Add a show to user's Saved Queries
@@ -381,20 +381,20 @@ def savedQuery(request):
 				currentQueries = cur.fetchall()
 				if (id, query) in currentQueries:
 					conn.close()
-					return Response("This query is already in the user's saved queries.", status=status.HTTP_400_BAD_REQUEST)	
-				
+					return Response("This query is already in the user's saved queries.", status=status.HTTP_400_BAD_REQUEST)
+
 				# if not, add it to the list
 				sql = "INSERT INTO savedquery VALUES (\'{}\', \'{}\', \'{}\')".format(id, query, description)
 				cur.execute(sql)
 				conn.commit()
 				conn.close()
 				return Response("The query has been added to user's saved queries.", status=status.HTTP_200_OK)
-			except psycopg2.ProgrammingError as e: 
+			except psycopg2.ProgrammingError as e:
 				print (repr(e))
 				conn.close()
 				return Response(status=status.HTTP_404_NOT_FOUND)
-	
-		
+
+
 		if request.method == 'DELETE':
 			"""
 			Delete a query from user's Saved Queries
@@ -407,7 +407,7 @@ def savedQuery(request):
 				if cur.rowcount == 0:
 					return Response("The userID/query is invalid or the query has been removed.", status=status.HTTP_400_BAD_REQUEST)
 				return Response("The query has been deleted from user's saved query.", status=status.HTTP_200_OK)
-			except psycopg2.ProgrammingError as e: 
+			except psycopg2.ProgrammingError as e:
 				print (repr(e))
 				conn.close()
 				return Response(status=status.HTTP_404_NOT_FOUND)
@@ -437,7 +437,7 @@ def show(request):
 				return Response("No showID found.", status=status.HTTP_400_BAD_REQUEST)
 			return Response(format(result,fields), status=status.HTTP_200_OK)
 
-	except psycopg2.ProgrammingError as e: 
+	except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -456,7 +456,7 @@ def menu(request):
 
 	# a dictionary to store the table and column name for a query field
 	dic = {'region': ('region', 'regionID'), 'genre': ('genre', 'genre'), 'title': ('show', 'title'), 'showType': ('show', 'showType')}
-	
+
 	try:
 		# if no field is specified, return distinct items for all available fields
 		if len(key) == 0:
@@ -485,7 +485,7 @@ def menu(request):
 			result_dic[key] = unlist
 			return Response(result_dic, status=status.HTTP_200_OK)
 
-	except psycopg2.ProgrammingError as e: 
+	except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
@@ -496,11 +496,11 @@ def menu(request):
 def program(request):
 	"""
 	Get all airing instances of TV programs matching given conditions.
-	Query fields: 
+	Query fields:
 	title: exact match of show title
-	showType: exact match of show type 
-	region: exact match of region 
-	genre: exact match of genre 
+	showType: exact match of show type
+	region: exact match of region
+	genre: exact match of genre
 	dateFrom: airDateTime starting from the given date
 	dateTo: airDateTime starting by the given date
 	timeFrom: airDateTime starting from the given time (hour 0-23)
@@ -510,7 +510,7 @@ def program(request):
 	"""
 	conn = getConnection()
 	cur = conn.cursor()
-	fields = ['showID', 'title', 'programTitle', 'showType', 'airDateTime', 'duration', 'stationName', 'regionID', 'contentRatingId', 'language', 'description', 'castcrew', 'programRatingId', 'scheduleRatingID', 'status', 'originalAirDate']
+	fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'programid', 'status']
 
 	try:
 		# extract and validate the query conditions that user specified
@@ -530,11 +530,11 @@ def program(request):
 				# timeFrom > timeTo (overnight)
 				if timeFrom > timeTo:
 					conditions.append("date_part(h, airDateTime) >= " + timeFrom + "OR date_part(h, airdatetime) <= " + timeTo)
-				
+
 				# timeFrom <= timeTo (regular)
 				elif timeFrom <= timeTo:
 					conditions.append("date_part(h, airDateTime) BETWEEN " + timeFrom + " AND " + timeTo)
-				
+
 				# flip the flag
 				timeComplete == True
 
@@ -551,9 +551,9 @@ def program(request):
 				if dateFrom > dateTo:
 					conn.close()
 					return Response("Invalid date range.", status=status.HTTP_400_BAD_REQUEST)
-				
+
 				conditions.append("airDateTime BETWEEN '" + dateFrom + "' AND dateadd(day,1,'" + dateTo + "')")
-				
+
 				# flip the flag
 				dateComplete == True
 
@@ -570,23 +570,21 @@ def program(request):
 				columns = re.split('\s|[,.]', value)
 				orderBy = ",".join(columns)
 
-			# other query fields	
-			else:	
+			# other query fields
+			else:
 				conditions.append(key + " = '" + value.replace('\'','\'\'') + "'")
-	
+
 		# run the query
 		if len(conditions) == 0:
-			sql = "SELECT {} FROM starSchedule ORDER BY {}".format(",".join(fields), orderBy)
+			sql = "SELECT {} FROM starschedule3 ORDER BY {}".format(",".join(fields), orderBy)
 		else:
-			sql = "SELECT {} FROM starSchedule WHERE {} ORDER BY {}".format(",".join(fields), " AND ".join(conditions), orderBy)
+			sql = "SELECT {} FROM starschedule3 WHERE {} ORDER BY {}".format(",".join(fields), " AND ".join(conditions), orderBy)
 		cur.execute(sql)
 		result = cur.fetchall()
 		conn.close()
-		return Response(format(result,fields), status=status.HTTP_200_OK)	
+		return Response(format(result,fields), status=status.HTTP_200_OK)
 
-	except psycopg2.ProgrammingError as e: 
+	except psycopg2.ProgrammingError as e:
 			print (repr(e))
 			conn.close()
 			return Response(status=status.HTTP_404_NOT_FOUND)
-	
-				
