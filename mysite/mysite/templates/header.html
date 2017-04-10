@@ -112,10 +112,18 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    {% if tab == 'dashboard' %}
                     <li class="active">
+                    {% else %}
+                    <li>
+                    {% endif %}
                         <a href="/dashboard/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
+                    {% if tab == 'report' %}
+                    <li class="active">
+                    {% else %}
                     <li>
+                    {% endif %}
                         <a href="/report/"><i class="fa fa-fw fa-table"></i> Reporting</a>
                     </li>
                     <li>

@@ -11,13 +11,12 @@
 
     <!-- Page Heading -->
         <div class="row">
-            <h3 class="page-header">
-                Dashboard <small>Statistics Overview</small>
-            </h3>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <h3>Upcoming</h3>
+            <div class="text-right">
+                <a href="/dashboard/favourite">Edit Favorite Shows <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            <div class="col-sm-8">
+                <h3>Upcoming Air Times</h3>
+                
                 <div class="scrollable">
                 <table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
                     <thead>
@@ -50,18 +49,15 @@
                     </tbody>
                 </table>
             </div>
-            <div class="text-right">
-                <a href="/dashboard/favourite">Favourite tv shows <i class="fa fa-arrow-circle-right"></i></a>
             </div>
-            </div>
-            <div class="col-sm-6">
-                <h3>This Past Week</h3>
-                <div class="table-responsive">
-                    <table class="table table-condensed table-hover table-bordered">
+            <div class="col-sm-4">
+                <h3>Air Time Summary</h3>
+                <div class="scrollable">
+                <table class="table table-condensed table-hover table-bordered table-striped" id="table_summary">
                         <!--'title', 'SUM(duration/60.0) as hours', 'regionID'-->
                         <tr>
                             <th>TV Show</th>
-                            <th>Total Air Time</th>
+                            <th>Air Time</th>
                             <th>Region</th>
                         </tr>
                     </thead>
@@ -104,9 +100,6 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </div>
-                <div class="text-right">
-                    <a href="#">Manage Dashboard <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
         </div>
 {% endblock %}

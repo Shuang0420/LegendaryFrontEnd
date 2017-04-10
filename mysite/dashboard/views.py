@@ -53,6 +53,7 @@ def index(request):
         pageData['upcoming'] = upcoming
         pageData['airtimes'] = airtimes
         pageData['savedQueries'] = queries
+        pageData['tab'] = 'dashboard'
         return HttpResponse(template.render(pageData))
     else:
         return render_to_response('users/home.html')
@@ -78,7 +79,8 @@ def favourite_programs(request):
     r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
     obj = r.json()
     favourite_shows = {}
-    favourite_shows["favourites"] = obj 
+    favourite_shows["favourites"] = obj
+    favourite_shows['tab'] = 'dashboard'
     return HttpResponse(template.render(favourite_shows, request))
 
 def add_fav(request):
@@ -91,7 +93,8 @@ def add_fav(request):
     r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
     obj = r.json()
     favourite_shows = {}
-    favourite_shows["favourites"] = obj 
+    favourite_shows["favourites"] = obj
+    favourite_shows['tab'] = 'dashboard'
     return HttpResponse(template.render(favourite_shows, request))
 
 def api_get_saved_query(userID):
@@ -108,5 +111,6 @@ def remove_fav(request):
     r = requests.get('http://localhost:8080/api/v1/favoriteshow/' + userID)
     obj = r.json()
     favourite_shows = {}
-    favourite_shows["favourites"] = obj 
+    favourite_shows["favourites"] = obj
+    favourite_shows['tab'] = 'dashboard'
     return HttpResponse(template.render(favourite_shows, request))

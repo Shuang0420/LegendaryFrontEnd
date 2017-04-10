@@ -41,6 +41,7 @@ report_content = None
 def index(request):
     template = loader.get_template('report/main.html')
     fields = get_dropdown_fields()
+    fields['tab'] = 'report'
     #print 'fields',fields
     if request.user.is_authenticated():
         return render(request,'report/main.html', fields)
@@ -62,6 +63,7 @@ def saved_queries(request):
     data['savedQueries'] = queries
     #data['test'] = 'hello'
     #return JsonResponse(queries, safe=False)
+    data['tab'] = 'report'
     return HttpResponse(template.render(data))
 
 
@@ -81,6 +83,7 @@ def run_saved_query(request):
         userID = request.user.username
     queries = api_get_saved_query(userID)
     results['savedQueries'] = queries
+    results['tab'] = 'report'
     return HttpResponse(template.render(results))
 
 
@@ -126,6 +129,7 @@ def save_query(request):
         fields = dict(request.POST.iteritems())
         fields['userID'] = userID
         status_code = api_save_query(fields)
+        fields['tab'] = 'report'
         return HttpResponse(status_code == requests.codes.ok)
 
 
