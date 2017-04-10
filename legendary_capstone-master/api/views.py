@@ -272,7 +272,7 @@ def favoriteShow(request):
 			conn.close()
 			return Response("No userID specified.", status=status.HTTP_400_BAD_REQUEST)
 		try:
-			fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'programid', 'status']
+			fields = ['showID', 'title', 'showtype', 'ratingid', 'language']
 			sql = "SELECT {} FROM favoriteshow JOIN show USING (showID) WHERE userID = \'{}\';".format(",".join(fields), key)
 			cur.execute(sql)
 			result = cur.fetchall()
