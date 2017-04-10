@@ -35,6 +35,7 @@ urlpatterns = [
     #url(r'^$', include('dashboard.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^report/', include('report.urls')),
+    url(r'^analytics/', RedirectView.as_view(url='/report/')),
     url(r'^admin/', admin.site.urls),
     #url(r'^login/$', auth_views.login, name='login'),
     #url(r'^logout/$', auth_views.logout, name='logout'),
