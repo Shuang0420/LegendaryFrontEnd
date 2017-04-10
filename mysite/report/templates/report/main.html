@@ -63,10 +63,10 @@
 
 
 					<div class="col-sm-4">
-						<label>Date Range:</label>
+						<label>Airing date:</label>
 					</div>
 					<div class="col-sm-8">
-						<label>Time Range:</label>
+						<label>Starting time:</label>
 					</div>
 
 
@@ -244,7 +244,7 @@
 	window.onload = function() {
 		var el = document.getElementById('export');
 		el.onclick = function() {
-			var filename = prompt('Enter text here');
+			var filename = prompt('Save as:');
 			if (filename) {
 				$.ajax({
 					url: "/report/save_csv/", // the script where you handle the form input.
