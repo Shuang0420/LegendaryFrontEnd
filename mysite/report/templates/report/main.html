@@ -169,17 +169,25 @@
 									$.each(data, function(key, value) {
 										trHTML +=
 											'<tr><td nowrap>' +
-											value.programTitle +
-											'</td><td nowrap>' +
-											value.showType +
-											'</td><td nowrap>' +
 											value.stationName +
 											'</td><td nowrap>' +
-											value.airDateTime +
+											value.affiliate +
+											'</td><td nowrap>' +
+											value.date +
+											'</td><td nowrap>' +
+											value.day +
+											'</td><td nowrap>' +
+											value.start +
 											'</td><td nowrap>' +
 											value.duration +
 											'</td><td nowrap>' +
-											value.description +
+											value.title +
+											'</td><td nowrap>' +
+											value.programTitle +
+											'</td><td nowrap>' +
+											value.programid +
+											'</td><td nowrap>' +
+											value.status +
 											'</td></tr>';
 									});
 									//clear the table before populate data
@@ -263,12 +271,16 @@
 						<thead class="thead-inverse">
 							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
 							<tr>
-								<th>Title</th>
-								<th>Show Type</th>
-								<th>Station Name</th>
-								<th>Air Time</th>
+								<th>Channel</th>
+								<th>Affiliate</th>
+								<th>Date</th>
+								<th>Day</th>
+								<th>Start</th>
 								<th>Duration</th>
-								<th>Description</th>
+								<th>Title</th>
+								<th>Episode</th>
+								<th>Episode #</th>
+								<th>Status</th>
 							</tr>
 						</thead>
 						<tbody id="tBody">

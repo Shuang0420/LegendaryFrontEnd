@@ -26,6 +26,8 @@ from StringIO import StringIO
 import re
 import csv
 from django.views.decorators.csrf import csrf_exempt
+from datetime import date
+import calendar
 
 # Create your views here.
 '''
@@ -71,6 +73,7 @@ def run_saved_query(request):
     DATA = str(DATA.replace('~',' '))
     DATA = json.loads(DATA)
     content = api_get_report(DATA)
+    content = reformReport(content)
     report_content = content
     results = {}
     results['results'] = report_content
@@ -79,7 +82,7 @@ def run_saved_query(request):
     queries = api_get_saved_query(userID)
     results['savedQueries'] = queries
     return HttpResponse(template.render(results))
-    
+
 
 
 def get_report(request):
@@ -90,25 +93,28 @@ def get_report(request):
     'duration', 'stationName', 'showRatingId', 'language', 'description',
     'castcrew', 'programRatingId', 'scheduleRatingID', 'status', 'originalAirDate']
     if request.POST:
-        '''
-        if request.POST.get('save'):
-            print 'save'
-            status = save_query(ctx)
-            data = {"status":status}
-            messages.success(request, "Saved successfully !")
-            #return render(request, 'report/main.html', data)
-            print status, type(status)
-            return HttpResponse(status)
-            '''
         #return render(request, 'report/main.html', ctx)
         #return HttpResponse(report_content, content_type='application/json')
         fields = dict(request.POST.iteritems())
         content = api_get_report(fields)
-        print content
+        content = reformReport(content)
         # update global content for pdf saving
         report_content = content
         return JsonResponse(content, safe=False)
         #return JsonResponse(report_content)
+
+
+def reformReport(content):
+    for c in content:
+        dayTime = c['airDateTime'].split('T')
+        #print 'dayTime',dayTime
+        c['date'] = dayTime[0]
+        year, month, day = [int(n) for n in dayTime[0].split('-')]
+        d = date(year, month, day)
+        day = calendar.day_name[d.weekday()]
+        c['day'] = day
+        c['start'] = dayTime[1]
+    return content
 
 
 # FOR PYTHON 2.7
@@ -134,15 +140,20 @@ def save_csv(request):
     data = [
     #report_content[0].keys(),
     # keep this so we have nice order
-    ["Title", "Show Type","Station Name", "Air Time", "Duration", "Description"]
+    ["Channel","Affiliate","Date","Day","Start","Duration","Title",
+    "Episode","Episode #", "Status"]
     ]
     for item in report_content:
-        data.append([str(item['title']),
-                    str(item['showType']),
-                    str(item['stationName']),
-                    str(item['airDateTime']),
+        data.append([str(item['stationName']),
+                    str(item['affiliate']),
+                    str(item['date']),
+                    str(item['day']),
+                    str(item['start']),
                     str(item['duration']),
-                    str(item['description'])
+                    str(item['title']),
+                    str(item['programTitle']),
+                    str(item['programid']),
+                    str(item['status'])
                     ])
     for d in data:
         writer.writerow(d)

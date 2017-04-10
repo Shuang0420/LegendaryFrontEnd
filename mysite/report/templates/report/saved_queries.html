@@ -106,23 +106,31 @@
 						<thead class="thead-inverse">
 							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
 							<tr>
-								<th>Title</th>
-								<th>Show Type</th>
-								<th>Station Name</th>
-								<th>Air Time</th>
+								<th>Channel</th>
+								<th>Affiliate</th>
+								<th>Date</th>
+								<th>Day</th>
+								<th>Start</th>
 								<th>Duration</th>
-								<th>Description</th>
+								<th>Title</th>
+								<th>Episode</th>
+								<th>Episode #</th>
+								<th>Status</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for row in results %}
                             <tr>
-                            	<td nowrap>{{row.programTitle}}</td>
-                            	<td nowrap>{{row.showType}}</td>
-                            	<td nowrap>{{row.stationName}}</td>
-                            	<td nowrap>{{row.airDateTime}}</td>
+															<td nowrap>{{row.stationName}}</td>
+															<td nowrap>{{row.affiliate}}</td>
+															<td nowrap>{{row.date}}</td>
+															<td nowrap>{{row.day}}</td>
+                            	<td nowrap>{{row.start}}</td>
                             	<td nowrap>{{row.duration}}</td>
-                            	<td nowrap>{{row.description}}</td>
+                            	<td nowrap>{{row.title}}</td>
+                            	<td nowrap>{{row.programTitle}}</td>
+                            	<td nowrap>{{row.programid}}</td>
+                            	<td nowrap>{{row.status}}</td>
                             </tr>
                             {% endfor %}
 						</tBody>
