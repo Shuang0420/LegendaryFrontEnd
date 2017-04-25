@@ -28,7 +28,7 @@
 				<div class="row">
 
 					<div class="col-sm-4 form-group">
-						<label>Show title:</label>
+						<label>Show Title:</label>
 						<!--<input type="text" class="form-control input-sm" name="title">-->
 						<select class="form-control input-sm" name="title" style="width: col-xs-4;">
 										<option selected="selected">All</option>
@@ -39,17 +39,31 @@
 					</div>
 
 
-					<div class="col-sm-2 form-group">
-						<label>Region:</label>
-						<select class="form-control input-sm" name="region" style="width:col-xs-2;">
+					<div class="col-sm-4 form-group">
+						<label>Episode Name:</label>
+						<select class="form-control input-sm" name="episodeName" style="width: col-xs-4;">
 										<option selected="selected">All</option>
-                           							<option value="US">United States</option>
+										{% for t in episodeName %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
 						</select>
 					</div>
 
-					<div class="col-sm-6 form-group">
-						<label>Show type:</label>
-						<select class="form-control input-sm" name="showType" style="width:auto;">
+
+					<div class="col-sm-4 form-group">
+						<label>Region:</label>
+						<select class="form-control input-sm" name="region" style="width:col-xs-2;">
+										<option selected="selected">All</option>
+                    <option value="US">United States</option>
+										{% for t in region %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-sm-4 form-group">
+						<label>Show Type:</label>
+						<select class="form-control input-sm" name="showType" style="width:col-xs-2;">
 										<option selected="selected">All</option>
 										{% for t in showType %}
 														<option value="{{t}}">{{t}}</option>
@@ -58,15 +72,31 @@
 					</div>
 
 
+					<div class="col-sm-4 form-group">
+						<label>Status:</label>
+						<select class="form-control input-sm" name="status" style="width:col-xs-2;">
+										<option selected="selected">All</option>
+										{% for t in status %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-sm-4 form-group">
+							<label for="inputsm">Keywords:</label>
+							<input class="form-control input-sm" id="inputsm" name="value" type="text">
+					</div>
 
 
 					<div class="col-sm-4">
-						<label>Airing date:</label>
+						<label>Airing Date:</label>
 					</div>
-					<div class="col-sm-8">
-						<label>Starting time:</label>
+					<div class="col-sm-2">
+						<label>Start Time(UTC):</label>
 					</div>
-
+					<div class="col-sm-6">
+						<label>End Time(UTC):</label>
+					</div>
 
 					<div class="col-sm-2 form-group">
 						<div class='input-group date' id='datepicker1'>
@@ -105,8 +135,10 @@
 							</div>
 						</div>
 					</div>
-					<input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
-					<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
+					<div class='col-sm-4'>
+						<input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
+						<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
+				</div>
 
 
 					<!-- Date range and time range -->
@@ -273,7 +305,7 @@
 								<th>Affiliate</th>
 								<th>Date</th>
 								<th>Day</th>
-								<th>Start</th>
+								<th>Start Time(UTC)</th>
 								<th>Duration</th>
 								<th>Title</th>
 								<th>Episode</th>

@@ -41,7 +41,6 @@ report_content = None
 def index(request):
     template = loader.get_template('report/main.html')
     fields = get_dropdown_fields()
-    fields['tab'] = 'report'
     #print 'fields',fields
     if request.user.is_authenticated():
         return render(request,'report/main.html', fields)
@@ -53,17 +52,12 @@ def index(request):
 
 def saved_queries(request):
     template = loader.get_template('report/saved_queries.html')
-    #return render(request,'report/saved_queries.html',savedQueries)
     if request.user.is_authenticated():
         userID = request.user.username
     queries = api_get_saved_query(userID)
-    #print queries
     data = {}
-    #data['savedQueries'] = queries
     data['savedQueries'] = queries
-    #data['test'] = 'hello'
     #return JsonResponse(queries, safe=False)
-    data['tab'] = 'report'
     return HttpResponse(template.render(data))
 
 
@@ -83,7 +77,6 @@ def run_saved_query(request):
         userID = request.user.username
     queries = api_get_saved_query(userID)
     results['savedQueries'] = queries
-    results['tab'] = 'report'
     return HttpResponse(template.render(results))
 
 
@@ -107,6 +100,9 @@ def get_report(request):
         #return JsonResponse(report_content)
 
 
+"""
+Helper function for get_report. Format airDateTime.
+"""
 def reformReport(content):
     for c in content:
         dayTime = c['airDateTime'].split('T')
@@ -120,7 +116,7 @@ def reformReport(content):
     return content
 
 
-# FOR PYTHON 2.7
+
 def save_query(request):
     print 'save'
     if request.user.is_authenticated():
@@ -129,7 +125,6 @@ def save_query(request):
         fields = dict(request.POST.iteritems())
         fields['userID'] = userID
         status_code = api_save_query(fields)
-        fields['tab'] = 'report'
         return HttpResponse(status_code == requests.codes.ok)
 
 
@@ -144,7 +139,7 @@ def save_csv(request):
     data = [
     #report_content[0].keys(),
     # keep this so we have nice order
-    ["Channel","Affiliate","Date","Day","Start","Duration","Title",
+    ["Channel","Affiliate","Date","Day","Start Time(UTC)","Duration","Title",
     "Episode","Episode #", "Status"]
     ]
     for item in report_content:
@@ -166,7 +161,7 @@ def save_csv(request):
 
 
 def save_pdf(request):
-    print 'rc',report_content
+    #print 'rc',report_content
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=report'
@@ -221,12 +216,13 @@ def save_pdf(request):
 Helper function
 """
 def get_dropdown_fields():
-    attributes = ['title','showType','genre','region']
+    attributes = ['title','showType','genre','region','episodeName','status']
     res = {}
     for attr in attributes:
         r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
         js = r.json()
-        res[attr] = js[attr]
+        if type(js) is dict:
+            res[attr] = js[attr]
     return res
 
 
@@ -268,7 +264,7 @@ def api_get_saved_query(userID):
 
 
 def api_save_query(fields):
-    print fields
+    #print fields
     DATA = fields_transform(fields)
     query = ''
     for k,v in DATA.iteritems():
@@ -284,6 +280,7 @@ def api_save_query(fields):
 
 def api_get_report(fields):
     DATA = fields_transform(fields)
+    #print 'data', DATA
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
     print 'get report',r.json()
     return r.json()

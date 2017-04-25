@@ -1,0 +1,303 @@
+{% extends "header.html" %}
+
+{% block javascript %}
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/moment.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<body>
+
+
+	<div class="container-fluid" style="height:90%;">
+		<!-- Page Heading -->
+		<div class="col-lg-12">
+			<div class="row">
+				<h1 class="page-header">
+					Analytics
+				</h1>
+			</div>
+		</div>
+
+
+			<!--must have csrf_token when using post method-->
+			<form action="/analytics/get_report/" method="post" id="queryFields">{% csrf_token %}
+					<div class="radio col-sm-9 form-group">
+					   <label class="radio-inline">
+					      <input type="radio" name="optionsRadios" id="bar"
+					         value="bar" checked> Bar graph
+					   </label>
+						 <label class="radio-inline">
+								<input type="radio" name="optionsRadios" id="pieChart"
+									 value="pieChart"> Pie chart
+						 </label>
+						 <label class="radio-inline">
+								<input type="radio" name="optionsRadios" id="table"
+									 value="table"> Table
+						 </label>
+					</div>
+
+					<div class='col-sm-3 form-group'>
+						<input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
+						<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
+					</div>
+
+
+					<div class="col-sm-6 form-group">
+						<label>Field:</label>
+						<select class="form-control input-sm" name="field" style="width: col-xs-4;">
+										<option selected="selected">All</option>
+										<option value="region">Region</option>
+										<option value="showType">Show Type</option>
+										<option value="title">Status</option>
+										<option value="title">Show Title</option>
+										<option value="title">Episode Name</option>
+						</select>
+					</div>
+
+					<div class="col-sm-6 form-group">
+						<label for="inputsm">Value:</label>
+						<input class="form-control input-sm" id="inputsm" name="value" type="text">
+					</div>
+
+
+					<div class="col-sm-6">
+						<label>Date Range:</label>
+					</div>
+					<div class="col-sm-6">
+						<label>Time Range:</label>
+					</div>
+
+
+					<div class="col-sm-3 form-group">
+						<div class='input-group date' id='datepicker1'>
+							<input type='text' class="form-control input-sm" name='dateFrom' />
+							<span class="input-group-addon">
+													                    <span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class="col-sm-3 form-group">
+						<div class='input-group date' id='datepicker2'>
+							<input type='text' class="form-control input-sm" name='dateTo' />
+							<span class="input-group-addon">
+													                    <span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+
+					<div class='col-sm-3'>
+						<div class="form-group">
+							<div class='input-group date' id='timepicker1'>
+								<input type='text' class="form-control input-sm" name='timeFrom' />
+								<span class="input-group-addon">
+																								<span class="glyphicon glyphicon-time"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class='col-sm-3'>
+						<div class="form-group">
+							<div class='input-group date' id='timepicker2'>
+								<input type='text' class="form-control input-sm" name='timeTo' />
+								<span class="input-group-addon">
+																								<span class="glyphicon glyphicon-time"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class='col-sm-6'>
+					<input type="submit" class="btn btn-default" name="criteria" value="Add Criteria" id="submit">
+				</div>
+
+
+
+					<!-- Date range and time range -->
+					<script type="text/javascript">
+						var dateTo = new Date();
+						var dateFrom = new Date();
+						dateFrom.setDate(dateFrom.getDate() - 14);
+						$(function() {
+							$('#datepicker1').datetimepicker({
+								defaultDate: dateFrom,
+								pickTime: false
+							});
+							$('#datepicker2').datetimepicker({
+								defaultDate: dateTo,
+								useCurrent: false, //Important! See issue #1075
+								pickTime: false
+							});
+							$("#datepicker1").on("dp.change", function(e) {
+								$('#datepicker2').data("DateTimePicker").minDate(e.date);
+							});
+							$("#datepicker2").on("dp.change", function(e) {
+								$('#datepicker1').data("DateTimePicker").maxDate(e.date);
+							});
+						});
+
+						$(function() {
+							dateFrom.setHours(dateFrom.getHours() - 12);
+							$('#timepicker1').datetimepicker({
+								pickDate: false,
+								defaultDate: dateFrom,
+							});
+							$('#timepicker2').datetimepicker({
+								useCurrent: false, //Important! See issue #1075
+								pickDate: false,
+								defaultDate: dateTo,
+							});
+							$("#timepicker1").on("dp.change", function(e) {
+								$('#timepicker2').data("DateTimePicker").minDate(e.date);
+							});
+							$("#timepicker2").on("dp.change", function(e) {
+								$('#timepicker1').data("DateTimePicker").maxDate(e.date);
+							});
+						});
+					</script>
+
+					<!-- Ajax for report table -->
+					<script>
+						$('#submit').click(function(e) {
+							document.getElementById("report_part").style.visibility = "visible";
+							//document.getElementById("success_message").style.visibility = "hidden";
+							$.ajax({
+								type: "POST",
+								url: "/analytics/get_report/", // the script where you handle the form input.
+								data: $("#queryFields").serialize(), // serializes the form's elements.
+
+								success: function(data) {
+									var trHTML = '';
+									$.each(data, function(key, value) {
+										trHTML +=
+											'<tr><td nowrap>' +
+											value.stationName +
+											'</td><td nowrap>' +
+											value.affiliate +
+											'</td><td nowrap>' +
+											value.date +
+											'</td><td nowrap>' +
+											value.day +
+											'</td><td nowrap>' +
+											value.start +
+											'</td><td nowrap>' +
+											value.duration +
+											'</td><td nowrap>' +
+											value.title +
+											'</td><td nowrap>' +
+											value.programTitle +
+											'</td><td nowrap>' +
+											value.programid +
+											'</td><td nowrap>' +
+											value.status +
+											'</td></tr>';
+									});
+									//clear the table before populate data
+									$('#tBody').empty();
+									$('#tBody').append(trHTML);
+								}
+							});
+							e.preventDefault();
+						});
+
+						$('#save').click(function(e2) {
+							$.ajax({
+								type: "POST",
+								url: "/report/save_query/", // the script where you handle the form input.
+								data: $("#queryFields").serialize(), // serializes the form's elements.
+								success: function(data) {
+									//alert(data);
+									if (data == "True") {
+										//$('#result').html("correct")
+										alert("Saved successfully!");
+									}
+									else {
+										alert("Something wrong. Please try again!");
+									}
+									//alert("Saved successfully!");
+								}
+							});
+							e2.preventDefault();
+						});
+					</script>
+				</div>
+			</form>
+
+			<!-- use message.success
+			<div class="row" id="success_message" style="display:none">
+			{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}" >{{ message }}</div>
+			{% endfor %}
+		</div>-->
+
+			<div class="row col-sm-12" id="report_part" style="visibility:hidden">
+
+				<br />
+				<!-- show some leading information for table
+				<h2>{{ title }} 	<small>{{ region }}</small> <small>{{ genre }}</samll></h2>
+				<p><b>{{date_range}}</b>{{dateFrom}} {{dateTo}} </p>
+				<p><b>{{time_range}}</b>{{timeFrom}} {{timeTo}}</p>
+				<div class="col-md-10"></div>
+						<div class="col-md-2">-->
+
+<button class="btn btn-default" id="export">Export</button>​
+
+<script>
+	window.onload = function() {
+		var el = document.getElementById('export');
+		el.onclick = function() {
+			var filename = prompt('Save as:');
+			if (filename) {
+				$.ajax({
+					url: "/report/save_csv/", // the script where you handle the form input.
+					success: function(data) {
+						// var win = window.open("data:application/pdf," + escape(data));
+						// win.document.title = "ttt";
+						var blob = new Blob([data]);
+						var link = document.createElement('a');
+						link.href = window.URL.createObjectURL(blob);
+						link.download = filename + ".csv";
+						link.click();
+					}
+				});
+			}
+		}
+	}
+</script>
+
+				<br />
+				<br />
+
+				<div class="scrollable">
+					<table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
+						<thead class="thead-inverse">
+							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
+							<tr>
+								<th>Channel</th>
+								<th>Affiliate</th>
+								<th>Date</th>
+								<th>Day</th>
+								<th>Start</th>
+								<th>Duration</th>
+								<th>Title</th>
+								<th>Episode</th>
+								<th>Episode #</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody id="tBody">
+						</tBody>
+					</table>
+				</div>
+			</div>
+
+
+
+		</div>
+</div>
+</body>
+
+		{% endblock %}
