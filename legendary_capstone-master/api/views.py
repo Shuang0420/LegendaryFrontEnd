@@ -511,7 +511,7 @@ def program(request):
 	"""
 	conn = getConnection()
 	cur = conn.cursor()
-	fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'programid', 'status']
+	fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'seasonepisode', 'status']
 
 	try:
 		# extract and validate the query conditions that user specified
