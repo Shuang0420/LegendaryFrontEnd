@@ -85,19 +85,14 @@ def get_report(request):
     global report_content
     #ctx ={}
     #ctx.update(csrf(request))
-    fields = ['showID', 'title', 'programTitle', 'showType', 'airDateTime',
-    'duration', 'stationName', 'showRatingId', 'language', 'description',
-    'castcrew', 'programRatingId', 'scheduleRatingID', 'status', 'originalAirDate']
     if request.POST:
-        #return render(request, 'report/main.html', ctx)
-        #return HttpResponse(report_content, content_type='application/json')
+
         fields = dict(request.POST.iteritems())
         content = api_get_report(fields)
         content = reformReport(content)
         # update global content for pdf saving
         report_content = content
         return JsonResponse(content, safe=False)
-        #return JsonResponse(report_content)
 
 
 """
@@ -216,7 +211,7 @@ def save_pdf(request):
 Helper function
 """
 def get_dropdown_fields():
-    attributes = ['title','showType','genre','region','episodeName','status']
+    attributes = ['title','showType','genre','region','episodeTitle','status']
     res = {}
     for attr in attributes:
         r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
@@ -227,17 +222,25 @@ def get_dropdown_fields():
 
 
 def fields_transform(fields):
+    print 'BEFORE TRANSOFRM',fields
     DATA = {}
-    if 'title' in fields:
-        if fields['title'] == 'All':
-            DATA['dateFrom'] = reformat_date(fields['dateFrom'])
-            DATA['dateTo'] = reformat_date(fields['dateTo'])
-            DATA['timeFrom'] = reformat_time(fields['timeFrom'])
-            DATA['timeTo'] = reformat_time(fields['timeTo'])
-        else:
-            DATA['title'] = fields['title']
-    if 'showType' in fields and fields['showType'] != 'All':
-        DATA['showType'] = fields['showType']
+    for k,v in fields.iteritems():
+        if v and v != 'All' and k != 'csrfmiddlewaretoken': DATA[k] = v
+    DATA['dateFrom'] = reformat_date(fields['dateFrom'])
+    DATA['dateTo'] = reformat_date(fields['dateTo'])
+    DATA['timeFrom'] = reformat_time(fields['timeFrom'])
+    DATA['timeTo'] = reformat_time(fields['timeTo'])
+    print 'AFTER TRANSOFRM', DATA
+    # if 'title' in fields:
+    #     if fields['title'] == 'All':
+    #         DATA['dateFrom'] = reformat_date(fields['dateFrom'])
+    #         DATA['dateTo'] = reformat_date(fields['dateTo'])
+    #         DATA['timeFrom'] = reformat_time(fields['timeFrom'])
+    #         DATA['timeTo'] = reformat_time(fields['timeTo'])
+    #     else:
+    #         DATA['title'] = fields['title']
+    # if 'showType' in fields and fields['showType'] != 'All':
+    #     DATA['showType'] = fields['showType']
     return DATA
 
 
