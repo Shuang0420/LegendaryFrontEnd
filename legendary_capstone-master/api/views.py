@@ -499,9 +499,11 @@ def program(request):
 	Get all airing instances of TV programs matching given conditions.
 	Query fields:
 	title: exact match of show title
+	programTitle: exact match of episode title
 	showType: exact match of show type
 	region: exact match of region
 	genre: exact match of genre
+	seasonEpisode: exact match of season and episode number "S0 E0"
 	dateFrom: airDateTime starting from the given date
 	dateTo: airDateTime starting by the given date
 	timeFrom: airDateTime starting from the given time (hour 0-23)
@@ -511,7 +513,7 @@ def program(request):
 	"""
 	conn = getConnection()
 	cur = conn.cursor()
-	fields = ['stationName', 'affiliate', 'airDateTime', 'duration', 'title' , 'programTitle', 'seasonepisode', 'status']
+	fields = ['title' , 'programTitle', 'seasonEpisode', 'airDateTime', 'duration', 'status', 'stationName', 'affiliate']
 
 	try:
 		# extract and validate the query conditions that user specified
@@ -529,12 +531,12 @@ def program(request):
 				timeTo = request.data.get('timeTo') or 24
 
 				# timeFrom > timeTo (overnight)
-				if timeFrom > timeTo:
-					conditions.append("date_part(h, airDateTime) >= " + timeFrom + "OR date_part(h, airdatetime) <= " + timeTo)
+				if int(timeFrom) > int(timeTo):
+					conditions.append("date_part(h, airDateTime) >= " + str(timeFrom) + "OR date_part(h, airdatetime) <= " + str(timeTo))
 
 				# timeFrom <= timeTo (regular)
-				elif timeFrom <= timeTo:
-					conditions.append("date_part(h, airDateTime) BETWEEN " + timeFrom + " AND " + timeTo)
+				elif int(timeFrom) <= int(timeTo):
+					conditions.append("date_part(h, airDateTime) BETWEEN " + str(timeFrom) + " AND " + str(timeTo))
 
 				# flip the flag
 				timeComplete == True
