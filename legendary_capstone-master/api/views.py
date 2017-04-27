@@ -239,12 +239,12 @@ def favoriteAiring(request):
 		# determine which statistical summary to provide
 		if statistic == 'listing':
 			fields = ['title', 'programTitle', 'airDateTime', 'duration', 'regionID']
-			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}".format(",".join(fields), id, date_clause)
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}  ORDER BY title".format(",".join(fields), id, date_clause)
 			column_names = fields
 
 		elif statistic == 'hour':
 			fields = ['title', 'SUM(duration/60.0) as hours', 'regionID']
-			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID".format(",".join(fields), id, date_clause)
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID ORDER BY title".format(",".join(fields), id, date_clause)
 			column_names = ['title', 'hours', 'regionID']
 
 		cur.execute(sql)
@@ -456,7 +456,7 @@ def menu(request):
 	result_dic = {}
 
 	# a dictionary to store the table and column name for a query field
-	dic = {'region': ('region', 'regionID'), 'genre': ('genre', 'genre'), 'title': ('show', 'title'), 'showType': ('show', 'showType')}
+	dic = {'region': ('region', 'regionID'), 'genre': ('genre', 'genre'), 'title': ('show', 'title'), 'showType': ('show', 'showType'), 'status': ('schedule', 'status'), 'episodeTitle': ('program', 'title')}
 
 	try:
 		# if no field is specified, return distinct items for all available fields
