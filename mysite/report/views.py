@@ -151,7 +151,7 @@ def save_csv(request):
                     str(item['duration']),
                     str(item['title']),
                     str(item['programTitle']),
-                    str(item['programid']),
+                    str(item['seasonepisode']),
                     str(item['status'])
                     ])
     for d in data:
