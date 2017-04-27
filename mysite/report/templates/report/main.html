@@ -84,7 +84,7 @@
 
 					<div class="col-sm-4 form-group">
 							<label for="inputsm">Keywords:</label>
-							<input class="form-control input-sm" id="inputsm" name="value" type="text">
+							<input class="form-control input-sm" id="inputsm" name="keyword" type="text">
 					</div>
 
 
@@ -145,7 +145,8 @@
 					<script type="text/javascript">
 						var dateTo = new Date();
 						var dateFrom = new Date();
-						dateFrom.setDate(dateFrom.getDate() - 14);
+						dateFrom.setDate(dateFrom.getDate() - 7);
+						dateTo.setDate(dateTo.getDate() + 7);
 						$(function() {
 							$('#datepicker1').datetimepicker({
 								defaultDate: dateFrom,

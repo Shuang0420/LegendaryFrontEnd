@@ -100,6 +100,7 @@ Helper function for get_report. Format airDateTime.
 """
 def reformReport(content):
     for c in content:
+        if 'airDateTime' not in c: continue
         dayTime = c['airDateTime'].split('T')
         #print 'dayTime',dayTime
         c['date'] = dayTime[0]
