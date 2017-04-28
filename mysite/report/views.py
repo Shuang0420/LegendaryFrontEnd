@@ -37,6 +37,14 @@ https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 
 report_content = None
 
+# Cache dropdown menu
+cachedMenu = {}
+
+queryFields = set(['title','programTitle','showType','status','region','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+
+
+
+
 # Create your views here.
 def index(request):
     template = loader.get_template('report/main.html')
@@ -212,6 +220,9 @@ def save_pdf(request):
 Helper function
 """
 def get_dropdown_fields():
+    global cachedMenu
+    if cachedMenu:
+        return cachedMenu
     attributes = ['title','showType','genre','region','episodeTitle','status']
     res = {}
     for attr in attributes:
@@ -219,6 +230,7 @@ def get_dropdown_fields():
         js = r.json()
         if type(js) is dict:
             res[attr] = js[attr]
+    cachedMenu = res
     return res
 
 
@@ -226,22 +238,12 @@ def fields_transform(fields):
     print 'BEFORE TRANSOFRM',fields
     DATA = {}
     for k,v in fields.iteritems():
-        if v and v != 'All' and k != 'csrfmiddlewaretoken': DATA[k] = v
+        if v and v != 'All' and k in queryFields: DATA[k] = v
     DATA['dateFrom'] = reformat_date(fields['dateFrom'])
     DATA['dateTo'] = reformat_date(fields['dateTo'])
     DATA['timeFrom'] = reformat_time(fields['timeFrom'])
     DATA['timeTo'] = reformat_time(fields['timeTo'])
     print 'AFTER TRANSOFRM', DATA
-    # if 'title' in fields:
-    #     if fields['title'] == 'All':
-    #         DATA['dateFrom'] = reformat_date(fields['dateFrom'])
-    #         DATA['dateTo'] = reformat_date(fields['dateTo'])
-    #         DATA['timeFrom'] = reformat_time(fields['timeFrom'])
-    #         DATA['timeTo'] = reformat_time(fields['timeTo'])
-    #     else:
-    #         DATA['title'] = fields['title']
-    # if 'showType' in fields and fields['showType'] != 'All':
-    #     DATA['showType'] = fields['showType']
     return DATA
 
 
@@ -276,8 +278,6 @@ def api_save_query(fields):
     DATA['query'] = json.dumps(DATA)
     DATA['description'] = query
     DATA['userID'] = fields['userID']
-    #DATA['description'] = str(DATA).strip()#.replace("'","")
-    #DATA = urllib.urlencode(DATA).encode("utf-8")
     r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
     return r.status_code
 

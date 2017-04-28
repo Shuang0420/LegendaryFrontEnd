@@ -30,11 +30,13 @@ from datetime import date
 import calendar
 import logging
 
-# {u'showType': u'All', u'title': u'48 Hours', u'dateTo': u'04/22/2017', u'region': u'All', u'dateFrom': u'04/08/2017', u'timeTo': u'3:29 PM', u'timeFrom': u'3:29 AM', u'csrfmiddlewaretoken': u'PW4WJpZ5CmH3VUu2XyhZ4OKdgNapNvPCPQxd97NsIuHYWOlX4FEzXHLuSCG5h5LR'}
-VERBOSE = True
+
 # initialize logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+queryFields = set(['title','programTitle','status','showType','region','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+
 
 # Create your views here.
 def index(request):
@@ -50,36 +52,66 @@ def index(request):
 
 def get_report(request):
     data = dict(request.POST.iteritems())
-    if 'field' and 'value' in request.POST:
+    if 'optionsRadios' and 'field' and 'value' in request.POST:
         data[request.POST['field']] = request.POST['value']
-        if VERBOSE:
-            logger.info('REQUEST PARAMS %s' % str(data))
+        logger.info('REQUEST PARAMS %s' % str(data))
         content = api_get_report(data)
         content = reformReport(content)
-        return JsonResponse(content, safe=False)
+        if request.POST['optionsRadios'] == 'table':
+            return JsonResponse(content, safe=False)
+        if request.POST['optionsRadios'] == 'barChart':
+            return
+        if request.POST['optionsRadios'] == 'pieChart':
+            return
+
+
+def save_query(request):
+    logger.info('SAVING QUERY')
+    if request.user.is_authenticated():
+        userID = request.user.username
+    if request.POST:
+        fields = dict(request.POST.iteritems())
+        fields['userID'] = userID
+        fields[request.POST['field']] = request.POST['value']
+        status_code = api_save_query(fields)
+        return HttpResponse(status_code == requests.codes.ok)
 
 
 def api_get_report(fields):
     DATA = fields_transform(fields)
-    if VERBOSE:
-        logger.info('API DATA %s' % str(DATA))
+    logger.info('API DATA %s' % str(DATA))
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
     #print 'get report',r.json()
     return r.json()
 
 
 
+
 def fields_transform(fields):
+    logger.info('BEFORE TRANSOFRM %s' % str(fields))
     DATA = {}
+    for k,v in fields.iteritems():
+        if v and v != 'All' and k in queryFields: DATA[k] = v
     DATA['dateFrom'] = reformat_date(fields['dateFrom'])
     DATA['dateTo'] = reformat_date(fields['dateTo'])
     DATA['timeFrom'] = reformat_time(fields['timeFrom'])
     DATA['timeTo'] = reformat_time(fields['timeTo'])
-    # DATA['title'] = fields['title']
-    # if 'showType' in fields and fields['showType'] != 'All':
-    #     DATA['showType'] = fields['showType']
+    logger.info('AFTER TRANSOFRM %s' % str(DATA))
     return DATA
 
+
+
+def api_save_query(fields):
+    #print fields
+    DATA = fields_transform(fields)
+    query = ''
+    for k,v in DATA.iteritems():
+        query += k + ': ' + v + ';'
+    DATA['query'] = json.dumps(DATA)
+    DATA['description'] = query
+    DATA['userID'] = fields['userID']
+    r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
+    return r.status_code
 
 
 def reformat_date(date):
