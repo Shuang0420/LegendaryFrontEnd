@@ -40,8 +40,12 @@ report_content = None
 # Cache dropdown menu
 cachedMenu = {}
 
-queryFields = set(['title','programTitle','showType','status','region','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+# ignore 'region'
+queryFields = set(['title','programTitle','showType','status','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
 
+# default report dict
+default_report_dict = dict.fromkeys(reportFields, 'empty')
 
 
 
@@ -97,7 +101,10 @@ def get_report(request):
 
         fields = dict(request.POST.iteritems())
         content = api_get_report(fields)
-        content = reformReport(content)
+        if content:
+            content = reformReport(content)
+        else:
+            content = [default_report_dict]
         # update global content for pdf saving
         report_content = content
         return JsonResponse(content, safe=False)
@@ -147,17 +154,10 @@ def save_csv(request):
     "Episode","Episode #", "Status"]
     ]
     for item in report_content:
-        data.append([str(item['stationName']),
-                    str(item['affiliate']),
-                    str(item['date']),
-                    str(item['day']),
-                    str(item['start']),
-                    str(item['duration']),
-                    str(item['title']),
-                    str(item['programTitle']),
-                    str(item['seasonEpisode']),
-                    str(item['status'])
-                    ])
+        row = []
+        for f in reportFields:
+            row.append(item[f])
+        data.append(row)
     for d in data:
         writer.writerow(d)
     return response
@@ -286,5 +286,5 @@ def api_get_report(fields):
     DATA = fields_transform(fields)
     #print 'data', DATA
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
-    print 'get report',r.json()
+    # print 'get report',r.json()
     return r.json()

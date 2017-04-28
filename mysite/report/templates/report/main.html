@@ -52,7 +52,7 @@
 
 					<div class="col-sm-4 form-group">
 						<label>Region:</label>
-						<select class="form-control input-sm" name="region" style="width:col-xs-2;">
+						<select class="form-control input-sm" name="regionID" style="width:col-xs-2;">
 										<option selected="selected">All</option>
                     <option value="US">United States</option>
 										{% for t in region %}
@@ -298,10 +298,10 @@
 				<br />
 
 				<div class="scrollable">
-					<table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
+					<table class="table table-condensed table-hover table-bordered table-striped header-fixed" id="mytable">
 						<thead class="thead-inverse">
 							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
-							<tr>
+							<tr >
 								<th>Channel</th>
 								<th>Affiliate</th>
 								<th>Date</th>
