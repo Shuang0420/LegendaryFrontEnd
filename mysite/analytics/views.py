@@ -29,14 +29,22 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 import calendar
 import logging
+from collections import defaultdict
 
 
 # initialize logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-queryFields = set(['title','programTitle','status','showType','region','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+# ignore 'region'
+queryFields = set(['title','programTitle','status','showType','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
 
+# default report dict
+default_report_dict = dict.fromkeys(reportFields, 'empty')
+
+
+report_content = None
 
 # Create your views here.
 def index(request):
@@ -50,19 +58,28 @@ def index(request):
         return render_to_response('users/home.html')
 
 
+
 def get_report(request):
+    global report_content
     data = dict(request.POST.iteritems())
-    if 'optionsRadios' and 'field' and 'value' in request.POST:
-        data[request.POST['field']] = request.POST['value']
-        logger.info('REQUEST PARAMS %s' % str(data))
-        content = api_get_report(data)
+    keys = data.keys()
+    for k in keys:
+        if k.startswith('field'):
+            fieldid = k.split('_')[1]
+            data[request.POST[k]] = request.POST['value_'+fieldid]
+    logger.info('REQUEST PARAMS %s' % str(data))
+    content = api_get_report(data)
+    if content:
         content = reformReport(content)
-        if request.POST['optionsRadios'] == 'table':
-            return JsonResponse(content, safe=False)
-        if request.POST['optionsRadios'] == 'barChart':
-            return
-        if request.POST['optionsRadios'] == 'pieChart':
-            return
+    else:
+        content = [default_report_dict]
+    report_content = content
+    if request.POST['optionsRadios'] == 'table':
+        return JsonResponse(content, safe=False)
+    if request.POST['optionsRadios'] == 'barChart':
+        return
+    if request.POST['optionsRadios'] == 'pieChart':
+        return
 
 
 def save_query(request):
@@ -137,3 +154,25 @@ def reformReport(content):
         c['day'] = day
         c['start'] = dayTime[1]
     return content
+
+
+def save_csv(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    data = [
+    #report_content[0].keys(),
+    # keep this so we have nice order
+    ["Channel","Affiliate","Date","Day","Start Time(UTC)","Duration","Title",
+    "Episode","Episode #", "Status"]
+    ]
+    for item in report_content:
+        row = []
+        for f in reportFields:
+            row.append(item[f])
+        data.append(row)
+    for d in data:
+        writer.writerow(d)
+    return response
