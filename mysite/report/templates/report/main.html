@@ -166,7 +166,10 @@
 						});
 
 						$(function() {
-							dateFrom.setHours(dateFrom.getHours() - 12);
+							dateFrom.setHours(12);
+							dateFrom.setMinutes(1);
+							dateTo.setHours(11);
+							dateTo.setMinutes(59);
 							$('#timepicker1').datetimepicker({
 								pickDate: false,
 								defaultDate: dateFrom,
