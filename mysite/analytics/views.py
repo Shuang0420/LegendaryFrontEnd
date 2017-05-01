@@ -36,9 +36,14 @@ from collections import defaultdict
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Cache dropdown menu
+cachedMenu = {}
+
 # ignore 'region'
 queryFields = set(['title','programTitle','status','showType','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
 reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
+criteriaFields = ['title','episodeTitle','status']
+
 
 # default report dict
 default_report_dict = dict.fromkeys(reportFields, 'empty')
@@ -50,7 +55,7 @@ report_content = None
 def index(request):
     template = loader.get_template('analytics/main.html')
     #fields = get_dropdown_fields()
-    fields = {}
+    fields = get_dropdown_fields()
     fields['tab'] = 'analytics'
     if request.user.is_authenticated():
         return render(request,'analytics/main.html', fields)
@@ -62,20 +67,22 @@ def index(request):
 def get_report(request):
     global report_content
     data = dict(request.POST.iteritems())
-    keys = data.keys()
-    for k in keys:
-        if k.startswith('field'):
-            fieldid = k.split('_')[1]
-            data[request.POST[k]] = request.POST['value_'+fieldid]
-    logger.info('REQUEST PARAMS %s' % str(data))
-    content = api_get_report(data)
-    if content:
-        content = reformReport(content)
-    else:
-        content = [default_report_dict]
-    report_content = content
+    allFields = defaultdict(dict)
+    res = []
+    for k,v in data.iteritems():
+        parts = k.split('_')
+        if parts[0] in criteriaFields:
+            allFields[parts[1]][parts[0]] = v
+    print 'allFields',allFields
+    for k,v in allFields.iteritems():
+        logger.info('REQUEST PARAMS %s' % str(v))
+        content = api_get_report(v)
+        print type(content)
+        content = reformReport(content) if content else [default_report_dict]
+        res.extend(content)
+    report_content = res
     if request.POST['optionsRadios'] == 'table':
-        return JsonResponse(content, safe=False)
+        return JsonResponse(res, safe=False)
     if request.POST['optionsRadios'] == 'barChart':
         return
     if request.POST['optionsRadios'] == 'pieChart':
@@ -94,6 +101,26 @@ def save_query(request):
         return HttpResponse(status_code == requests.codes.ok)
 
 
+
+
+"""
+Helper function
+"""
+def get_dropdown_fields():
+    global cachedMenu
+    if cachedMenu:
+        return cachedMenu
+    attributes = criteriaFields
+    res = {}
+    for attr in attributes:
+        r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
+        js = r.json()
+        if type(js) is dict:
+            res[attr] = js[attr]
+    cachedMenu = res
+    return res
+
+
 def api_get_report(fields):
     DATA = fields_transform(fields)
     logger.info('API DATA %s' % str(DATA))
@@ -109,10 +136,6 @@ def fields_transform(fields):
     DATA = {}
     for k,v in fields.iteritems():
         if v and v != 'All' and k in queryFields: DATA[k] = v
-    DATA['dateFrom'] = reformat_date(fields['dateFrom'])
-    DATA['dateTo'] = reformat_date(fields['dateTo'])
-    DATA['timeFrom'] = reformat_time(fields['timeFrom'])
-    DATA['timeTo'] = reformat_time(fields['timeTo'])
     logger.info('AFTER TRANSOFRM %s' % str(DATA))
     return DATA
 

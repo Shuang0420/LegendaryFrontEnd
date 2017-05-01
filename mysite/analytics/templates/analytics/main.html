@@ -46,22 +46,36 @@
 						<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
 					</div>
 
-
-					<div class="col-sm-6 form-group">
-						<label>Field:</label>
-						<select class="form-control input-sm" name="field_0" style="width: col-xs-4;">
+					<div class="col-sm-4 form-group">
+						<label>Show Title:</label>
+						<!--<input type="text" class="form-control input-sm" name="title">-->
+						<select class="form-control input-sm" name="title_0" style="width: col-xs-4;">
 										<option selected="selected">All</option>
-										<option value="regionID">Region</option>
-										<option value="showType">Show Type</option>
-										<option value="status">Status</option>
-										<option value="title">Show Title</option>
-										<option value="programTitle">Episode Name</option>
+										{% for t in title %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
 						</select>
 					</div>
 
-					<div class="col-sm-6 form-group">
-						<label for="inputsm">Value:</label>
-						<input class="form-control input-sm" id="inputsm" name="value_0" type="text">
+
+					<div class="col-sm-4 form-group">
+						<label>Episode Title:</label>
+						<select class="form-control input-sm" name="programTitle_0" style="width: col-xs-4;">
+										<option selected="selected">All</option>
+										{% for t in episodeTitle %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-sm-4 form-group">
+						<label>Status:</label>
+						<select class="form-control input-sm" name="status_0" style="width:col-xs-2;">
+										<option selected="selected">All</option>
+										{% for t in status %}
+														<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
 					</div>
 
 
@@ -70,51 +84,7 @@
 					</div>
 
 
-					<div class="col-sm-6">
-						<label>Date Range:</label>
-					</div>
-					<div class="col-sm-6">
-						<label>Time Range:</label>
-					</div>
 
-
-					<div class="col-sm-3 form-group">
-						<div class='input-group date' id='datepicker1'>
-							<input type='text' class="form-control input-sm" name='dateFrom' />
-							<span class="input-group-addon">
-													                    <span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
-					</div>
-					<div class="col-sm-3 form-group">
-						<div class='input-group date' id='datepicker2'>
-							<input type='text' class="form-control input-sm" name='dateTo' />
-							<span class="input-group-addon">
-													                    <span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
-					</div>
-
-					<div class='col-sm-3'>
-						<div class="form-group">
-							<div class='input-group date' id='timepicker1'>
-								<input type='text' class="form-control input-sm" name='timeFrom' />
-								<span class="input-group-addon">
-																								<span class="glyphicon glyphicon-time"></span>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class='col-sm-3'>
-						<div class="form-group">
-							<div class='input-group date' id='timepicker2'>
-								<input type='text' class="form-control input-sm" name='timeTo' />
-								<span class="input-group-addon">
-																								<span class="glyphicon glyphicon-time"></span>
-								</span>
-							</div>
-						</div>
-					</div>
 					<div class='col-sm-6'>
 					<button type="button" onclick="addCriteria();" class="btn btn-default" name="criteria" value="Add Criteria">Add Criteria</button>
 				</div>
@@ -123,70 +93,40 @@
 				 var criteriaId = 0;
 					function addCriteria() {
 						criteriaId += 1;
-						var criteria = '<div class="col-sm-6 form-group"> \
-												<label>Field:</label> \
-												<select class="form-control input-sm" name=' + 'field_' + criteriaId + ' style="width: col-xs-4;"> \
+						var criteria = '<div class="col-sm-4 form-group"> \
+												<label>Show Title:</label> \
+												<select class="form-control input-sm" name="title_' + criteriaId + '" style="width: col-xs-4;"> \
 																<option selected="selected">All</option> \
-																<option value="regionID">Region</option> \
-																<option value="showType">Show Type</option> \
-																<option value="status">Status</option> \
-																<option value="title">Show Title</option> \
-																<option value="programTitle">Episode Name</option> \
+																{% for t in title %} \
+																				<option value="{{t}}">{{t}}</option> \
+																{% endfor %} \
 												</select> \
 											</div> \
-											<div class="col-sm-6 form-group"> \
-												<label for="inputsm">Value:</label> \
-												<input class="form-control input-sm" id="inputsm" name=' + 'value_' + criteriaId + ' type="text"> \
+											<div class="col-sm-4 form-group"> \
+												<label>Episode Title:</label> \
+												<select class="form-control input-sm" name="programTitle_' + criteriaId + '" style="width: col-xs-4;"> \
+																<option selected="selected">All</option> \
+																{% for t in episodeTitle %} \
+																				<option value="{{t}}">{{t}}</option> \
+																{% endfor %} \
+												</select> \
+											</div> \
+											<div class="col-sm-4 form-group"> \
+												<label>Status:</label> \
+												<select class="form-control input-sm" name="status_' + criteriaId + '" style="width:col-xs-2;"> \
+																<option selected="selected">All</option> \
+																{% for t in status %} \
+																				<option value="{{t}}">{{t}}</option> \
+																{% endfor %} \
+												</select> \
 											</div>';
-
-						document.getElementById('more_criteria').innerHTML += criteria;
+						if (criteriaId < 3) {
+							document.getElementById('more_criteria').innerHTML += criteria;
+						}
+						else if (criteriaId == 3){
+							document.getElementById('more_criteria').innerHTML += '<p>You can compare at most 3 items!</p>';
+						}
 					}
-				</script>
-
-
-
-				<!-- Date range and time range -->
-				<script type="text/javascript">
-					var dateTo = new Date();
-					var dateFrom = new Date();
-					dateFrom.setDate(dateFrom.getDate() - 7);
-					dateTo.setDate(dateTo.getDate() + 7);
-					$(function() {
-						$('#datepicker1').datetimepicker({
-							defaultDate: dateFrom,
-							pickTime: false
-						});
-						$('#datepicker2').datetimepicker({
-							defaultDate: dateTo,
-							useCurrent: false, //Important! See issue #1075
-							pickTime: false
-						});
-						$("#datepicker1").on("dp.change", function(e) {
-							$('#datepicker2').data("DateTimePicker").minDate(e.date);
-						});
-						$("#datepicker2").on("dp.change", function(e) {
-							$('#datepicker1').data("DateTimePicker").maxDate(e.date);
-						});
-					});
-
-					$(function() {
-						dateFrom.setHours(dateFrom.getHours() - 12);
-						$('#timepicker1').datetimepicker({
-							pickDate: false,
-							defaultDate: dateFrom,
-						});
-						$('#timepicker2').datetimepicker({
-							useCurrent: false, //Important! See issue #1075
-							pickDate: false,
-							defaultDate: dateTo,
-						});
-						$("#timepicker1").on("dp.change", function(e) {
-							$('#timepicker2').data("DateTimePicker").minDate(e.date);
-						});
-						$("#timepicker2").on("dp.change", function(e) {
-							$('#timepicker1').data("DateTimePicker").maxDate(e.date);
-						});
-					});
 				</script>
 
 
