@@ -239,7 +239,7 @@ def favoriteAiring(request):
 		# determine which statistical summary to provide
 		if statistic == 'listing':
 			fields = ['title', 'programTitle', 'airDateTime', 'duration', 'regionID']
-			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {}  ORDER BY title".format(",".join(fields), id, date_clause)
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} ORDER BY title".format(",".join(fields), id, date_clause)
 			column_names = fields
 
 		elif statistic == 'hour':
@@ -508,7 +508,7 @@ def program(request):
 	dateTo: airDateTime starting by the given date
 	timeFrom: airDateTime starting from the given time (hour 0-23)
 	timeTo: airDateTime starting by the given time (hour 0-23)
-	keyword: wildcard search in the program's title and description
+	keyword: wildcard search in the show and episode title 
 	orderBy: order results by column(s)
 	"""
 	conn = getConnection()
@@ -532,7 +532,7 @@ def program(request):
 
 				# timeFrom > timeTo (overnight)
 				if int(timeFrom) > int(timeTo):
-					conditions.append("date_part(h, airDateTime) >= " + str(timeFrom) + "OR date_part(h, airdatetime) <= " + str(timeTo))
+					conditions.append("(date_part(h, airDateTime) >= " + str(timeFrom) + " OR date_part(h, airdatetime) <= " + str(timeTo) + ")")
 
 				# timeFrom <= timeTo (regular)
 				elif int(timeFrom) <= int(timeTo):
@@ -563,10 +563,16 @@ def program(request):
 			# query by keyword
 			elif key == 'keyword':
 				words = re.split('\s|[,.]', value)
+				showList = []
+				episodeList = []
 				for word in words:
 					word = word.lower().replace('\'','\'\'')
-					temp = "lower(title) LIKE '%" + word + "%' OR lower(description) LIKE '%" + word + "%'"
-					conditions.append(temp)
+					showList.append("lower(title) LIKE '%" + word + "%'".format(word))
+					episodeList.append("lower(programTitle) LIKE '%" + word + "%'".format(word))
+					# temp = "lower(title) LIKE '%" + word + "%' OR lower(programTitle) LIKE '%" + word + "%'"
+				showString = "(" + " AND ".join(showList) + ")"
+				episodeString = "(" + " AND ".join(episodeList) + ")"
+				conditions.append("(" + showString + " OR " + episodeString + ")")
 
 			# orderBy by columns
 			elif key == 'orderBy':
@@ -582,7 +588,9 @@ def program(request):
 			sql = "SELECT {} FROM starschedule3 ORDER BY {}".format(",".join(fields), orderBy)
 		else:
 			sql = "SELECT {} FROM starschedule3 WHERE {} ORDER BY {}".format(",".join(fields), " AND ".join(conditions), orderBy)
+		
 		cur.execute(sql)
+		print(sql)
 		result = cur.fetchall()
 		conn.close()
 		return Response(format(result,fields), status=status.HTTP_200_OK)
