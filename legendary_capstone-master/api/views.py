@@ -569,7 +569,6 @@ def program(request):
 					word = word.lower().replace('\'','\'\'')
 					showList.append("lower(title) LIKE '%" + word + "%'".format(word))
 					episodeList.append("lower(programTitle) LIKE '%" + word + "%'".format(word))
-					# temp = "lower(title) LIKE '%" + word + "%' OR lower(programTitle) LIKE '%" + word + "%'"
 				showString = "(" + " AND ".join(showList) + ")"
 				episodeString = "(" + " AND ".join(episodeList) + ")"
 				conditions.append("(" + showString + " OR " + episodeString + ")")
