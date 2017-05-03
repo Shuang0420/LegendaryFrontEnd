@@ -37,6 +37,18 @@ https://docs.djangoproject.com/en/1.10/intro/tutorial01/
 
 report_content = None
 
+# Cache dropdown menu
+cachedMenu = {}
+
+# ignore 'region'
+queryFields = set(['title','programTitle','showType','status','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
+reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
+
+# default report dict
+default_report_dict = dict.fromkeys(reportFields, 'empty')
+
+
+
 # Create your views here.
 def index(request):
     template = loader.get_template('report/main.html')
@@ -89,7 +101,10 @@ def get_report(request):
 
         fields = dict(request.POST.iteritems())
         content = api_get_report(fields)
-        content = reformReport(content)
+        if content:
+            content = reformReport(content)
+        else:
+            content = [default_report_dict]
         # update global content for pdf saving
         report_content = content
         return JsonResponse(content, safe=False)
@@ -100,6 +115,7 @@ Helper function for get_report. Format airDateTime.
 """
 def reformReport(content):
     for c in content:
+        if 'airDateTime' not in c: continue
         dayTime = c['airDateTime'].split('T')
         #print 'dayTime',dayTime
         c['date'] = dayTime[0]
@@ -138,17 +154,10 @@ def save_csv(request):
     "Episode","Episode #", "Status"]
     ]
     for item in report_content:
-        data.append([str(item['stationName']),
-                    str(item['affiliate']),
-                    str(item['date']),
-                    str(item['day']),
-                    str(item['start']),
-                    str(item['duration']),
-                    str(item['title']),
-                    str(item['programTitle']),
-                    str(item['seasonepisode']),
-                    str(item['status'])
-                    ])
+        row = []
+        for f in reportFields:
+            row.append(item[f])
+        data.append(row)
     for d in data:
         writer.writerow(d)
     return response
@@ -211,6 +220,9 @@ def save_pdf(request):
 Helper function
 """
 def get_dropdown_fields():
+    global cachedMenu
+    if cachedMenu:
+        return cachedMenu
     attributes = ['title','showType','genre','region','episodeTitle','status']
     res = {}
     for attr in attributes:
@@ -218,6 +230,7 @@ def get_dropdown_fields():
         js = r.json()
         if type(js) is dict:
             res[attr] = js[attr]
+    cachedMenu = res
     return res
 
 
@@ -225,22 +238,12 @@ def fields_transform(fields):
     print 'BEFORE TRANSOFRM',fields
     DATA = {}
     for k,v in fields.iteritems():
-        if v and v != 'All' and k != 'csrfmiddlewaretoken': DATA[k] = v
+        if v and v != 'All' and k in queryFields: DATA[k] = v
     DATA['dateFrom'] = reformat_date(fields['dateFrom'])
     DATA['dateTo'] = reformat_date(fields['dateTo'])
     DATA['timeFrom'] = reformat_time(fields['timeFrom'])
     DATA['timeTo'] = reformat_time(fields['timeTo'])
     print 'AFTER TRANSOFRM', DATA
-    # if 'title' in fields:
-    #     if fields['title'] == 'All':
-    #         DATA['dateFrom'] = reformat_date(fields['dateFrom'])
-    #         DATA['dateTo'] = reformat_date(fields['dateTo'])
-    #         DATA['timeFrom'] = reformat_time(fields['timeFrom'])
-    #         DATA['timeTo'] = reformat_time(fields['timeTo'])
-    #     else:
-    #         DATA['title'] = fields['title']
-    # if 'showType' in fields and fields['showType'] != 'All':
-    #     DATA['showType'] = fields['showType']
     return DATA
 
 
@@ -275,8 +278,6 @@ def api_save_query(fields):
     DATA['query'] = json.dumps(DATA)
     DATA['description'] = query
     DATA['userID'] = fields['userID']
-    #DATA['description'] = str(DATA).strip()#.replace("'","")
-    #DATA = urllib.urlencode(DATA).encode("utf-8")
     r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
     return r.status_code
 
@@ -285,5 +286,5 @@ def api_get_report(fields):
     DATA = fields_transform(fields)
     #print 'data', DATA
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
-    print 'get report',r.json()
+    # print 'get report',r.json()
     return r.json()
