@@ -448,7 +448,7 @@ def show(request):
 @api_view(['GET'])
 def menu(request):
 	"""
-	Get a list of distinct items for query fields, including show title, show type, region, and genre.
+	Get a list of distinct items for query fields, including show title, episode title, show type, station name, timezone and airing status.
 	"""
 	conn = getConnection()
 	cur = conn.cursor()
@@ -456,7 +456,12 @@ def menu(request):
 	result_dic = {}
 
 	# a dictionary to store the table and column name for a query field
-	dic = {'region': ('region', 'regionID'), 'genre': ('genre', 'genre'), 'title': ('show', 'title'), 'showType': ('show', 'showType'), 'status': ('schedule', 'status'), 'episodeTitle': ('program', 'title')}
+	dic = { 'title': ('show', 'title'),
+			'episodeTitle': ('program', 'title'),
+			'showType': ('show', 'showType'),
+			'stationName': ('station', 'stationName'),
+			'timezone': ('lineup', 'timezone'),
+			'status': ('schedule', 'status')}
 
 	try:
 		# if no field is specified, return distinct items for all available fields
@@ -501,9 +506,9 @@ def program(request):
 	title: exact match of show title
 	programTitle: exact match of episode title
 	showType: exact match of show type
-	region: exact match of region
-	genre: exact match of genre
-	seasonEpisode: exact match of season and episode number "S0 E0"
+	stationName: exact match of TV station
+	timezone: exact match of time zone
+	status: exact match of airing status (FirstRun or Repeat)
 	dateFrom: airDateTime starting from the given date
 	dateTo: airDateTime starting by the given date
 	timeFrom: airDateTime starting from the given time (hour 0-23)
@@ -511,9 +516,10 @@ def program(request):
 	keyword: wildcard search in the show and episode title 
 	orderBy: order results by column(s)
 	"""
+
 	conn = getConnection()
 	cur = conn.cursor()
-	fields = ['title' , 'programTitle', 'seasonEpisode', 'airDateTime', 'duration', 'status', 'stationName', 'affiliate']
+	fields = ['title' , 'programTitle', 'seasonEpisode', 'airDateTime', 'timezone', 'duration', 'status', 'stationName', 'affiliate']
 
 	try:
 		# extract and validate the query conditions that user specified
