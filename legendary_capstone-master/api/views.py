@@ -456,9 +456,9 @@ def menu(request):
 	result_dic = {}
 
 	# a dictionary to store the table and column name for a query field
-	dic = { 'title': ('show', 'title'),
+	dic = { 'title': ('showny', 'title'),
 			'episodeTitle': ('program', 'title'),
-			'showType': ('show', 'showType'),
+			'showType': ('showny', 'showType'),
 			'stationName': ('station', 'stationName'),
 			'timezone': ('lineup', 'timezone'),
 			'status': ('schedule', 'status')}

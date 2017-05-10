@@ -27,6 +27,7 @@ import re
 import csv
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
+from datetime import datetime
 import calendar
 import logging
 from collections import defaultdict
@@ -63,6 +64,78 @@ def index(request):
         return render_to_response('users/home.html')
 
 
+def CreateTableData(query_results):
+    total_show_time = {}
+    prime_time = {}
+    FirstRun = {}
+    titleSet = {}
+    affiliateSet = {}
+    for res in query_results:
+        title = res['title']
+        if title not in titleSet:
+            titleSet[title] = len(titleSet)
+        aff = res['stationName']
+        if aff is not None and aff != "" and aff not in affiliateSet:
+            affiliateSet[aff] = len(affiliateSet)
+        if title in total_show_time:
+            total_show_time[title] += int(res['duration'])
+            time = datetime.strptime(res['airDateTime'],"%Y-%m-%dT%H:%M:%S").time().hour
+            if time >= 20 and time <= 23:
+                prime_time[title] += res['duration']
+            if res['status'] == 'FirstRun':
+                FirstRun[title] += res['duration']
+        else:
+            total_show_time[title] = int(res['duration'])
+            time = datetime.strptime(res['airDateTime'],"%Y-%m-%dT%H:%M:%S").time().hour
+            prime_time[title] = 0
+            FirstRun[title] = 0
+            if time >= 20 and time <= 23:
+                prime_time[title] += res['duration']
+            if res['status'] == 'FirstRun':
+                FirstRun[title] += res['duration']
+    # create the tables for Graphs - Show affiliate bar chart
+    Show_affiliate = []
+    Show_affiliate.append(["TV Shows"]*(len(affiliateSet)+1))
+    for i in range(len(titleSet)):
+        Show_affiliate.append([0]*(len(affiliateSet)+1 ))
+    for aff in affiliateSet.keys():
+        Show_affiliate[0][affiliateSet[aff]+1] = aff
+    for show in titleSet.keys():
+        Show_affiliate[titleSet[show]+1][0] = show
+    for res in query_results:
+        title = res['title']
+        aff = res['stationName']
+        index_title = titleSet[title]+1
+        if aff is not None and aff != "" and aff in affiliateSet:
+            index_aff = affiliateSet[aff] + 1
+            Show_affiliate[index_title][index_aff] += float(res['duration'])/60
+    # create the table for Graphs - show time
+    show_hours_table = []
+    show_hours_table.append(['Tv Show', 'Air Time'])
+    show_prime_hours_table = []
+    show_prime_hours_table.append(['Tv Show', 'Prime Air Time'])
+    show_first_hours_table = []
+    show_first_hours_table.append(['Tv Show', 'First Run Time'])
+    for i in range(len(titleSet)):
+        show_hours_table.append(['Show Name',0])
+        show_prime_hours_table.append(['Show Name',0])
+        show_first_hours_table.append(['Show Name',0])
+    for show in titleSet.keys():
+        show_hours_table[titleSet[show]+1][0] = show
+        show_hours_table[titleSet[show]+1][1] = float(total_show_time[show])/60
+        show_prime_hours_table[titleSet[show]+1][0] = show
+        show_prime_hours_table[titleSet[show]+1][1] = float(prime_time[show])/60
+        show_first_hours_table[titleSet[show]+1][0] = show
+        show_first_hours_table[titleSet[show]+1][1] = float(FirstRun[show])/60
+    #print 'Show_affiliate'
+    #print Show_affiliate
+    #print 'show_hours_table'
+    #print show_hours_table
+    #print 'show_prime_hours_table'
+    #print show_prime_hours_table
+    #print 'show_first_hours_table'
+    #print show_first_hours_table
+    return Show_affiliate,show_hours_table,show_prime_hours_table,show_first_hours_table
 
 def get_report(request):
     global report_content
@@ -73,20 +146,23 @@ def get_report(request):
         parts = k.split('_')
         if parts[0] in criteriaFields:
             allFields[parts[1]][parts[0]] = v
-    print 'allFields',allFields
+    #print 'allFields',allFields
     for k,v in allFields.iteritems():
         logger.info('REQUEST PARAMS %s' % str(v))
         content = api_get_report(v)
-        print type(content)
+        #print type(content)
         content = reformReport(content) if content else [default_report_dict]
         res.extend(content)
     report_content = res
-    if request.POST['optionsRadios'] == 'table':
-        return JsonResponse(res, safe=False)
-    if request.POST['optionsRadios'] == 'barChart':
-        return
-    if request.POST['optionsRadios'] == 'pieChart':
-        return
+    #print "result = " + str(res)
+    station_data,hours_table,prime_hours_table,first_table = CreateTableData(report_content)
+    dict_graphs = {'station_graph':station_data,\
+                   'airtime_graph':hours_table,\
+                   'prime_graph':prime_hours_table,\
+                   'first_graph':first_table}
+    #print "res value = " + str(res)
+    #print "TYPE = " + str(type(res))
+    return JsonResponse(dict_graphs,safe=False)
 
 
 def save_query(request):
@@ -109,6 +185,7 @@ Helper function
 def get_dropdown_fields():
     global cachedMenu
     if cachedMenu:
+        #print "Prev DOES IT CONTAINS:"  +str(cachedMenu.keys())
         return cachedMenu
     attributes = criteriaFields
     res = {}
@@ -117,7 +194,9 @@ def get_dropdown_fields():
         js = r.json()
         if type(js) is dict:
             res[attr] = js[attr]
+
     cachedMenu = res
+    #print "DOES IT CONTAINS:"  +str('The Big Bang Theory' in cachedMenu['title'])
     return res
 
 
