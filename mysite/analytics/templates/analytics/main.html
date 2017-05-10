@@ -77,29 +77,6 @@
                                         {% endfor %}
                         </select>
           </div>
-
-
-          <div class="col-sm-4 form-group">
-            <label>Episode Title:</label>
-            <select class="form-control input-sm" name="programTitle_0" style="width: col-xs-4;">
-                                        <option selected="selected">All</option>
-                                        {% for t in episodeTitle %}
-                                                        <option value="{{t}}">{{t}}</option>
-                                        {% endfor %}
-                        </select>
-          </div>
-
-          <div class="col-sm-4 form-group">
-            <label>Status:</label>
-            <select class="form-control input-sm" name="status_0" style="width:col-xs-2;">
-                                        <option selected="selected">All</option>
-                                        {% for t in status %}
-                                                        <option value="{{t}}">{{t}}</option>
-                                        {% endfor %}
-                        </select>
-          </div>
-
-
           <div id="more_criteria">
 
           </div>
@@ -122,28 +99,6 @@
                 '" style="width: col-xs-4;"> \
                                                                 <option selected="selected">All</option> \
                                                                 {% for t in title %} \
-                                                                                <option value="{{t}}">{{t}}</option> \
-                                                                {% endfor %} \
-                                                </select> \
-                                            </div> \
-                                            <div class="col-sm-4 form-group"> \
-                                                <label>Episode Title:</label> \
-                                                <select class="form-control input-sm" name="programTitle_' +
-                criteriaId +
-                '" style="width: col-xs-4;"> \
-                                                                <option selected="selected">All</option> \
-                                                                {% for t in episodeTitle %} \
-                                                                                <option value="{{t}}">{{t}}</option> \
-                                                                {% endfor %} \
-                                                </select> \
-                                            </div> \
-                                            <div class="col-sm-4 form-group"> \
-                                                <label>Status:</label> \
-                                                <select class="form-control input-sm" name="status_' +
-                criteriaId +
-                '" style="width:col-xs-2;"> \
-                                                                <option selected="selected">All</option> \
-                                                                {% for t in status %} \
                                                                                 <option value="{{t}}">{{t}}</option> \
                                                                 {% endfor %} \
                                                 </select> \
