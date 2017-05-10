@@ -1,262 +1,233 @@
-{% extends "header.html" %}
+{% extends "header.html" %} {% block javascript %}
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/moment.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
 
-{% block javascript %}
-	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/js/moment.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap-table.js"></script>
+{% endblock %} {% block content %}
+<!-- reference: https://developers.google.com/chart/interactive/docs/gallery/piechart -->
+<!-- https://developers.google.com/chart/interactive/docs/gallery/columnchart -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {
+    'packages': ['bar']
+  });
+  google.charts.load('current', {'packages':['corechart']});
 
-{% endblock %}
-
-{% block content %}
-<body>
-
-
-	<div class="container-fluid" style="height:90%;">
-		<!-- Page Heading -->
-		<div class="col-lg-12">
-			<div class="row">
-				<h1 class="page-header">
-					Analytics
-				</h1>
-			</div>
-
-
-			<!--must have csrf_token when using post method-->
-			<form action="/analytics/get_report/" method="post" id="queryFields">{% csrf_token %}
-				<div class="row">
-					<div class="radio col-sm-9 form-group">
-					   <label class="radio-inline">
-					      <input type="radio" name="optionsRadios" id="barChart"
-					         value="bar" checked> Bar graph
-					   </label>
-						 <label class="radio-inline">
-								<input type="radio" name="optionsRadios" id="pieChart"
-									 value="pieChart"> Pie chart
-						 </label>
-						 <label class="radio-inline">
-								<input type="radio" name="optionsRadios" id="table"
-									 value="table"> Table
-						 </label>
-					</div>
-
-					<div class='col-sm-3 form-group'>
-						<input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
-						<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
-					</div>
-
-					<div class="col-sm-4 form-group">
-						<label>Show Title:</label>
-						<!--<input type="text" class="form-control input-sm" name="title">-->
-						<select class="form-control input-sm" name="title_0" style="width: col-xs-4;">
-										<option selected="selected">All</option>
-										{% for t in title %}
-														<option value="{{t}}">{{t}}</option>
-										{% endfor %}
-						</select>
-					</div>
-
-
-					<div class="col-sm-4 form-group">
-						<label>Episode Title:</label>
-						<select class="form-control input-sm" name="programTitle_0" style="width: col-xs-4;">
-										<option selected="selected">All</option>
-										{% for t in episodeTitle %}
-														<option value="{{t}}">{{t}}</option>
-										{% endfor %}
-						</select>
-					</div>
-
-					<div class="col-sm-4 form-group">
-						<label>Status:</label>
-						<select class="form-control input-sm" name="status_0" style="width:col-xs-2;">
-										<option selected="selected">All</option>
-										{% for t in status %}
-														<option value="{{t}}">{{t}}</option>
-										{% endfor %}
-						</select>
-					</div>
-
-
-					<div id="more_criteria">
-
-					</div>
-
-
-
-					<div class='col-sm-6'>
-					<button type="button" onclick="addCriteria();" class="btn btn-default" name="criteria" value="Add Criteria">Add Criteria</button>
-				</div>
-
-				<script>
-				 var criteriaId = 0;
-					function addCriteria() {
-						criteriaId += 1;
-						var criteria = '<div class="col-sm-4 form-group"> \
-												<label>Show Title:</label> \
-												<select class="form-control input-sm" name="title_' + criteriaId + '" style="width: col-xs-4;"> \
-																<option selected="selected">All</option> \
-																{% for t in title %} \
-																				<option value="{{t}}">{{t}}</option> \
-																{% endfor %} \
-												</select> \
-											</div> \
-											<div class="col-sm-4 form-group"> \
-												<label>Episode Title:</label> \
-												<select class="form-control input-sm" name="programTitle_' + criteriaId + '" style="width: col-xs-4;"> \
-																<option selected="selected">All</option> \
-																{% for t in episodeTitle %} \
-																				<option value="{{t}}">{{t}}</option> \
-																{% endfor %} \
-												</select> \
-											</div> \
-											<div class="col-sm-4 form-group"> \
-												<label>Status:</label> \
-												<select class="form-control input-sm" name="status_' + criteriaId + '" style="width:col-xs-2;"> \
-																<option selected="selected">All</option> \
-																{% for t in status %} \
-																				<option value="{{t}}">{{t}}</option> \
-																{% endfor %} \
-												</select> \
-											</div>';
-						if (criteriaId < 3) {
-							document.getElementById('more_criteria').innerHTML += criteria;
-						}
-						else if (criteriaId == 3){
-							document.getElementById('more_criteria').innerHTML += '<p>You can compare at most 3 items!</p>';
-						}
-					}
-				</script>
-
-
-				<!-- Ajax for report table -->
-				<script>
-					$('#submit').click(function(e) {
-						document.getElementById("report_part").style.visibility = "visible";
-						//document.getElementById("success_message").style.visibility = "hidden";
-						$.ajax({
-							type: "POST",
-							url: "/analytics/get_report/", // the script where you handle the form input.
-							data: $("#queryFields").serialize(), // serializes the form's elements.
-
-							success: function(data) {
-								var trHTML = '';
-								$.each(data, function(key, value) {
-									trHTML +=
-										'<tr><td nowrap>' +
-										value.stationName +
-										'</td><td nowrap>' +
-										value.affiliate +
-										'</td><td nowrap>' +
-										value.date +
-										'</td><td nowrap>' +
-										value.day +
-										'</td><td nowrap>' +
-										value.start +
-										'</td><td nowrap>' +
-										value.duration +
-										'</td><td nowrap>' +
-										value.title +
-										'</td><td nowrap>' +
-										value.programTitle +
-										'</td><td nowrap>' +
-										value.seasonEpisode +
-										'</td><td nowrap>' +
-										value.status +
-										'</td></tr>';
-								});
-								//clear the table before populate data
-								$('#tBody').empty();
-								$('#tBody').append(trHTML);
-							}
-						});
-						e.preventDefault();
-					});
-
-					$('#save').click(function(e2) {
-						$.ajax({
-							type: "POST",
-							url: "/analytics/save_query/", // the script where you handle the form input.
-							data: $("#queryFields").serialize(), // serializes the form's elements.
-							success: function(data) {
-								//alert(data);
-								if (data == "True") {
-									//$('#result').html("correct")
-									alert("Saved successfully!");
-								}
-								else {
-									alert("Something wrong. Please try again!");
-								}
-								//alert("Saved successfully!");
-							}
-						});
-						e2.preventDefault();
-					});
-				</script>
-			</div>
-		</form>
-
-
-			<div class="row col-sm-12" id="report_part" style="visibility:hidden">
-
-				<br />
-
-<button class="btn btn-default" id="export">Export</button>​
-
-<script>
-	window.onload = function() {
-		var el = document.getElementById('export');
-		el.onclick = function() {
-			var filename = prompt('Save as:');
-			if (filename) {
-				$.ajax({
-					url: "/analytics/save_csv/", // the script where you handle the form input.
-					success: function(data) {
-						// var win = window.open("data:application/pdf," + escape(data));
-						// win.document.title = "ttt";
-						var blob = new Blob([data]);
-						var link = document.createElement('a');
-						link.href = window.URL.createObjectURL(blob);
-						link.download = filename + ".csv";
-						link.click();
-					}
-				});
-			}
-		}
-	}
+  function drawBarChart(data_array) {
+    var data = google.visualization.arrayToDataTable(data_array);
+    var options = {
+      chart: {title: 'TV Shows And Stations',subtitle: 'Total Airtime',},
+      bars: 'vertical'
+    };
+    var chart = new google.charts.Bar(document.getElementById('barchart'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+  }
+  //https://developers.google.com/chart/interactive/docs/gallery/piechart
+  function drawPieChart(data_array,doc_pie_id,heading_title) {
+    var data = google.visualization.arrayToDataTable(data_array);
+    var options = {title: heading_title,
+                   legend:{position:'none'}};
+    var chart = new google.visualization.PieChart(document.getElementById(doc_pie_id));
+    chart.draw(data, options);
+  }
+  function drawPieChart_Legend(data_array,doc_pie_id,heading_title) {
+    var data = google.visualization.arrayToDataTable(data_array);
+    var options = {title: heading_title,
+                   legend:{position:'top',
+                           maxLines: 3}};
+    var chart = new google.visualization.PieChart(document.getElementById(doc_pie_id));
+    chart.draw(data, options);
+  }
 </script>
 
-				<br />
-				<br />
+<body>
+  <div class="container-fluid" style="height:90%;">
+    <!-- Page Heading -->
+    <div class="col-lg-12">
+      <div class="row">
+        <h1 class="page-header">Analytics</h1>
+      </div>
+      <!--must have csrf_token when using post method-->
+      <form action="/analytics/get_report/" method="post" id="queryFields">{% csrf_token %}
+        <div class="row">
+          <div class='col-sm-12 form-group'>
+            <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
+            <input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
+          </div>
 
-				<div class="scrollable">
-					<table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
-						<thead class="thead-inverse">
-							<!-- ["Title", "Showtype", "Description", "StationName", "StationName", "Duration"]-->
-							<tr>
-								<th>Channel</th>
-								<th>Affiliate</th>
-								<th>Date</th>
-								<th>Day</th>
-								<th>Start</th>
-								<th>Duration</th>
-								<th>Title</th>
-								<th>Episode</th>
-								<th>Episode #</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody id="tBody">
-						</tBody>
-					</table>
-				</div>
-			</div>
+          <div class="col-sm-4 form-group">
+            <label>Show Title:</label>
+            <!--<input type="text" class="form-control input-sm" name="title">-->
+            <select class="form-control input-sm" name="title_0" style="width: col-xs-4;">
+                                        <option selected="selected">All</option>
+                                        {% for t in title %}
+                                                        <option value="{{t}}">{{t}}</option>
+                                        {% endfor %}
+                        </select>
+          </div>
+
+
+          <div class="col-sm-4 form-group">
+            <label>Episode Title:</label>
+            <select class="form-control input-sm" name="programTitle_0" style="width: col-xs-4;">
+                                        <option selected="selected">All</option>
+                                        {% for t in episodeTitle %}
+                                                        <option value="{{t}}">{{t}}</option>
+                                        {% endfor %}
+                        </select>
+          </div>
+
+          <div class="col-sm-4 form-group">
+            <label>Status:</label>
+            <select class="form-control input-sm" name="status_0" style="width:col-xs-2;">
+                                        <option selected="selected">All</option>
+                                        {% for t in status %}
+                                                        <option value="{{t}}">{{t}}</option>
+                                        {% endfor %}
+                        </select>
+          </div>
+
+
+          <div id="more_criteria">
+
+          </div>
 
 
 
-		</div>
-</div>
+          <div class='col-sm-6'>
+            <button type="button" onclick="addCriteria();" class="btn btn-default" name="criteria" value="Add Criteria">Add Criteria</button>
+          </div>
+
+          <script>
+            var criteriaId = 0;
+
+            function addCriteria() {
+              criteriaId += 1;
+              var criteria = '<div class="col-sm-4 form-group"> \
+                                                <label>Show Title:</label> \
+                                                <select class="form-control input-sm" name="title_' +
+                criteriaId +
+                '" style="width: col-xs-4;"> \
+                                                                <option selected="selected">All</option> \
+                                                                {% for t in title %} \
+                                                                                <option value="{{t}}">{{t}}</option> \
+                                                                {% endfor %} \
+                                                </select> \
+                                            </div> \
+                                            <div class="col-sm-4 form-group"> \
+                                                <label>Episode Title:</label> \
+                                                <select class="form-control input-sm" name="programTitle_' +
+                criteriaId +
+                '" style="width: col-xs-4;"> \
+                                                                <option selected="selected">All</option> \
+                                                                {% for t in episodeTitle %} \
+                                                                                <option value="{{t}}">{{t}}</option> \
+                                                                {% endfor %} \
+                                                </select> \
+                                            </div> \
+                                            <div class="col-sm-4 form-group"> \
+                                                <label>Status:</label> \
+                                                <select class="form-control input-sm" name="status_' +
+                criteriaId +
+                '" style="width:col-xs-2;"> \
+                                                                <option selected="selected">All</option> \
+                                                                {% for t in status %} \
+                                                                                <option value="{{t}}">{{t}}</option> \
+                                                                {% endfor %} \
+                                                </select> \
+                                            </div>';
+              if (criteriaId < 3) {
+                document.getElementById('more_criteria').innerHTML += criteria;
+              } else if (criteriaId == 3) {
+                document.getElementById('more_criteria').innerHTML += '<p>You can compare at most 3 items!</p>';
+              }
+            }
+          </script>
+
+
+          <!-- Ajax for report table -->
+          <script type="text/javascript">
+            $('#submit').click(function(e) {
+              document.getElementById("report_part").style.visibility = "visible";
+              $.ajax({
+                type: "POST",
+                url: "/analytics/get_report/", // the script where you handle the form input.
+                data: $("#queryFields").serialize(), // serializes the form's elements.
+                success: function(data) {
+                  drawBarChart(data.station_graph);
+                  drawPieChart_Legend(data.airtime_graph,'piechart_total', 'Total Air Time');
+                  drawPieChart_Legend(data.prime_graph,  'piechart_prime', 'Total Prime Time');
+                  drawPieChart_Legend(data.first_graph,  'piechart_first', 'Non Repeat Air Time');
+                }
+              });
+              e.preventDefault();
+            });
+
+            $('#save').click(function(e2) {
+              $.ajax({
+                type: "POST",
+                url: "/analytics/save_query/", // the script where you handle the form input.
+                data: $("#queryFields").serialize(), // serializes the form's elements.
+                success: function(data) {
+                  //alert(data);
+                  if (data == "True") {
+                    //$('#result').html("correct")
+                    alert("Saved successfully!");
+                  } else {
+                    alert("Something wrong. Please try again!");
+                  }
+                  //alert("Saved successfully!");
+                }
+              });
+              e2.preventDefault();
+            });
+          </script>
+        </div>
+      </form>
+      <div class="row col-sm-12" id="report_part" style="visibility:hidden">
+        <button class="btn btn-default" id="export">Export</button>​
+        <script>
+          window.onload = function() {
+            var el = document.getElementById('export');
+            el.onclick = function() {
+              var filename = prompt('Save as:');
+              if (filename) {
+                $.ajax({
+                  url: "/analytics/save_csv/", // the script where you handle the form input.
+                  success: function(data) {
+                    // var win = window.open("data:application/pdf," + escape(data));
+                    // win.document.title = "ttt";
+                    var blob = new Blob([data]);
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename + ".csv";
+                    link.click();
+                  }
+                });
+              }
+            }
+          }
+        </script>
+        <br />
+        <div class="row">
+          <div class="col-sm-4">
+            <div id="piechart_total" style="height: 400px;"></div>
+          </div>
+          <div class="col-sm-4">
+            <div id="piechart_prime" style="height: 400px;"></div>
+          </div>
+          <div class="col-sm-4">
+            <div id="piechart_first" style="height: 400px;"></div>
+          </div>
+        </div>
+        <div class="row" id="report_part_bar" style="visibility:visible">
+          <div id="barchart" style="width: 900px; height: 450px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 {% endblock %}
