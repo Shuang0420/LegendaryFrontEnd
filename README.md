@@ -38,11 +38,11 @@ Four tabs including dashboard/reporting/analytics/users are ready.
   ```
   - The project layout follows the default settings for Django project.
   - api/: Django Web application which contains our main functional code. Two main files we modified are
-    views.py: actually returns HttpResponse object containing the content for the request
-    urls.py: contains a list of url patterns
+    - views.py: actually returns HttpResponse object containing the content for the request
+    - urls.py: contains a list of url patterns
   - capstone/: contains site settings for the api server. Two main files we modified are
-    settings.py: Settings/configuration for this Django project. Django settings will tell you all about how settings work.
-    urls.py: The URL declarations for this Django project; a “table of contents” of your Django-powered site.
+    - settings.py: Settings/configuration for this Django project. Django settings will tell you all about how settings work.
+    - urls.py: The URL declarations for this Django project; a “table of contents” of your Django-powered site.
 - mysite/: contains code for frontend
   ```
   ├── analytics
@@ -127,7 +127,7 @@ We use [bootstrap SB Admin template](https://startbootstrap.com/template-overvie
 
 
 ## How to use
-If you are going to run the server on local, you may need to change the settings file LegendaryFrontEnd/mysite/mysite/settings.py, replace the TEMPLATES.DIRS paths and STATICFILES_DIRS to the path on local machine.
+If you are going to run the server on local, you may need to change the settings file LegendaryFrontEnd/mysite/mysite/settings.py, **replace the TEMPLATES.DIRS paths and STATICFILES_DIRS to the path on local machine**.
 
 Run on the background
 ```
