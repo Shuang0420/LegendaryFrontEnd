@@ -41,8 +41,8 @@ report_content = None
 cachedMenu = {}
 
 # ignore 'region'
-queryFields = set(['title','programTitle','showType','status','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
-reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
+queryFields = set(['title','programTitle','showType','status','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy','timezone'])
+reportFields = ['stationName', 'affiliate', 'date', 'day', 'start','timezone', 'duration','title','programTitle','seasonEpisode','status']
 
 # default report dict
 default_report_dict = dict.fromkeys(reportFields, 'empty')
@@ -150,7 +150,7 @@ def save_csv(request):
     data = [
     #report_content[0].keys(),
     # keep this so we have nice order
-    ["Channel","Affiliate","Date","Day","Start Time(UTC)","Duration","Title",
+    ["Channel","Affiliate","Date","Day","Start Time","TimeZone","Duration","Title",
     "Episode","Episode #", "Status"]
     ]
     for item in report_content:
@@ -223,7 +223,7 @@ def get_dropdown_fields():
     global cachedMenu
     if cachedMenu:
         return cachedMenu
-    attributes = ['title','showType','genre','region','episodeTitle','status']
+    attributes = ['title','showType','genre','region','episodeTitle','status','timezone']
     res = {}
     for attr in attributes:
         r = requests.get('http://localhost:8080/api/v1/menu/'+ attr)
@@ -235,7 +235,7 @@ def get_dropdown_fields():
 
 
 def fields_transform(fields):
-    print 'BEFORE TRANSOFRM',fields
+    #print 'BEFORE TRANSOFRM',fields
     DATA = {}
     for k,v in fields.iteritems():
         if v and v != 'All' and k in queryFields: DATA[k] = v
@@ -243,7 +243,7 @@ def fields_transform(fields):
     DATA['dateTo'] = reformat_date(fields['dateTo'])
     DATA['timeFrom'] = reformat_time(fields['timeFrom'])
     DATA['timeTo'] = reformat_time(fields['timeTo'])
-    print 'AFTER TRANSOFRM', DATA
+    #print 'AFTER TRANSOFRM', DATA
     return DATA
 
 
@@ -256,7 +256,7 @@ def reformat_time(time):
     if parts[-1] == 'PM':
         return str(int(parts[0])+12)
     else:
-        return parts[0]
+        return str(int(parts[0])%12)
 
 
 
@@ -272,6 +272,7 @@ def api_get_saved_query(userID):
 def api_save_query(fields):
     #print fields
     DATA = fields_transform(fields)
+    print "Transformed fields = " + str(DATA)
     query = ''
     for k,v in DATA.iteritems():
         query += k + ': ' + v + ';'
@@ -286,5 +287,5 @@ def api_get_report(fields):
     DATA = fields_transform(fields)
     #print 'data', DATA
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
-    # print 'get report',r.json()
+    #print 'get report',r.json()
     return r.json()

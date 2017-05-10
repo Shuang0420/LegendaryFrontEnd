@@ -92,10 +92,13 @@
 						<label>Airing Date:</label>
 					</div>
 					<div class="col-sm-2">
-						<label>Start Time(UTC):</label>
+						<label>Start Time:</label>
 					</div>
-					<div class="col-sm-6">
-						<label>End Time(UTC):</label>
+					<div class="col-sm-2">
+						<label>End Time:</label>
+					</div>
+          <div class="col-sm-4">
+						<label>Time Zone:</label>
 					</div>
 
 					<div class="col-sm-2 form-group">
@@ -136,9 +139,17 @@
 						</div>
 					</div>
 					<div class='col-sm-4'>
+						<select class="form-control input-sm" name="timezone" style="width:col-xs-2;">
+										<option selected="selected">All</option>
+										{% for t in timezone %}
+											<option value="{{t}}">{{t}}</option>
+										{% endfor %}
+						</select>
+          </div>
+          <div class='col-sm-12'>
 						<input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
 						<input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
-				</div>
+				  </div>
 
 
 					<!-- Date range and time range -->
@@ -166,9 +177,9 @@
 						});
 
 						$(function() {
-							dateFrom.setHours(12);
-							dateFrom.setMinutes(1);
-							dateTo.setHours(11);
+							dateFrom.setHours(00);
+							dateFrom.setMinutes(01);
+							dateTo.setHours(23);
 							dateTo.setMinutes(59);
 							$('#timepicker1').datetimepicker({
 								pickDate: false,
@@ -212,6 +223,8 @@
 											value.day +
 											'</td><td nowrap>' +
 											value.start +
+											'</td><td nowrap>' +
+                      value.timezone +
 											'</td><td nowrap>' +
 											value.duration +
 											'</td><td nowrap>' +
@@ -309,7 +322,8 @@
 								<th>Affiliate</th>
 								<th>Date</th>
 								<th>Day</th>
-								<th>Start Time(UTC)</th>
+								<th>Start Time</th>
+                <th>TimeZone</th>
 								<th>Duration</th>
 								<th>Title</th>
 								<th>Episode</th>
