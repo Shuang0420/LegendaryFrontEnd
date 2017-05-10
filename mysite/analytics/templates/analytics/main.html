@@ -18,10 +18,20 @@
   function drawBarChart(data_array) {
     var data = google.visualization.arrayToDataTable(data_array);
     var options = {
-      chart: {title: 'TV Shows And Stations',subtitle: 'Total Airtime',},
+      chart: {title: 'TV Shows And Stations',subtitle: 'Total Airtime'},
       bars: 'vertical'
     };
     var chart = new google.charts.Bar(document.getElementById('barchart'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+  }
+
+  function drawBarChart_airings(data_array) {
+    var data = google.visualization.arrayToDataTable(data_array);
+    var options = {
+      chart: {title: 'TV Shows And Airing',subtitle: 'First Run, Prime Time, Total Airings'},
+      bars: 'vertical'
+    };
+    var chart = new google.charts.Bar(document.getElementById('barchart_airings'));
     chart.draw(data, google.charts.Bar.convertOptions(options));
   }
   //https://developers.google.com/chart/interactive/docs/gallery/piechart
@@ -157,9 +167,10 @@
                 data: $("#queryFields").serialize(), // serializes the form's elements.
                 success: function(data) {
                   drawBarChart(data.station_graph);
-                  drawPieChart_Legend(data.airtime_graph,'piechart_total', 'Total Air Time');
-                  drawPieChart_Legend(data.prime_graph,  'piechart_prime', 'Total Prime Time');
-                  drawPieChart_Legend(data.first_graph,  'piechart_first', 'Non Repeat Air Time');
+                  drawBarChart_airings(data.airtime_graph);
+                  //drawPieChart_Legend(data.airtime_graph,'piechart_total', 'Total Air Time');
+                  //drawPieChart_Legend(data.prime_graph,  'piechart_prime', 'Total Prime Time');
+                  //drawPieChart_Legend(data.first_graph,  'piechart_first', 'Non Repeat Air Time');
                 }
               });
               e.preventDefault();
@@ -212,7 +223,7 @@
         </script>
         <br />
         <div class="row">
-          <div class="col-sm-4">
+          <!-- <div class="col-sm-4">
             <div id="piechart_total" style="height: 400px;"></div>
           </div>
           <div class="col-sm-4">
@@ -220,7 +231,8 @@
           </div>
           <div class="col-sm-4">
             <div id="piechart_first" style="height: 400px;"></div>
-          </div>
+          </div> -->
+          <div id="barchart_airings" style="width: 100%; height: 450px;"></div>
         </div>
         <div class="row" id="report_part_bar" style="visibility:visible">
           <div id="barchart" style="width: 100%; height: 450px;"></div>
