@@ -37,12 +37,11 @@ def index(request):
         params["timeRange"] = "7"
         params["statistic"] = "hour"
         r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
-        print r
         airtimes = r.json
 
         params["statistic"] = "listing"
         r = requests.post('http://localhost:8080/api/v1/favoriteairing/', params)
-        print r
+        #print r
         upcoming = r.json
         if request.user.is_authenticated():
             userID = request.user.username
@@ -57,7 +56,7 @@ def index(request):
         return HttpResponse(template.render(pageData))
     else:
         return render_to_response('users/home.html')
-    
+
     # return HttpResponse("Hello, world. Go to /mysample/1 to see dashboard 1")
 
 def api_get_search(title):
@@ -84,7 +83,7 @@ def favourite_programs(request):
     return HttpResponse(template.render(favourite_shows, request))
 
 def add_fav(request):
-    template = loader.get_template('dashboard/favourite.html')    
+    template = loader.get_template('dashboard/favourite.html')
     fields = dict(request.GET.iteritems())
     showID = fields["showId"]
     userID = 'emilie'
@@ -102,7 +101,7 @@ def api_get_saved_query(userID):
     return r.json()
 
 def remove_fav(request):
-    template = loader.get_template('dashboard/favourite.html')    
+    template = loader.get_template('dashboard/favourite.html')
     fields = dict(request.GET.iteritems())
     showID = fields["showId"]
     userID = 'emilie'

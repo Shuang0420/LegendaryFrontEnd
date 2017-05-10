@@ -16,7 +16,7 @@
                 </div>
             <div class="col-sm-8">
                 <h3>Upcoming Air Times</h3>
-                
+
                 <div class="scrollable">
                 <table class="table table-condensed table-hover table-bordered table-striped" id="mytable">
                     <thead>
@@ -25,8 +25,7 @@
                             <th>TV Show</th>
                             <th>Episode</th>
                             <th>Air Date Time</th>
-                            <th>Duration</th>
-                            <th>Region</th>
+                            <th>Timezone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,8 +34,7 @@
                                 <td>{{row.title}}</td>
                                 <td>{{row.programTitle}}</td>
                                 <td>{{row.airDateTime}}</td>
-                                <td>{{row.duration}}</td>
-                                <td>{{row.regionID}}</td>
+                                <td>{{row.timezone}}</td>
                             </tr>
                         {% endfor %}
                         <!--
@@ -57,8 +55,8 @@
                         <!--'title', 'SUM(duration/60.0) as hours', 'regionID'-->
                         <tr>
                             <th>TV Show</th>
-                            <th>Air Time</th>
-                            <th>Region</th>
+                            <th>Air Time Hrs</th>
+                            <th>TimeZone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,7 +64,7 @@
                             <tr>
                                 <td>{{row.title}}</td>
                                 <td>{{row.hours}}</td>
-                                <td>{{row.regionID}}</td>
+                                <td>{{row.timezone}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
