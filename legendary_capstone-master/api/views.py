@@ -238,14 +238,14 @@ def favoriteAiring(request):
 	try:
 		# determine which statistical summary to provide
 		if statistic == 'listing':
-			fields = ['title', 'programTitle', 'airDateTime', 'duration', 'regionID']
+			fields = ['title', 'programTitle', 'airDateTime', 'stationName', 'timezone']
 			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} ORDER BY title".format(",".join(fields), id, date_clause)
 			column_names = fields
 
 		elif statistic == 'hour':
-			fields = ['title', 'SUM(duration/60.0) as hours', 'regionID']
-			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, regionID ORDER BY title".format(",".join(fields), id, date_clause)
-			column_names = ['title', 'hours', 'regionID']
+			fields = ['title', 'ROUND(SUM(duration/60.0),2) as hours', 'timezone']
+			sql = "SELECT {} FROM starschedule3 WHERE showid in (SELECT showid FROM favoriteshow WHERE userID = \'{}\') AND {} GROUP BY title, timezone ORDER BY title".format(",".join(fields), id, date_clause)
+			column_names = ['title', 'hours', 'timezone']
 
 		cur.execute(sql)
 		result = cur.fetchall()
