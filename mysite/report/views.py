@@ -255,8 +255,10 @@ def reformat_time(time):
     parts = re.split(':| ',time)
     if parts[-1] == 'PM':
         return str(int(parts[0])+12)
-    else:
+    elif parts[-1] == 'AM':
         return str(int(parts[0])%12)
+    else:
+        return parts[0]
 
 
 
