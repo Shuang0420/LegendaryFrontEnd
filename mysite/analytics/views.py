@@ -41,9 +41,9 @@ logger = logging.getLogger(__name__)
 cachedMenu = {}
 
 # ignore 'region'
-queryFields = set(['title','programTitle','status','showType','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy'])
-reportFields = ['stationName', 'affiliate', 'date', 'day', 'start', 'duration','title','programTitle','seasonEpisode','status']
-criteriaFields = ['title','episodeTitle','status']
+queryFields = set(['title','programTitle','showType','status','genre','seasonEpisode','dateFrom','dateTo','timeFrom','timeTo','keyword','orderBy','timezone'])
+reportFields = ['stationName', 'affiliate', 'date', 'day', 'start','timezone', 'duration','title','programTitle','seasonEpisode','status']
+criteriaFields = ['title','episodeTitle','status','timezone']
 
 
 # default report dict
@@ -55,7 +55,6 @@ report_content = None
 # Create your views here.
 def index(request):
     template = loader.get_template('analytics/main.html')
-    #fields = get_dropdown_fields()
     fields = get_dropdown_fields()
     fields['tab'] = 'analytics'
     if request.user.is_authenticated():
@@ -120,39 +119,56 @@ def CreateTableData(query_results):
         Show_airings[1][titleSet[show]+1] = total_show_time[show]
         Show_airings[2][titleSet[show]+1] = prime_time[show]
         Show_airings[3][titleSet[show]+1] = FirstRun[show]
-    #print 'Show_affiliate'
-    #print Show_affiliate
-    #print 'show_hours_table'
-    #print show_hours_table
-    #print 'show_prime_hours_table'
-    #print show_prime_hours_table
-    #print 'show_first_hours_table'
-    #print show_first_hours_table
-    return Show_affiliate,Show_airings
+
+    show_hours_table = []
+    show_hours_table.append(['Tv Show', 'Air Time'])
+    show_prime_hours_table = []
+    show_prime_hours_table.append(['Tv Show', 'Prime Air Time'])
+    show_first_hours_table = []
+    show_first_hours_table.append(['Tv Show', 'First Run Time'])
+    for i in range(len(titleSet)):
+        show_hours_table.append(['Show Name',0])
+        show_prime_hours_table.append(['Show Name',0])
+        show_first_hours_table.append(['Show Name',0])
+    for show in titleSet.keys():
+        show_hours_table[titleSet[show]+1][0] = show
+        show_hours_table[titleSet[show]+1][1] = float(total_show_time[show])
+        show_prime_hours_table[titleSet[show]+1][0] = show
+        show_prime_hours_table[titleSet[show]+1][1] = float(prime_time[show])
+        show_first_hours_table[titleSet[show]+1][0] = show
+        show_first_hours_table[titleSet[show]+1][1] = float(FirstRun[show])
+    return Show_affiliate,Show_airings,show_hours_table,show_prime_hours_table,show_first_hours_table
 
 def get_report(request):
     global report_content
     data = dict(request.POST.iteritems())
     allFields = defaultdict(dict)
+    commonFields = defaultdict(dict)
     res = []
+    multiTimeZones = False
     for k,v in data.iteritems():
-        parts = k.split('_')
-        if parts[0] in criteriaFields:
-            allFields[parts[1]][parts[0]] = v
-    #print 'allFields',allFields
-    for k,v in allFields.iteritems():
-        logger.info('REQUEST PARAMS %s' % str(v))
-        content = api_get_report(v)
-        #print type(content)
-        content = reformReport(content) if content else [default_report_dict]
-        res.extend(content)
+        if k == 'timezone' and v == 'All':
+            multiTimeZones = True
+        if k != "csrfmiddlewaretoken" and k != "title_0" and k != 'title_1' and k != 'title_2':
+            commonFields[k] = v
+    for k,v in data.iteritems():
+        if (k == "title_0" or k == 'title_1' or k == 'title_2') and v != 'All':
+            logger.info('REQUEST PARAMS %s' % str(v))
+            commonFields['title'] = v
+            content = api_get_report(commonFields)
+            content = reformReport(content) if content else [default_report_dict]
+            res.extend(content)
     report_content = res
-    #print "result = " + str(res)
-    station_data,Show_airings = CreateTableData(report_content)
-    dict_graphs = {'station_graph':station_data,\
-                   'airtime_graph':Show_airings,}
-    #print "res value = " + str(res)
-    #print "TYPE = " + str(type(res))
+    Show_affiliate,\
+    Show_airings,\
+    show_hours_table,\
+    show_prime_hours_table,\
+    show_first_hours_table = CreateTableData(report_content)
+    dict_graphs = {'station_graph':Show_affiliate,\
+                   'airtime_graph':Show_airings,\
+                   'pie_total' : show_hours_table,\
+                   'pie_prime' : show_prime_hours_table,\
+                   'pie_firstRun' : show_first_hours_table}
     return JsonResponse(dict_graphs,safe=False)
 
 
@@ -176,7 +192,6 @@ Helper function
 def get_dropdown_fields():
     global cachedMenu
     if cachedMenu:
-        #print "Prev DOES IT CONTAINS:"  +str(cachedMenu.keys())
         return cachedMenu
     attributes = criteriaFields
     res = {}
@@ -187,32 +202,17 @@ def get_dropdown_fields():
             res[attr] = js[attr]
 
     cachedMenu = res
-    #print "DOES IT CONTAINS:"  +str('The Big Bang Theory' in cachedMenu['title'])
     return res
 
 
 def api_get_report(fields):
     DATA = fields_transform(fields)
-    logger.info('API DATA %s' % str(DATA))
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
-    #print 'get report',r.json()
     return r.json()
 
 
 
-
-def fields_transform(fields):
-    logger.info('BEFORE TRANSOFRM %s' % str(fields))
-    DATA = {}
-    for k,v in fields.iteritems():
-        if v and v != 'All' and k in queryFields: DATA[k] = v
-    logger.info('AFTER TRANSOFRM %s' % str(DATA))
-    return DATA
-
-
-
 def api_save_query(fields):
-    #print fields
     DATA = fields_transform(fields)
     query = ''
     for k,v in DATA.iteritems():
@@ -223,6 +223,15 @@ def api_save_query(fields):
     r = requests.post('http://localhost:8080/api/v1/savedquery/', data=DATA)
     return r.status_code
 
+def fields_transform(fields):
+    DATA = {}
+    for k,v in fields.iteritems():
+        if v and v != 'All' and k in queryFields: DATA[k] = v
+    DATA['dateFrom'] = reformat_date(fields['dateFrom'])
+    DATA['dateTo'] = reformat_date(fields['dateTo'])
+    DATA['timeFrom'] = reformat_time(fields['timeFrom'])
+    DATA['timeTo'] = reformat_time(fields['timeTo'])
+    return DATA
 
 def reformat_date(date):
     parts = date.split('/')
@@ -233,13 +242,13 @@ def reformat_time(time):
     if parts[-1] == 'PM':
         return str(int(parts[0])+12)
     else:
-        return parts[0]
+        return str(int(parts[0])%12)
 
 
 def reformReport(content):
     for c in content:
+        if 'airDateTime' not in c: continue
         dayTime = c['airDateTime'].split('T')
-        #print 'dayTime',dayTime
         c['date'] = dayTime[0]
         year, month, day = [int(n) for n in dayTime[0].split('-')]
         d = date(year, month, day)
@@ -256,9 +265,8 @@ def save_csv(request):
 
     writer = csv.writer(response)
     data = [
-    #report_content[0].keys(),
     # keep this so we have nice order
-    ["Channel","Affiliate","Date","Day","Start Time(UTC)","Duration","Title",
+    ["Channel","Affiliate","Date","Day","Start Time","TimeZone","Duration","Title",
     "Episode","Episode #", "Status"]
     ]
     for item in report_content:

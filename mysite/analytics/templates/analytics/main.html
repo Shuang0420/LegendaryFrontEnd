@@ -62,30 +62,136 @@
       <!--must have csrf_token when using post method-->
       <form action="/analytics/get_report/" method="post" id="queryFields">{% csrf_token %}
         <div class="row">
-          <div class='col-sm-12 form-group'>
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
-            <input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
-          </div>
-
           <div class="col-sm-4 form-group">
             <label>Show Title:</label>
             <!--<input type="text" class="form-control input-sm" name="title">-->
             <select class="form-control input-sm" name="title_0" style="width: col-xs-4;">
-                                        <option selected="selected">All</option>
-                                        {% for t in title %}
-                                                        <option value="{{t}}">{{t}}</option>
-                                        {% endfor %}
-                        </select>
+                <option selected="selected">All</option>
+                {% for t in title %}
+                    <option value="{{t}}">{{t}}</option>
+                {% endfor %}
+            </select>
           </div>
           <div id="more_criteria">
-
           </div>
-
-
-
-          <div class='col-sm-6'>
+          <div class='col-sm-12'>
             <button type="button" onclick="addCriteria();" class="btn btn-default" name="criteria" value="Add Criteria">Add Criteria</button>
           </div>
+
+
+          <div class="col-sm-4">
+            <label>Airing Date:</label>
+          </div>
+          <div class="col-sm-2">
+            <label>Start Time:</label>
+          </div>
+          <div class="col-sm-2">
+            <label>End Time:</label>
+          </div>
+          <div class="col-sm-4">
+            <label>Time Zone:</label>
+          </div>
+
+          <div class="col-sm-2 form-group">
+            <div class='input-group date' id='datepicker1'>
+              <input type='text' class="form-control input-sm" name='dateFrom' />
+              <span class="input-group-addon">
+                                              <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-2 form-group">
+            <div class='input-group date' id='datepicker2'>
+              <input type='text' class="form-control input-sm" name='dateTo' />
+              <span class="input-group-addon">
+                                              <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+
+          <div class='col-sm-2'>
+            <div class="form-group">
+              <div class='input-group date' id='timepicker1'>
+                <input type='text' class="form-control input-sm" name='timeFrom' />
+                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class='col-sm-2'>
+            <div class="form-group">
+              <div class='input-group date' id='timepicker2'>
+                <input type='text' class="form-control input-sm" name='timeTo' />
+                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class='col-sm-4'>
+            <select class="form-control input-sm" name="timezone" style="width:col-xs-2;">
+                    <option selected="selected">All</option>
+                    {% for t in timezone %}
+                      <option value="{{t}}">{{t}}</option>
+                    {% endfor %}
+            </select>
+          </div>
+          <div class='col-sm-12'>
+            <input type="submit" class="btn btn-primary" name="submit" value="Submit" id="submit">
+            <input type="submit" class="btn btn-primary" name="save" value="Save Query" id="save">
+          </div>
+
+
+          <!-- Date range and time range -->
+          <script type="text/javascript">
+            var dateTo = new Date();
+            var dateFrom = new Date();
+            dateFrom.setDate(dateFrom.getDate() - 7);
+            dateTo.setDate(dateTo.getDate() + 7);
+            $(function() {
+              $('#datepicker1').datetimepicker({
+                defaultDate: dateFrom,
+                pickTime: false
+              });
+              $('#datepicker2').datetimepicker({
+                defaultDate: dateTo,
+                useCurrent: false, //Important! See issue #1075
+                pickTime: false
+              });
+              $("#datepicker1").on("dp.change", function(e) {
+                $('#datepicker2').data("DateTimePicker").minDate(e.date);
+              });
+              $("#datepicker2").on("dp.change", function(e) {
+                $('#datepicker1').data("DateTimePicker").maxDate(e.date);
+              });
+            });
+
+            $(function() {
+              dateFrom.setHours(00);
+              dateFrom.setMinutes(01);
+              dateTo.setHours(23);
+              dateTo.setMinutes(59);
+              $('#timepicker1').datetimepicker({
+                pickDate: false,
+                defaultDate: dateFrom,
+              });
+              $('#timepicker2').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                pickDate: false,
+                defaultDate: dateTo,
+              });
+              $("#timepicker1").on("dp.change", function(e) {
+                $('#timepicker2').data("DateTimePicker").minDate(e.date);
+              });
+              $("#timepicker2").on("dp.change", function(e) {
+                $('#timepicker1').data("DateTimePicker").maxDate(e.date);
+              });
+            });
+          </script>
+
+
+
 
           <script>
             var criteriaId = 0;
@@ -115,17 +221,26 @@
           <!-- Ajax for report table -->
           <script type="text/javascript">
             $('#submit').click(function(e) {
-              document.getElementById("report_part").style.visibility = "visible";
               $.ajax({
                 type: "POST",
                 url: "/analytics/get_report/", // the script where you handle the form input.
                 data: $("#queryFields").serialize(), // serializes the form's elements.
                 success: function(data) {
-                  drawBarChart(data.station_graph);
-                  drawBarChart_airings(data.airtime_graph);
-                  //drawPieChart_Legend(data.airtime_graph,'piechart_total', 'Total Air Time');
-                  //drawPieChart_Legend(data.prime_graph,  'piechart_prime', 'Total Prime Time');
-                  //drawPieChart_Legend(data.first_graph,  'piechart_first', 'Non Repeat Air Time');
+                  if ( data != null ){
+                    $('#piechart_total').empty();
+                    $('#piechart_prime').empty();
+                    $('#piechart_first').empty();
+                    $('#barchart_airings').empty();
+                    $('#barchart').empty();
+                    document.getElementById("report_part").style.visibility = "visible";
+                    drawPieChart_Legend(data.pie_total,'piechart_total', 'Total Airings');
+                    drawPieChart_Legend(data.pie_prime,  'piechart_prime', 'Prime Time Airings');
+                    drawPieChart_Legend(data.pie_firstRun,  'piechart_first', 'FirstRun');
+                    drawBarChart_airings(data.airtime_graph);
+                    drawBarChart(data.station_graph);
+                  } else {
+                    document.getElementById("report_part").style.visibility = "visible";
+                  }
                 }
               });
               e.preventDefault();
@@ -152,6 +267,7 @@
           </script>
         </div>
       </form>
+      <br/>
       <div class="row col-sm-12" id="report_part" style="visibility:hidden">
         <button class="btn btn-default" id="export">Export</button>​
         <script>
@@ -178,7 +294,7 @@
         </script>
         <br />
         <div class="row">
-          <!-- <div class="col-sm-4">
+          <div class="col-sm-4">
             <div id="piechart_total" style="height: 400px;"></div>
           </div>
           <div class="col-sm-4">
@@ -186,9 +302,10 @@
           </div>
           <div class="col-sm-4">
             <div id="piechart_first" style="height: 400px;"></div>
-          </div> -->
-          <div id="barchart_airings" style="width: 100%; height: 450px;"></div>
+          </div>
+
         </div>
+        <div class="row"><div id="barchart_airings" style="width: 100%; height: 450px;"/></div>
         <div class="row" id="report_part_bar" style="visibility:visible">
           <div id="barchart" style="width: 100%; height: 450px;"></div>
         </div>

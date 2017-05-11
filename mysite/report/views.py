@@ -285,7 +285,7 @@ def api_save_query(fields):
 
 def api_get_report(fields):
     DATA = fields_transform(fields)
-    #print 'data', DATA
+    print 'data', DATA
     r = requests.post('http://localhost:8080/api/v1/program', data=DATA)
     #print 'get report',r.json()
     return r.json()
