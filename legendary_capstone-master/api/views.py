@@ -456,9 +456,9 @@ def menu(request):
 	result_dic = {}
 
 	# a dictionary to store the table and column name for a query field
-	dic = { 'title': ('showny', 'title'),
+	dic = { 'title': ('show', 'title'),
 			'episodeTitle': ('program', 'title'),
-			'showType': ('showny', 'showType'),
+			'showType': ('show', 'showType'),
 			'stationName': ('station', 'stationName'),
 			'timezone': ('lineup', 'timezone'),
 			'status': ('schedule', 'status')}
@@ -513,7 +513,7 @@ def program(request):
 	dateTo: airDateTime starting by the given date
 	timeFrom: airDateTime starting from the given time (hour 0-23)
 	timeTo: airDateTime starting by the given time (hour 0-23)
-	keyword: wildcard search in the show and episode title 
+	keyword: wildcard search in the show and episode title
 	orderBy: order results by column(s)
 	"""
 
@@ -593,7 +593,7 @@ def program(request):
 			sql = "SELECT {} FROM starschedule3 ORDER BY {}".format(",".join(fields), orderBy)
 		else:
 			sql = "SELECT {} FROM starschedule3 WHERE {} ORDER BY {}".format(",".join(fields), " AND ".join(conditions), orderBy)
-		
+
 		cur.execute(sql)
 		print(sql)
 		result = cur.fetchall()
