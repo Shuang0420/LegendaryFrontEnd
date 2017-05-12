@@ -115,7 +115,7 @@ Four tabs including dashboard/reporting/analytics/users are ready.
   - analytics/, dashboard/, report/, users/: four Django Web applications containing code for four tabs on frontend
   - static/: contains css, javascript files
   - mysite/: contains site settings for the frontend server
-  ​
+    ​
 
 **Templates:**
 We use [bootstrap SB Admin template](https://startbootstrap.com/template-overviews/sb-admin/) as the website templates for bootstrap. The html file is under the templates folder for each Django app. CSS and Javascript files are under mysite/static/.
@@ -140,3 +140,23 @@ cd ..
 cd mysite/
 nohup python manage.py runserver 0.0.0.0:8000 &
 ```
+
+## Views
+
+### Dashboard
+
+![Legendary_dashboard](views/Legendary_dashboard.png)
+
+### Reporting
+
+![Legendary_reporting](views/Legendary_reporting.png)
+
+### Analytics
+
+![Legendary_analytics_1](views/Legendary_analytics_1.png)
+
+![Legendary_analytics_2](views/Legendary_analytics_2.png)
+
+### Users
+
+![Legendary_users](views/Legendary_users.png)
